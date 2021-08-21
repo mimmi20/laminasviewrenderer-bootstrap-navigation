@@ -32,7 +32,7 @@
         <ini name="intl.use_exceptions" value="1"/>
     </php>
 
-    <testsuite name="Template Test Suite">
+    <testsuite name="laminasviewrenderer-bootstrap-navigation Test Suite">
         <directory>tests/</directory>
     </testsuite>
 
@@ -40,5 +40,8 @@
         <include>
             <directory suffix=".php">src/</directory>
         </include>
+        <report>
+            <text outputFile="php://stdout" showUncoveredFiles="true" showOnlySummary="false"/>
+        </report>
     </coverage>
 </phpunit>
