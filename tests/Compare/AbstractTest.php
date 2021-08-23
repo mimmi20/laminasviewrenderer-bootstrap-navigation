@@ -12,7 +12,6 @@ declare(strict_types = 1);
 
 namespace Mimmi20Test\LaminasView\BootstrapNavigation\Compare;
 
-use Laminas\Config\Config;
 use Laminas\Config\Exception\RuntimeException;
 use Laminas\Config\Factory as ConfigFactory;
 use Laminas\I18n\Translator\Translator;
@@ -23,18 +22,26 @@ use Laminas\Navigation\Service\DefaultNavigationFactory;
 use Laminas\Permissions\Acl\Acl;
 use Laminas\Permissions\Acl\Resource\GenericResource;
 use Laminas\Permissions\Acl\Role\GenericRole;
+use Laminas\Router\ConfigProvider;
+use Laminas\ServiceManager\Config;
 use Laminas\ServiceManager\Exception\ContainerModificationsNotAllowedException;
 use Laminas\ServiceManager\Factory\InvokableFactory;
 use Laminas\ServiceManager\ServiceManager;
 use Laminas\View\Helper\Navigation\AbstractHelper;
-use Laminas\View\HelperPluginManager as ViewHelperPluginManager;
-use Mimmi20\LaminasView\BootstrapNavigation\ViewHelperInterface;
+use Laminas\View\HelperPluginManager;
+use Laminas\View\Renderer\PhpRenderer;
 use Mimmi20\LaminasView\Helper\HtmlElement\Helper\HtmlElementFactory;
 use Mimmi20\LaminasView\Helper\HtmlElement\Helper\HtmlElementInterface;
+use Mimmi20\NavigationHelper\ContainerParser\ContainerParserFactory;
+use Mimmi20\NavigationHelper\ContainerParser\ContainerParserInterface;
+use Mimmi20\NavigationHelper\Htmlify\HtmlifyFactory;
+use Mimmi20\NavigationHelper\Htmlify\HtmlifyInterface;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerExceptionInterface;
 use SebastianBergmann\RecursionContext\InvalidArgumentException;
+use Laminas\Mvc\Service\ServiceManagerConfig;
+use Laminas\Router\RouteMatch as V3RouteMatch;
 
 use function file_get_contents;
 use function sprintf;
@@ -93,53 +100,8 @@ abstract class AbstractTest extends TestCase
         $this->files = $cwd . '/_files';
         $config      = ConfigFactory::fromFile($this->files . '/navigation.xml', true);
 
-        static::assertInstanceOf(Config::class, $config);
-
         $sm = $this->serviceManager = new ServiceManager();
         $sm->setAllowOverride(true);
-
-        $sm->setFactory('Navigation', DefaultNavigationFactory::class);
-        $sm->setFactory('navigation', DefaultNavigationFactory::class);
-        $sm->setFactory('default', DefaultNavigationFactory::class);
-        $sm->setFactory('nav_test1', new ConstructedNavigationFactory('nav_test1'));
-        $sm->setFactory('nav_test2', new ConstructedNavigationFactory('nav_test2'));
-        $sm->setFactory('nav_test3', new ConstructedNavigationFactory('nav_test3'));
-        $sm->setFactory(PageFactory::class, InvokableFactory::class);
-        $sm->setAlias(PageFactoryInterface::class, PageFactory::class);
-        $sm->setFactory(HelperPluginManager::class, PluginManagerFactory::class);
-        $sm->setFactory(PartialRendererInterface::class, PartialRendererFactory::class);
-        $sm->setFactory(HtmlElementInterface::class, HtmlElementFactory::class);
-        $sm->setFactory(
-            'config',
-            static fn (): array => [
-                'navigation' => [
-                    'default' => $config->get('nav_test1'),
-                ],
-                'view_helpers' => [
-                    'aliases' => [
-                        'navigation' => Navigation::class,
-                        'Navigation' => Navigation::class,
-                    ],
-                    'factories' => [
-                        Navigation::class => NavigationFactory::class,
-                        UrlHelper::class => UrlHelperFactory::class,
-                        ServerUrlHelper::class => ServerUrlHelperFactory::class,
-                    ],
-                ],
-                'templates' => [
-                    'map' => [
-                        'test::menu' => __DIR__ . '/_files/mvc/views/menu.phtml',
-                        'test::menu-with-partials' => __DIR__ . '/_files/mvc/views/menu_with_partial_params.phtml',
-                        'test::bc' => __DIR__ . '/_files/mvc/views/bc.phtml',
-                        'test::bc-separator' => __DIR__ . '/_files/mvc/views/bc_separator.phtml',
-                        'test::bc-with-partials' => __DIR__ . '/_files/mvc/views/bc_with_partial_params.phtml',
-                    ],
-                ],
-            ]
-        );
-        $sm->setFactory(ViewHelperPluginManager::class, HelperPluginManagerFactory::class);
-        $sm->setFactory(LaminasViewRenderer::class, LaminasViewRendererFactory::class);
-        $sm->setFactory(BaseServerUrlHelper::class, InvokableFactory::class);
 
         $logger = $this->getMockBuilder(Logger::class)
             ->disableOriginalConstructor()
@@ -161,17 +123,97 @@ abstract class AbstractTest extends TestCase
         $logger->expects(static::never())
             ->method('debug');
 
-        $sm->setService(Logger::class, $logger);
+        // read navigation config
+        $this->_files = $cwd . '/_files';
+        $config = ConfigFactory::fromFile($this->_files . '/navigation.xml', true);
 
         // setup containers from config
-        $this->nav1 = $sm->get('nav_test1');
-        $this->nav2 = $sm->get('nav_test2');
-        $this->nav3 = $sm->get('nav_test3');
+        $this->nav1 = new Navigation($config->get('nav_test1'));
+        $this->nav2 = new Navigation($config->get('nav_test2'));
+        $this->nav3 = new Navigation($config->get('nav_test3'));
+
+        // setup view
+        $view = new PhpRenderer();
+        $view->resolver()->addPath($cwd . '/_files/mvc/views');
+
+        // setup service manager
+        $smConfig = [
+            'modules'                 => [],
+            'module_listener_options' => [
+                'config_cache_enabled' => false,
+                'cache_dir'            => 'data/cache',
+                'module_paths'         => [],
+                'extra_config'         => [
+                    'service_manager' => [
+                        'factories' => [
+                            'config' => function () use ($config) {
+                                return [
+                                    'navigation' => [
+                                        'default' => $config->get('nav_test1'),
+                                    ],
+                                ];
+                            }
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        (new ServiceManagerConfig())->configureServiceManager($sm);
+
+        if (class_exists(ConfigProvider::class)) {
+            $routerConfig = new Config((new ConfigProvider())->getDependencyConfig());
+            $routerConfig->configureServiceManager($sm);
+        }
+
+        $sm->setService(Logger::class, $logger);
+
+        $sm->setFactory('Navigation', DefaultNavigationFactory::class);
+        $sm->setFactory('navigation', DefaultNavigationFactory::class);
+        $sm->setFactory('default', DefaultNavigationFactory::class);
+        $sm->setFactory('nav_test1', new ConstructedNavigationFactory('nav_test1'));
+        $sm->setFactory('nav_test2', new ConstructedNavigationFactory('nav_test2'));
+        $sm->setFactory('nav_test3', new ConstructedNavigationFactory('nav_test3'));
+        $sm->setFactory(HtmlElementInterface::class, HtmlElementFactory::class);
+        $sm->setFactory(HtmlifyInterface::class, HtmlifyFactory::class);
+        $sm->setFactory(ContainerParserInterface::class, ContainerParserFactory::class);
+        $sm->setFactory(
+            'config',
+            static fn (): array => [
+                'navigation' => [
+                    'default' => $config->get('nav_test1'),
+                ],
+                'view_helpers' => [
+                    'aliases' => [
+                        'navigation' => Navigation::class,
+                        'Navigation' => Navigation::class,
+                    ],
+                ],
+            ]
+        );
+
+        $sm->setFactory(
+            HelperPluginManager::class,
+            static fn (): HelperPluginManager => new HelperPluginManager($sm)
+        );
+
+        $sm->setService(PhpRenderer::class, $view);
+        $sm->setService('ApplicationConfig', $smConfig);
+        $sm->get('ModuleManager')->loadModules();
+        $sm->get('Application')->bootstrap();
+        $sm->setFactory('Navigation', DefaultNavigationFactory::class);
 
         $sm->setService('nav1', $this->nav1);
         $sm->setService('nav2', $this->nav2);
 
         $sm->setAllowOverride(false);
+
+        $app = $this->serviceManager->get('Application');
+        $app->getMvcEvent()->setRouteMatch(new V3RouteMatch([
+                                                                         'controller' => 'post',
+                                                                         'action'     => 'view',
+                                                                         'id'         => '1337',
+                                                                     ]));
     }
 
     /**
@@ -192,7 +234,7 @@ abstract class AbstractTest extends TestCase
     /**
      * Sets up ACL
      *
-     * @return array<string, LaminasAcl|string>
+     * @return array<string, Acl|string>
      *
      * @throws \Laminas\Permissions\Acl\Exception\InvalidArgumentException
      */
@@ -216,7 +258,7 @@ abstract class AbstractTest extends TestCase
         $acl->allow('special', 'special_foo');
         $acl->allow('special', 'admin_foo', 'read');
 
-        return ['acl' => new LaminasAcl($acl), 'role' => 'special'];
+        return ['acl' => $acl, 'role' => 'special'];
     }
 
     /**

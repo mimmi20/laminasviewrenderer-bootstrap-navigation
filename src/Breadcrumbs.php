@@ -55,7 +55,7 @@ final class Breadcrumbs extends \Laminas\View\Helper\Navigation\Breadcrumbs
         $this->htmlify         = $htmlify;
         $this->containerParser = $containerParser;
         $this->translator      = $translator;
-        $this->renderer        = $renderer;
+        $this->view        = $renderer;
     }
 
     /**
@@ -204,7 +204,7 @@ final class Breadcrumbs extends \Laminas\View\Helper\Navigation\Breadcrumbs
             $model['pages'] = array_reverse($model['pages']);
         }
 
-        return $this->renderer->render($partial, $model);
+        return $this->view->render($partial, $model);
     }
 
     /**

@@ -65,9 +65,7 @@ final class BreadcrumbsTest extends AbstractTest
     {
         parent::setUp();
 
-        $plugin              = $this->serviceManager->get(ViewHelperPluginManager::class);
         $renderer = $this->serviceManager->get(PhpRenderer::class);
-        $escapeHelper = $plugin->get(EscapeHtml::class);
 
         $translator = null;
 
@@ -77,7 +75,6 @@ final class BreadcrumbsTest extends AbstractTest
             $this->serviceManager->get(Logger::class),
             $this->serviceManager->get(HtmlifyInterface::class),
             $this->serviceManager->get(ContainerParserInterface::class),
-            $escapeHelper,
             $renderer,
             $translator
         );
@@ -239,7 +236,7 @@ final class BreadcrumbsTest extends AbstractTest
     {
         $acl = $this->getAcl();
         assert($acl['acl'] instanceof AclInterface);
-        $this->helper->setAuthorization($acl['acl']);
+        $this->helper->setAcl($acl['acl']);
         assert(is_string($acl['role']));
         $this->helper->setRole($acl['role']);
 
@@ -254,7 +251,7 @@ final class BreadcrumbsTest extends AbstractTest
      */
     public function testRenderingPartial(): void
     {
-        $this->helper->setPartial('test::bc');
+        $this->helper->setPartial('bc.phtml');
 
         $expected = $this->getExpected('bc/partial.html');
         self::assertSame($expected, $this->helper->render());
@@ -267,7 +264,7 @@ final class BreadcrumbsTest extends AbstractTest
      */
     public function testRenderingPartialWithSeparator(): void
     {
-        $this->helper->setPartial('test::bc-separator')->setSeparator(' / ');
+        $this->helper->setPartial('bc_separator.phtml')->setSeparator(' / ');
 
         $expected = trim($this->getExpected('bc/partialwithseparator.html'));
         self::assertSame($expected, $this->helper->render());
@@ -280,7 +277,7 @@ final class BreadcrumbsTest extends AbstractTest
      */
     public function testRenderingPartialBySpecifyingAnArrayAsPartial(): void
     {
-        $this->helper->setPartial(['test::bc', 'application']);
+        $this->helper->setPartial(['bc.phtml', 'application']);
 
         $expected = $this->getExpected('bc/partial.html');
         self::assertSame($expected, $this->helper->render());
@@ -310,7 +307,7 @@ final class BreadcrumbsTest extends AbstractTest
      */
     public function testRenderingPartialWithParams(): void
     {
-        $this->helper->setPartial('test::bc-with-partials')->setSeparator(' / ');
+        $this->helper->setPartial('bc_with_partial_params.phtml')->setSeparator(' / ');
 
         $expected = $this->getExpected('bc/partial_with_params.html');
         $actual   = $this->helper->renderPartialWithParams(['variable' => 'test value']);

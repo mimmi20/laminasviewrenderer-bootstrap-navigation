@@ -16,6 +16,9 @@ use Interop\Container\ContainerInterface;
 use Laminas\I18n\View\Helper\Translate;
 use Laminas\Log\Logger;
 use Laminas\Navigation\AbstractContainer;
+use Laminas\Navigation\Navigation;
+use Laminas\Navigation\Page\AbstractPage;
+use Laminas\Navigation\Page\Uri;
 use Laminas\Permissions\Acl\Acl;
 use Laminas\ServiceManager\PluginManagerInterface;
 use Laminas\ServiceManager\ServiceLocatorInterface;
@@ -29,7 +32,9 @@ use Laminas\View\Renderer\PhpRenderer;
 use Laminas\View\Renderer\RendererInterface;
 use Mimmi20\LaminasView\BootstrapNavigation\Menu;
 use Mimmi20\LaminasView\Helper\HtmlElement\Helper\HtmlElementInterface;
+use Mimmi20\NavigationHelper\Accept\AcceptHelperInterface;
 use Mimmi20\NavigationHelper\ContainerParser\ContainerParserInterface;
+use Mimmi20\NavigationHelper\FindActive\FindActiveInterface;
 use PHPUnit\Framework\Constraint\IsInstanceOf;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestCase;
@@ -447,7 +452,7 @@ final class MenuTest extends TestCase
      * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
-    public function testSetUseAuthorization(): void
+    public function testSetUseAcl(): void
     {
         $logger = $this->getMockBuilder(Logger::class)
             ->disableOriginalConstructor()
@@ -527,22 +532,22 @@ final class MenuTest extends TestCase
             $translator
         );
 
-        self::assertTrue($helper->getUseAuthorization());
+        self::assertTrue($helper->getUseAcl());
 
-        $helper->setUseAuthorization(false);
+        $helper->setUseAcl(false);
 
-        self::assertFalse($helper->getUseAuthorization());
+        self::assertFalse($helper->getUseAcl());
 
-        $helper->setUseAuthorization();
+        $helper->setUseAcl();
 
-        self::assertTrue($helper->getUseAuthorization());
+        self::assertTrue($helper->getUseAcl());
     }
 
     /**
      * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
-    public function testSetAuthorization(): void
+    public function testsetAcl(): void
     {
         $auth        = $this->createMock(Acl::class);
         $defaultAuth = $this->createMock(Acl::class);
@@ -625,20 +630,20 @@ final class MenuTest extends TestCase
             $translator
         );
 
-        self::assertNull($helper->getAuthorization());
-        self::assertFalse($helper->hasAuthorization());
+        self::assertNull($helper->getAcl());
+        self::assertFalse($helper->hasAcl());
 
         assert($defaultAuth instanceof Acl);
         Menu::setDefaultAcl($defaultAuth);
 
-        self::assertSame($defaultAuth, $helper->getAuthorization());
-        self::assertTrue($helper->hasAuthorization());
+        self::assertSame($defaultAuth, $helper->getAcl());
+        self::assertTrue($helper->hasAcl());
 
         assert($auth instanceof Acl);
-        $helper->setAuthorization($auth);
+        $helper->setAcl($auth);
 
-        self::assertSame($auth, $helper->getAuthorization());
-        self::assertTrue($helper->hasAuthorization());
+        self::assertSame($auth, $helper->getAcl());
+        self::assertTrue($helper->hasAcl());
     }
 
     /**
@@ -727,7 +732,7 @@ final class MenuTest extends TestCase
             $translator
         );
 
-        self::assertNull($helper->getView());
+        self::assertSame($renderer, $helper->getView());
 
         assert($view instanceof RendererInterface);
         $helper->setView($view);
@@ -743,7 +748,7 @@ final class MenuTest extends TestCase
      */
     public function testSetContainer(): void
     {
-        $container = $this->createMock(\Mezzio\AbstractContainer::class);
+        $container = $this->createMock(AbstractContainer::class);
 
         $logger = $this->getMockBuilder(Logger::class)
             ->disableOriginalConstructor()
@@ -963,7 +968,7 @@ final class MenuTest extends TestCase
         $logger->expects(self::never())
             ->method('debug');
 
-        $container = $this->createMock(\Mezzio\AbstractContainer::class);
+        $container = $this->createMock(AbstractContainer::class);
         $name      = 'Mezzio\\Navigation\\Top';
 
         $serviceLocator = $this->getMockBuilder(ServiceLocatorInterface::class)
@@ -1058,10 +1063,10 @@ final class MenuTest extends TestCase
         $logger->expects(self::never())
             ->method('debug');
 
-        $container = $this->createMock(\Mezzio\AbstractContainer::class);
+        $container = $this->createMock(AbstractContainer::class);
         $name      = 'Mezzio\\Navigation\\Top';
 
-        $page = $this->getMockBuilder(PageInterface::class)
+        $page = $this->getMockBuilder(AbstractPage::class)
             ->disableOriginalConstructor()
             ->getMock();
         $page->expects(self::never())
@@ -1158,9 +1163,9 @@ final class MenuTest extends TestCase
         $helper->setRole($role);
 
         assert($auth instanceof Acl);
-        $helper->setAuthorization($auth);
+        $helper->setAcl($auth);
 
-        assert($page instanceof PageInterface);
+        assert($page instanceof AbstractPage);
         self::assertFalse($helper->accept($page));
     }
 
@@ -1216,7 +1221,7 @@ final class MenuTest extends TestCase
         $pageHref                   = 'http://page';
         $pageTarget                 = 'page-target';
 
-        $page = $this->getMockBuilder(PageInterface::class)
+        $page = $this->getMockBuilder(AbstractPage::class)
             ->disableOriginalConstructor()
             ->getMock();
         $page->expects(self::never())
@@ -1251,10 +1256,8 @@ final class MenuTest extends TestCase
             ->method('hasPage');
         $page->expects(self::never())
             ->method('hasPages');
-
         $page->expects(self::never())
-            ->method('hashCode')
-            ->willReturn('page');
+            ->method('getCustomProperties');
 
         $containerParser = $this->getMockBuilder(ContainerParserInterface::class)
             ->disableOriginalConstructor()
@@ -1325,7 +1328,7 @@ final class MenuTest extends TestCase
         assert($view instanceof PhpRenderer);
         $helper->setView($view);
 
-        assert($page instanceof PageInterface);
+        assert($page instanceof AbstractPage);
         self::assertSame($expected, $helper->htmlify($page));
     }
 
@@ -1454,7 +1457,7 @@ final class MenuTest extends TestCase
 
         $name = 'Mezzio\\Navigation\\Top';
 
-        $parentPage = $this->getMockBuilder(PageInterface::class)
+        $parentPage = $this->getMockBuilder(AbstractPage::class)
             ->disableOriginalConstructor()
             ->getMock();
         $parentPage->expects(self::never())
@@ -1467,8 +1470,28 @@ final class MenuTest extends TestCase
             ->method('getParent');
         $parentPage->expects(self::never())
             ->method('isActive');
+        $parentPage->expects(self::never())
+            ->method('getLabel');
+        $parentPage->expects(self::never())
+            ->method('getTextDomain');
+        $parentPage->expects(self::never())
+            ->method('getTitle');
+        $parentPage->expects(self::never())
+            ->method('getId');
+        $parentPage->expects(self::never())
+            ->method('getClass');
+        $parentPage->expects(self::never())
+            ->method('getHref');
+        $parentPage->expects(self::never())
+            ->method('getTarget');
+        $parentPage->expects(self::never())
+            ->method('hasPage');
+        $parentPage->expects(self::never())
+            ->method('hasPages');
+        $parentPage->expects(self::never())
+            ->method('getCustomProperties');
 
-        $page = $this->getMockBuilder(PageInterface::class)
+        $page = $this->getMockBuilder(AbstractPage::class)
             ->disableOriginalConstructor()
             ->getMock();
         $page->expects(self::never())
@@ -1481,6 +1504,26 @@ final class MenuTest extends TestCase
             ->method('getParent');
         $page->expects(self::never())
             ->method('isActive');
+        $page->expects(self::never())
+            ->method('getLabel');
+        $page->expects(self::never())
+            ->method('getTextDomain');
+        $page->expects(self::never())
+            ->method('getTitle');
+        $page->expects(self::never())
+            ->method('getId');
+        $page->expects(self::never())
+            ->method('getClass');
+        $page->expects(self::never())
+            ->method('getHref');
+        $page->expects(self::never())
+            ->method('getTarget');
+        $page->expects(self::never())
+            ->method('hasPage');
+        $page->expects(self::never())
+            ->method('hasPages');
+        $page->expects(self::never())
+            ->method('getCustomProperties');
 
         $container = new Navigation();
         $container->addPage($page);
@@ -1575,7 +1618,7 @@ final class MenuTest extends TestCase
         $helper->setRole($role);
 
         assert($auth instanceof Acl);
-        $helper->setAuthorization($auth);
+        $helper->setAcl($auth);
 
         self::assertSame([], $helper->findActive($name, $minDepth, $maxDepth));
     }
@@ -1610,7 +1653,7 @@ final class MenuTest extends TestCase
 
         $name = 'Mezzio\\Navigation\\Top';
 
-        $parentPage = $this->getMockBuilder(PageInterface::class)
+        $parentPage = $this->getMockBuilder(AbstractPage::class)
             ->disableOriginalConstructor()
             ->getMock();
         $parentPage->expects(self::never())
@@ -1623,8 +1666,28 @@ final class MenuTest extends TestCase
             ->method('getParent');
         $parentPage->expects(self::never())
             ->method('isActive');
+        $parentPage->expects(self::never())
+            ->method('getLabel');
+        $parentPage->expects(self::never())
+            ->method('getTextDomain');
+        $parentPage->expects(self::never())
+            ->method('getTitle');
+        $parentPage->expects(self::never())
+            ->method('getId');
+        $parentPage->expects(self::never())
+            ->method('getClass');
+        $parentPage->expects(self::never())
+            ->method('getHref');
+        $parentPage->expects(self::never())
+            ->method('getTarget');
+        $parentPage->expects(self::never())
+            ->method('hasPage');
+        $parentPage->expects(self::never())
+            ->method('hasPages');
+        $parentPage->expects(self::never())
+            ->method('getCustomProperties');
 
-        $page = $this->getMockBuilder(PageInterface::class)
+        $page = $this->getMockBuilder(AbstractPage::class)
             ->disableOriginalConstructor()
             ->getMock();
         $page->expects(self::never())
@@ -1637,6 +1700,26 @@ final class MenuTest extends TestCase
             ->method('getParent');
         $page->expects(self::never())
             ->method('isActive');
+        $page->expects(self::never())
+            ->method('getLabel');
+        $page->expects(self::never())
+            ->method('getTextDomain');
+        $page->expects(self::never())
+            ->method('getTitle');
+        $page->expects(self::never())
+            ->method('getId');
+        $page->expects(self::never())
+            ->method('getClass');
+        $page->expects(self::never())
+            ->method('getHref');
+        $page->expects(self::never())
+            ->method('getTarget');
+        $page->expects(self::never())
+            ->method('hasPage');
+        $page->expects(self::never())
+            ->method('hasPages');
+        $page->expects(self::never())
+            ->method('getCustomProperties');
 
         $container = new Navigation();
         $container->addPage($page);
@@ -1736,7 +1819,7 @@ final class MenuTest extends TestCase
         $helper->setRole($role);
 
         assert($auth instanceof Acl);
-        $helper->setAuthorization($auth);
+        $helper->setAcl($auth);
 
         $expected = [
             'page' => $page,
@@ -1863,7 +1946,7 @@ final class MenuTest extends TestCase
         $helper->setRole($role);
 
         assert($auth instanceof Acl);
-        $helper->setAuthorization($auth);
+        $helper->setAcl($auth);
 
         $expected = [];
 
@@ -1900,7 +1983,7 @@ final class MenuTest extends TestCase
 
         $name = 'Mezzio\\Navigation\\Top';
 
-        $parentPage = $this->getMockBuilder(PageInterface::class)
+        $parentPage = $this->getMockBuilder(AbstractPage::class)
             ->disableOriginalConstructor()
             ->getMock();
         $parentPage->expects(self::never())
@@ -1913,8 +1996,28 @@ final class MenuTest extends TestCase
             ->method('getParent');
         $parentPage->expects(self::never())
             ->method('isActive');
+        $parentPage->expects(self::never())
+            ->method('getLabel');
+        $parentPage->expects(self::never())
+            ->method('getTextDomain');
+        $parentPage->expects(self::never())
+            ->method('getTitle');
+        $parentPage->expects(self::never())
+            ->method('getId');
+        $parentPage->expects(self::never())
+            ->method('getClass');
+        $parentPage->expects(self::never())
+            ->method('getHref');
+        $parentPage->expects(self::never())
+            ->method('getTarget');
+        $parentPage->expects(self::never())
+            ->method('hasPage');
+        $parentPage->expects(self::never())
+            ->method('hasPages');
+        $parentPage->expects(self::never())
+            ->method('getCustomProperties');
 
-        $page = $this->getMockBuilder(PageInterface::class)
+        $page = $this->getMockBuilder(AbstractPage::class)
             ->disableOriginalConstructor()
             ->getMock();
         $page->expects(self::never())
@@ -1927,6 +2030,26 @@ final class MenuTest extends TestCase
             ->method('getParent');
         $page->expects(self::never())
             ->method('isActive');
+        $page->expects(self::never())
+            ->method('getLabel');
+        $page->expects(self::never())
+            ->method('getTextDomain');
+        $page->expects(self::never())
+            ->method('getTitle');
+        $page->expects(self::never())
+            ->method('getId');
+        $page->expects(self::never())
+            ->method('getClass');
+        $page->expects(self::never())
+            ->method('getHref');
+        $page->expects(self::never())
+            ->method('getTarget');
+        $page->expects(self::never())
+            ->method('hasPage');
+        $page->expects(self::never())
+            ->method('hasPages');
+        $page->expects(self::never())
+            ->method('getCustomProperties');
 
         $container = new Navigation();
         $container->addPage($page);
@@ -2026,7 +2149,7 @@ final class MenuTest extends TestCase
         $helper->setRole($role);
 
         assert($auth instanceof Acl);
-        $helper->setAuthorization($auth);
+        $helper->setAcl($auth);
 
         $expected = [
             'page' => $page,
@@ -2069,7 +2192,7 @@ final class MenuTest extends TestCase
 
         $name = 'Mezzio\\Navigation\\Top';
 
-        $page = $this->getMockBuilder(PageInterface::class)
+        $page = $this->getMockBuilder(AbstractPage::class)
             ->disableOriginalConstructor()
             ->getMock();
         $page->expects(self::never())
@@ -2082,6 +2205,26 @@ final class MenuTest extends TestCase
             ->method('getParent');
         $page->expects(self::never())
             ->method('isActive');
+        $page->expects(self::never())
+            ->method('getLabel');
+        $page->expects(self::never())
+            ->method('getTextDomain');
+        $page->expects(self::never())
+            ->method('getTitle');
+        $page->expects(self::never())
+            ->method('getId');
+        $page->expects(self::never())
+            ->method('getClass');
+        $page->expects(self::never())
+            ->method('getHref');
+        $page->expects(self::never())
+            ->method('getTarget');
+        $page->expects(self::never())
+            ->method('hasPage');
+        $page->expects(self::never())
+            ->method('hasPages');
+        $page->expects(self::never())
+            ->method('getCustomProperties');
 
         $container = new Navigation();
         $container->addPage($page);
@@ -2176,7 +2319,7 @@ final class MenuTest extends TestCase
         $helper->setRole($role);
 
         assert($auth instanceof Acl);
-        $helper->setAuthorization($auth);
+        $helper->setAcl($auth);
 
         $expected = [];
 
@@ -2221,7 +2364,7 @@ final class MenuTest extends TestCase
         $parentPage->setResource($resource);
         $parentPage->setPrivilege($privilege);
 
-        $page = $this->getMockBuilder(PageInterface::class)
+        $page = $this->getMockBuilder(AbstractPage::class)
             ->disableOriginalConstructor()
             ->getMock();
         $page->expects(self::never())
@@ -2234,6 +2377,26 @@ final class MenuTest extends TestCase
             ->method('getParent');
         $page->expects(self::never())
             ->method('isActive');
+        $page->expects(self::never())
+            ->method('getLabel');
+        $page->expects(self::never())
+            ->method('getTextDomain');
+        $page->expects(self::never())
+            ->method('getTitle');
+        $page->expects(self::never())
+            ->method('getId');
+        $page->expects(self::never())
+            ->method('getClass');
+        $page->expects(self::never())
+            ->method('getHref');
+        $page->expects(self::never())
+            ->method('getTarget');
+        $page->expects(self::never())
+            ->method('hasPage');
+        $page->expects(self::never())
+            ->method('hasPages');
+        $page->expects(self::never())
+            ->method('getCustomProperties');
 
         $parentPage->addPage($page);
 
@@ -2335,7 +2498,7 @@ final class MenuTest extends TestCase
         $helper->setRole($role);
 
         assert($auth instanceof Acl);
-        $helper->setAuthorization($auth);
+        $helper->setAcl($auth);
 
         $expected = [
             'page' => $parentPage,
@@ -2502,7 +2665,7 @@ final class MenuTest extends TestCase
         $helper->setRole($role);
 
         assert($auth instanceof Acl);
-        $helper->setAuthorization($auth);
+        $helper->setAcl($auth);
 
         $expected = [];
 
@@ -2665,7 +2828,7 @@ final class MenuTest extends TestCase
         $helper->setRole($role);
 
         assert($auth instanceof Acl);
-        $helper->setAuthorization($auth);
+        $helper->setAcl($auth);
 
         $helper->setMinDepth(-1);
         $helper->setMaxDepth($maxDepth);
@@ -2673,97 +2836,6 @@ final class MenuTest extends TestCase
         $expected = [];
 
         self::assertSame($expected, $helper->findActive($name));
-    }
-
-    /**
-     * @throws Exception
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     */
-    public function testEscapeLabels(): void
-    {
-        $logger = $this->getMockBuilder(Logger::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $logger->expects(self::never())
-            ->method('emerg');
-        $logger->expects(self::never())
-            ->method('alert');
-        $logger->expects(self::never())
-            ->method('crit');
-        $logger->expects(self::never())
-            ->method('err');
-        $logger->expects(self::never())
-            ->method('warn');
-        $logger->expects(self::never())
-            ->method('notice');
-        $logger->expects(self::never())
-            ->method('info');
-        $logger->expects(self::never())
-            ->method('debug');
-
-        $serviceLocator = $this->getMockBuilder(ServiceLocatorInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $serviceLocator->expects(self::never())
-            ->method('has');
-        $serviceLocator->expects(self::never())
-            ->method('get');
-        $serviceLocator->expects(self::never())
-            ->method('build');
-
-        $containerParser = $this->getMockBuilder(ContainerParserInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $containerParser->expects(self::never())
-            ->method('parseContainer');
-
-        $escapeHtmlAttr = $this->getMockBuilder(EscapeHtmlAttr::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $escapeHtmlAttr->expects(self::never())
-            ->method('__invoke');
-
-        $escapeHtml = $this->getMockBuilder(EscapeHtml::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $escapeHtml->expects(self::never())
-            ->method('__invoke');
-
-        $renderer = $this->getMockBuilder(PhpRenderer::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $renderer->expects(self::never())
-            ->method('render');
-
-        $translator = $this->getMockBuilder(Translate::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $translator->expects(self::never())
-            ->method('__invoke');
-
-        $htmlElement = $this->getMockBuilder(HtmlElementInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $htmlElement->expects(self::never())
-            ->method('toHtml');
-
-
-        $helper = new Menu(
-            $serviceLocator,
-            $logger,
-            $containerParser,
-            $escapeHtmlAttr,
-            $renderer,
-            $escapeHtml,
-            $htmlElement,
-            $translator
-        );
-
-        self::assertTrue($helper->getEscapeLabels());
-
-        $helper->escapeLabels(false);
-
-        self::assertFalse($helper->getEscapeLabels());
     }
 
     /**
@@ -3343,7 +3415,7 @@ final class MenuTest extends TestCase
         $logger->expects(self::never())
             ->method('debug');
 
-        $container = $this->createMock(\Mezzio\AbstractContainer::class);
+        $container = $this->createMock(AbstractContainer::class);
 
         $findActiveHelper = $this->getMockBuilder(FindActiveInterface::class)
             ->disableOriginalConstructor()
@@ -3526,7 +3598,7 @@ final class MenuTest extends TestCase
             ->method('isAllowed');
 
         assert($auth instanceof Acl);
-        $helper->setAuthorization($auth);
+        $helper->setAcl($auth);
 
         $view = $this->getMockBuilder(PhpRenderer::class)
             ->disableOriginalConstructor()
@@ -3643,7 +3715,7 @@ final class MenuTest extends TestCase
             ->method('isAllowed');
 
         assert($auth instanceof Acl);
-        $helper->setAuthorization($auth);
+        $helper->setAcl($auth);
 
         $view = $this->getMockBuilder(PhpRenderer::class)
             ->disableOriginalConstructor()
@@ -3701,7 +3773,7 @@ final class MenuTest extends TestCase
         $parentPage->setResource($resource);
         $parentPage->setPrivilege($privilege);
 
-        $page = $this->getMockBuilder(PageInterface::class)
+        $page = $this->getMockBuilder(AbstractPage::class)
             ->disableOriginalConstructor()
             ->getMock();
         $page->expects(self::never())
@@ -3714,6 +3786,26 @@ final class MenuTest extends TestCase
             ->method('getParent');
         $page->expects(self::never())
             ->method('isActive');
+        $page->expects(self::never())
+            ->method('getLabel');
+        $page->expects(self::never())
+            ->method('getTextDomain');
+        $page->expects(self::never())
+            ->method('getTitle');
+        $page->expects(self::never())
+            ->method('getId');
+        $page->expects(self::never())
+            ->method('getClass');
+        $page->expects(self::never())
+            ->method('getHref');
+        $page->expects(self::never())
+            ->method('getTarget');
+        $page->expects(self::never())
+            ->method('hasPage');
+        $page->expects(self::never())
+            ->method('hasPages');
+        $page->expects(self::never())
+            ->method('getCustomProperties');
 
         $parentPage->addPage($page);
 
@@ -3796,7 +3888,7 @@ final class MenuTest extends TestCase
         $helper->setRole($role);
 
         assert($auth instanceof Acl);
-        $helper->setAuthorization($auth);
+        $helper->setAcl($auth);
 
         $helper->setPartial($partial);
 
@@ -3844,7 +3936,7 @@ final class MenuTest extends TestCase
 
         $name = 'Mezzio\\Navigation\\Top';
 
-        $page = $this->getMockBuilder(PageInterface::class)
+        $page = $this->getMockBuilder(AbstractPage::class)
             ->disableOriginalConstructor()
             ->getMock();
         $page->expects(self::never())
@@ -3857,6 +3949,26 @@ final class MenuTest extends TestCase
             ->method('isActive');
         $page->expects(self::never())
             ->method('getParent');
+        $page->expects(self::never())
+            ->method('getLabel');
+        $page->expects(self::never())
+            ->method('getTextDomain');
+        $page->expects(self::never())
+            ->method('getTitle');
+        $page->expects(self::never())
+            ->method('getId');
+        $page->expects(self::never())
+            ->method('getClass');
+        $page->expects(self::never())
+            ->method('getHref');
+        $page->expects(self::never())
+            ->method('getTarget');
+        $page->expects(self::never())
+            ->method('hasPage');
+        $page->expects(self::never())
+            ->method('hasPages');
+        $page->expects(self::never())
+            ->method('getCustomProperties');
 
         $container = new Navigation();
         $container->addPage($page);
@@ -3937,7 +4049,7 @@ final class MenuTest extends TestCase
         $helper->setRole($role);
 
         assert($auth instanceof Acl);
-        $helper->setAuthorization($auth);
+        $helper->setAcl($auth);
 
         $helper->setPartial($partial);
 
@@ -3991,7 +4103,7 @@ final class MenuTest extends TestCase
         $parentPage->setResource($resource);
         $parentPage->setPrivilege($privilege);
 
-        $page = $this->getMockBuilder(PageInterface::class)
+        $page = $this->getMockBuilder(AbstractPage::class)
             ->disableOriginalConstructor()
             ->getMock();
         $page->expects(self::never())
@@ -4004,6 +4116,26 @@ final class MenuTest extends TestCase
             ->method('getParent');
         $page->expects(self::never())
             ->method('isActive');
+        $page->expects(self::never())
+            ->method('getLabel');
+        $page->expects(self::never())
+            ->method('getTextDomain');
+        $page->expects(self::never())
+            ->method('getTitle');
+        $page->expects(self::never())
+            ->method('getId');
+        $page->expects(self::never())
+            ->method('getClass');
+        $page->expects(self::never())
+            ->method('getHref');
+        $page->expects(self::never())
+            ->method('getTarget');
+        $page->expects(self::never())
+            ->method('hasPage');
+        $page->expects(self::never())
+            ->method('hasPages');
+        $page->expects(self::never())
+            ->method('getCustomProperties');
 
         $parentPage->addPage($page);
 
@@ -4086,7 +4218,7 @@ final class MenuTest extends TestCase
         $helper->setRole($role);
 
         assert($auth instanceof Acl);
-        $helper->setAuthorization($auth);
+        $helper->setAcl($auth);
 
         $helper->setContainer($container);
 
@@ -4147,7 +4279,7 @@ final class MenuTest extends TestCase
         $page->setPrivilege($privilege);
         $page->setActive(true);
 
-        $subPage = $this->getMockBuilder(PageInterface::class)
+        $subPage = $this->getMockBuilder(AbstractPage::class)
             ->disableOriginalConstructor()
             ->getMock();
         $subPage->expects(self::never())
@@ -4160,8 +4292,27 @@ final class MenuTest extends TestCase
             ->method('getParent');
         $subPage->expects(self::never())
             ->method('isActive');
+        $subPage->expects(self::never())
+            ->method('getLabel');
+        $subPage->expects(self::never())
+            ->method('getTextDomain');
+        $subPage->expects(self::never())
+            ->method('getTitle');
+        $subPage->expects(self::never())
+            ->method('getId');
+        $subPage->expects(self::never())
+            ->method('getClass');
+        $subPage->expects(self::never())
+            ->method('getHref');
+        $subPage->expects(self::never())
+            ->method('getTarget');
+        $subPage->expects(self::never())
+            ->method('hasPage');
+        $subPage->expects(self::never())
+            ->method('hasPages');
+        $subPage->expects(self::never())
+            ->method('getCustomProperties');
 
-        assert($subPage instanceof PageInterface);
         $page->addPage($subPage);
         $parentPage->addPage($page);
 
@@ -4241,7 +4392,7 @@ final class MenuTest extends TestCase
         $helper->setRole($role);
 
         assert($auth instanceof Acl);
-        $helper->setAuthorization($auth);
+        $helper->setAcl($auth);
 
         $helper->setContainer($parentPage);
 
@@ -4285,7 +4436,7 @@ final class MenuTest extends TestCase
         $logger->expects(self::never())
             ->method('debug');
 
-        $container = $this->createMock(\Mezzio\AbstractContainer::class);
+        $container = $this->createMock(AbstractContainer::class);
 
         $findActiveHelper = $this->getMockBuilder(FindActiveInterface::class)
             ->disableOriginalConstructor()
@@ -4397,7 +4548,7 @@ final class MenuTest extends TestCase
 
         $name = 'Mezzio\\Navigation\\Top';
 
-        $page = $this->getMockBuilder(PageInterface::class)
+        $page = $this->getMockBuilder(AbstractPage::class)
             ->disableOriginalConstructor()
             ->getMock();
         $page->expects(self::never())
@@ -4410,6 +4561,26 @@ final class MenuTest extends TestCase
             ->method('isActive');
         $page->expects(self::never())
             ->method('getParent');
+        $page->expects(self::never())
+            ->method('getLabel');
+        $page->expects(self::never())
+            ->method('getTextDomain');
+        $page->expects(self::never())
+            ->method('getTitle');
+        $page->expects(self::never())
+            ->method('getId');
+        $page->expects(self::never())
+            ->method('getClass');
+        $page->expects(self::never())
+            ->method('getHref');
+        $page->expects(self::never())
+            ->method('getTarget');
+        $page->expects(self::never())
+            ->method('hasPage');
+        $page->expects(self::never())
+            ->method('hasPages');
+        $page->expects(self::never())
+            ->method('getCustomProperties');
 
         $container = new Navigation();
         $container->addPage($page);
@@ -4520,7 +4691,7 @@ final class MenuTest extends TestCase
         $helper->setRole($role);
 
         assert($auth instanceof Acl);
-        $helper->setAuthorization($auth);
+        $helper->setAcl($auth);
 
         $expected = '';
         $partial  = 'testPartial';
@@ -4599,7 +4770,7 @@ final class MenuTest extends TestCase
         $parentPage->setTitle($parentTitle);
         $parentPage->setTextDomain($parentTextDomain);
 
-        $page = $this->getMockBuilder(PageInterface::class)
+        $page = $this->getMockBuilder(AbstractPage::class)
             ->disableOriginalConstructor()
             ->getMock();
         $page->expects(self::once())
@@ -4643,10 +4814,8 @@ final class MenuTest extends TestCase
             ->method('hasPages')
             ->withConsecutive([false], [true])
             ->willReturnOnConsecutiveCalls(false, false);
-
-        $page->expects(self::once())
-            ->method('hashCode')
-            ->willReturn('page');
+        $page->expects(self::never())
+            ->method('getCustomProperties');
 
         $parentPage->addPage($page);
 
@@ -4792,7 +4961,7 @@ final class MenuTest extends TestCase
         $helper->setRole($role);
 
         assert($auth instanceof Acl);
-        $helper->setAuthorization($auth);
+        $helper->setAcl($auth);
 
         $view = $this->getMockBuilder(PhpRenderer::class)
             ->disableOriginalConstructor()
@@ -4870,7 +5039,7 @@ final class MenuTest extends TestCase
         $parentPage->setTitle($parentTitle);
         $parentPage->setTextDomain($parentTextDomain);
 
-        $page = $this->getMockBuilder(PageInterface::class)
+        $page = $this->getMockBuilder(AbstractPage::class)
             ->disableOriginalConstructor()
             ->getMock();
         $page->expects(self::once())
@@ -4914,10 +5083,8 @@ final class MenuTest extends TestCase
             ->method('hasPages')
             ->withConsecutive([false], [true])
             ->willReturnOnConsecutiveCalls(false, false);
-
-        $page->expects(self::once())
-            ->method('hashCode')
-            ->willReturn('page');
+        $page->expects(self::never())
+            ->method('getCustomProperties');
 
         $parentPage->addPage($page);
 
@@ -5063,7 +5230,7 @@ final class MenuTest extends TestCase
         $helper->setRole($role);
 
         assert($auth instanceof Acl);
-        $helper->setAuthorization($auth);
+        $helper->setAcl($auth);
 
         $view = $this->getMockBuilder(PhpRenderer::class)
             ->disableOriginalConstructor()
@@ -5127,7 +5294,7 @@ final class MenuTest extends TestCase
         $parentPage->setTitle($parentTitle);
         $parentPage->setTextDomain($parentTextDomain);
 
-        $page = $this->getMockBuilder(PageInterface::class)
+        $page = $this->getMockBuilder(AbstractPage::class)
             ->disableOriginalConstructor()
             ->getMock();
         $page->expects(self::never())
@@ -5158,10 +5325,8 @@ final class MenuTest extends TestCase
             ->method('hasPage');
         $page->expects(self::never())
             ->method('hasPages');
-
-        $page->expects(self::once())
-            ->method('hashCode')
-            ->willReturn('page');
+        $page->expects(self::never())
+            ->method('getCustomProperties');
 
         $parentPage->addPage($page);
 
@@ -5239,7 +5404,7 @@ final class MenuTest extends TestCase
         $helper->setRole($role);
 
         assert($auth instanceof Acl);
-        $helper->setAuthorization($auth);
+        $helper->setAcl($auth);
 
         $view = $this->getMockBuilder(PhpRenderer::class)
             ->disableOriginalConstructor()
@@ -5319,7 +5484,7 @@ final class MenuTest extends TestCase
         $parentPage->setTitle($parentTitle);
         $parentPage->setTextDomain($parentTextDomain);
 
-        $page = $this->getMockBuilder(PageInterface::class)
+        $page = $this->getMockBuilder(AbstractPage::class)
             ->disableOriginalConstructor()
             ->getMock();
         $page->expects(self::once())
@@ -5363,10 +5528,8 @@ final class MenuTest extends TestCase
             ->method('hasPages')
             ->withConsecutive([false], [true])
             ->willReturnOnConsecutiveCalls(false, false);
-
-        $page->expects(self::once())
-            ->method('hashCode')
-            ->willReturn('page');
+        $page->expects(self::never())
+            ->method('getCustomProperties');
 
         $parentPage->addPage($page);
 
@@ -5512,7 +5675,7 @@ final class MenuTest extends TestCase
         $helper->setRole($role);
 
         assert($auth instanceof Acl);
-        $helper->setAuthorization($auth);
+        $helper->setAcl($auth);
 
         $view = $this->getMockBuilder(PhpRenderer::class)
             ->disableOriginalConstructor()
@@ -5588,7 +5751,7 @@ final class MenuTest extends TestCase
         $parentPage->setTitle($parentTitle);
         $parentPage->setTextDomain($parentTextDomain);
 
-        $page = $this->getMockBuilder(PageInterface::class)
+        $page = $this->getMockBuilder(AbstractPage::class)
             ->disableOriginalConstructor()
             ->getMock();
         $page->expects(self::once())
@@ -5632,10 +5795,8 @@ final class MenuTest extends TestCase
             ->method('hasPages')
             ->withConsecutive([false], [true])
             ->willReturnOnConsecutiveCalls(false, false);
-
-        $page->expects(self::once())
-            ->method('hashCode')
-            ->willReturn('page');
+        $page->expects(self::never())
+            ->method('getCustomProperties');
 
         $parentPage->addPage($page);
 
@@ -5781,7 +5942,7 @@ final class MenuTest extends TestCase
         $helper->setRole($role);
 
         assert($auth instanceof Acl);
-        $helper->setAuthorization($auth);
+        $helper->setAcl($auth);
 
         $view = $this->getMockBuilder(PhpRenderer::class)
             ->disableOriginalConstructor()
@@ -5858,7 +6019,7 @@ final class MenuTest extends TestCase
         $parentPage->setTitle($parentTitle);
         $parentPage->setTextDomain($parentTextDomain);
 
-        $page = $this->getMockBuilder(PageInterface::class)
+        $page = $this->getMockBuilder(AbstractPage::class)
             ->disableOriginalConstructor()
             ->getMock();
         $page->expects(self::once())
@@ -5902,10 +6063,8 @@ final class MenuTest extends TestCase
             ->method('hasPages')
             ->withConsecutive([false], [true])
             ->willReturnOnConsecutiveCalls(false, false);
-
-        $page->expects(self::once())
-            ->method('hashCode')
-            ->willReturn('page');
+        $page->expects(self::never())
+            ->method('getCustomProperties');
 
         $parentPage->addPage($page);
 
@@ -6051,7 +6210,7 @@ final class MenuTest extends TestCase
         $helper->setRole($role);
 
         assert($auth instanceof Acl);
-        $helper->setAuthorization($auth);
+        $helper->setAcl($auth);
 
         $view = $this->getMockBuilder(PhpRenderer::class)
             ->disableOriginalConstructor()
@@ -6127,7 +6286,7 @@ final class MenuTest extends TestCase
         $parentPage->setTitle($parentTitle);
         $parentPage->setTextDomain($parentTextDomain);
 
-        $page = $this->getMockBuilder(PageInterface::class)
+        $page = $this->getMockBuilder(AbstractPage::class)
             ->disableOriginalConstructor()
             ->getMock();
         $page->expects(self::once())
@@ -6171,10 +6330,8 @@ final class MenuTest extends TestCase
             ->method('hasPages')
             ->withConsecutive([false], [true])
             ->willReturnOnConsecutiveCalls(false, false);
-
-        $page->expects(self::once())
-            ->method('hashCode')
-            ->willReturn('page');
+        $page->expects(self::never())
+            ->method('getCustomProperties');
 
         $parentPage->addPage($page);
 
@@ -6320,7 +6477,7 @@ final class MenuTest extends TestCase
         $helper->setRole($role);
 
         assert($auth instanceof Acl);
-        $helper->setAuthorization($auth);
+        $helper->setAcl($auth);
 
         $view = $this->getMockBuilder(PhpRenderer::class)
             ->disableOriginalConstructor()
@@ -6379,7 +6536,7 @@ final class MenuTest extends TestCase
         $page->setPrivilege($privilege);
         $page->setActive(true);
 
-        $subPage = $this->getMockBuilder(PageInterface::class)
+        $subPage = $this->getMockBuilder(AbstractPage::class)
             ->disableOriginalConstructor()
             ->getMock();
         $subPage->expects(self::never())
@@ -6410,19 +6567,9 @@ final class MenuTest extends TestCase
             ->method('hasPage');
         $subPage->expects(self::never())
             ->method('hasPages');
+        $subPage->expects(self::never())
+            ->method('getCustomProperties');
 
-        $subPage->expects(self::once())
-            ->method('hashCode')
-            ->willReturn('sub-page');
-
-        assert(
-            $subPage instanceof PageInterface,
-            sprintf(
-                '$subPage should be an Instance of %s, but was %s',
-                PageInterface::class,
-                get_class($subPage)
-            )
-        );
         $page->addPage($subPage);
         $parentPage->addPage($page);
 
@@ -6516,7 +6663,7 @@ final class MenuTest extends TestCase
         $helper->setRole($role);
 
         assert($auth instanceof Acl);
-        $helper->setAuthorization($auth);
+        $helper->setAcl($auth);
 
         $helper->setContainer($parentPage);
 
@@ -6576,7 +6723,7 @@ final class MenuTest extends TestCase
         $page->setPrivilege($privilege);
         $page->setActive(true);
 
-        $subPage = $this->getMockBuilder(PageInterface::class)
+        $subPage = $this->getMockBuilder(AbstractPage::class)
             ->disableOriginalConstructor()
             ->getMock();
         $subPage->expects(self::never())
@@ -6607,19 +6754,9 @@ final class MenuTest extends TestCase
             ->method('hasPage');
         $subPage->expects(self::never())
             ->method('hasPages');
+        $subPage->expects(self::never())
+            ->method('getCustomProperties');
 
-        $subPage->expects(self::once())
-            ->method('hashCode')
-            ->willReturn('sub-page');
-
-        assert(
-            $subPage instanceof PageInterface,
-            sprintf(
-                '$subPage should be an Instance of %s, but was %s',
-                PageInterface::class,
-                get_class($subPage)
-            )
-        );
         $page->addPage($subPage);
         $parentPage->addPage($page);
 
@@ -6713,7 +6850,7 @@ final class MenuTest extends TestCase
         $helper->setRole($role);
 
         assert($auth instanceof Acl);
-        $helper->setAuthorization($auth);
+        $helper->setAcl($auth);
 
         $helper->setContainer($parentPage);
 
@@ -6789,7 +6926,7 @@ final class MenuTest extends TestCase
         $parentPage->setTitle($parentTitle);
         $parentPage->setTextDomain($parentTextDomain);
 
-        $page = $this->getMockBuilder(PageInterface::class)
+        $page = $this->getMockBuilder(AbstractPage::class)
             ->disableOriginalConstructor()
             ->getMock();
         $page->expects(self::never())
@@ -6832,10 +6969,8 @@ final class MenuTest extends TestCase
             ->method('hasPages')
             ->with(true)
             ->willReturn(false);
-
-        $page->expects(self::once())
-            ->method('hashCode')
-            ->willReturn('page');
+        $page->expects(self::never())
+            ->method('getCustomProperties');
 
         $parentPage->addPage($page);
 
@@ -6968,7 +7103,7 @@ final class MenuTest extends TestCase
         $helper->setRole($role);
 
         assert($auth instanceof Acl);
-        $helper->setAuthorization($auth);
+        $helper->setAcl($auth);
 
         $view = $this->getMockBuilder(PhpRenderer::class)
             ->disableOriginalConstructor()
@@ -7042,7 +7177,7 @@ final class MenuTest extends TestCase
         $parentPage->setTitle($parentTitle);
         $parentPage->setTextDomain($parentTextDomain);
 
-        $page = $this->getMockBuilder(PageInterface::class)
+        $page = $this->getMockBuilder(AbstractPage::class)
             ->disableOriginalConstructor()
             ->getMock();
         $page->expects(self::never())
@@ -7085,10 +7220,8 @@ final class MenuTest extends TestCase
             ->method('hasPages')
             ->with(true)
             ->willReturn(false);
-
-        $page->expects(self::once())
-            ->method('hashCode')
-            ->willReturn('page');
+        $page->expects(self::never())
+            ->method('getCustomProperties');
 
         $parentPage->addPage($page);
 
@@ -7221,7 +7354,7 @@ final class MenuTest extends TestCase
         $helper->setRole($role);
 
         assert($auth instanceof Acl);
-        $helper->setAuthorization($auth);
+        $helper->setAcl($auth);
 
         $view = $this->getMockBuilder(PhpRenderer::class)
             ->disableOriginalConstructor()
@@ -7295,7 +7428,7 @@ final class MenuTest extends TestCase
         $parentPage->setTitle($parentTitle);
         $parentPage->setTextDomain($parentTextDomain);
 
-        $page = $this->getMockBuilder(PageInterface::class)
+        $page = $this->getMockBuilder(AbstractPage::class)
             ->disableOriginalConstructor()
             ->getMock();
         $page->expects(self::never())
@@ -7338,10 +7471,8 @@ final class MenuTest extends TestCase
             ->method('hasPages')
             ->with(true)
             ->willReturn(false);
-
-        $page->expects(self::once())
-            ->method('hashCode')
-            ->willReturn('page');
+        $page->expects(self::never())
+            ->method('getCustomProperties');
 
         $parentPage->addPage($page);
 
@@ -7474,7 +7605,7 @@ final class MenuTest extends TestCase
         $helper->setRole($role);
 
         assert($auth instanceof Acl);
-        $helper->setAuthorization($auth);
+        $helper->setAcl($auth);
 
         $view = $this->getMockBuilder(PhpRenderer::class)
             ->disableOriginalConstructor()
@@ -7487,7 +7618,7 @@ final class MenuTest extends TestCase
         assert($view instanceof PhpRenderer);
         $helper->setView($view);
 
-        self::assertSame($expected, $helper->renderSubMenu($name));
+        self::assertSame($expected, $helper->renderSubMenu($container));
     }
 
     /**
@@ -7537,7 +7668,7 @@ final class MenuTest extends TestCase
         $parentPage->setTitle($parentTitle);
         $parentPage->setTextDomain($parentTextDomain);
 
-        $page = $this->getMockBuilder(PageInterface::class)
+        $page = $this->getMockBuilder(AbstractPage::class)
             ->disableOriginalConstructor()
             ->getMock();
         $page->expects(self::never())
@@ -7568,10 +7699,8 @@ final class MenuTest extends TestCase
             ->method('hasPage');
         $page->expects(self::never())
             ->method('hasPages');
-
-        $page->expects(self::once())
-            ->method('hashCode')
-            ->willReturn('page');
+        $page->expects(self::never())
+            ->method('getCustomProperties');
 
         $parentPage->addPage($page);
 
@@ -7668,7 +7797,7 @@ final class MenuTest extends TestCase
         $helper->setRole($role);
 
         assert($auth instanceof Acl);
-        $helper->setAuthorization($auth);
+        $helper->setAcl($auth);
 
         $view = $this->getMockBuilder(PhpRenderer::class)
             ->disableOriginalConstructor()
@@ -7681,7 +7810,7 @@ final class MenuTest extends TestCase
         assert($view instanceof PhpRenderer);
         $helper->setView($view);
 
-        self::assertSame($expected, $helper->renderSubMenu($name));
+        self::assertSame($expected, $helper->renderSubMenu($container));
     }
 
     /**
@@ -7732,7 +7861,7 @@ final class MenuTest extends TestCase
         $parentPage->setTitle($parentTitle);
         $parentPage->setTextDomain($parentTextDomain);
 
-        $page = $this->getMockBuilder(PageInterface::class)
+        $page = $this->getMockBuilder(AbstractPage::class)
             ->disableOriginalConstructor()
             ->getMock();
         $page->expects(self::never())
@@ -7763,10 +7892,8 @@ final class MenuTest extends TestCase
             ->method('hasPage');
         $page->expects(self::never())
             ->method('hasPages');
-
-        $page->expects(self::once())
-            ->method('hashCode')
-            ->willReturn('page');
+        $page->expects(self::never())
+            ->method('getCustomProperties');
 
         $parentPage->addPage($page);
 
@@ -7863,7 +7990,7 @@ final class MenuTest extends TestCase
         $helper->setRole($role);
 
         assert($auth instanceof Acl);
-        $helper->setAuthorization($auth);
+        $helper->setAcl($auth);
 
         $view = $this->getMockBuilder(PhpRenderer::class)
             ->disableOriginalConstructor()
@@ -7877,7 +8004,7 @@ final class MenuTest extends TestCase
         $helper->setView($view);
         $helper->setIndent($indent);
 
-        self::assertSame($expected, $helper->renderSubMenu($name));
+        self::assertSame($expected, $helper->renderSubMenu($container));
     }
 
     /**
@@ -7938,7 +8065,7 @@ final class MenuTest extends TestCase
         $parentPage->setTitle($parentTitle);
         $parentPage->setTextDomain($parentTextDomain);
 
-        $page = $this->getMockBuilder(PageInterface::class)
+        $page = $this->getMockBuilder(AbstractPage::class)
             ->disableOriginalConstructor()
             ->getMock();
         $page->expects(self::never())
@@ -7981,10 +8108,8 @@ final class MenuTest extends TestCase
             ->method('hasPages')
             ->with(true)
             ->willReturn(false);
-
-        $page->expects(self::once())
-            ->method('hashCode')
-            ->willReturn('page');
+        $page->expects(self::never())
+            ->method('getCustomProperties');
 
         $parentPage->addPage($page);
 
@@ -8117,7 +8242,7 @@ final class MenuTest extends TestCase
         $helper->setRole($role);
 
         assert($auth instanceof Acl);
-        $helper->setAuthorization($auth);
+        $helper->setAcl($auth);
 
         $view = $this->getMockBuilder(PhpRenderer::class)
             ->disableOriginalConstructor()
@@ -8131,7 +8256,7 @@ final class MenuTest extends TestCase
         $helper->setView($view);
         $helper->setIndent($indent);
 
-        self::assertSame($expected, $helper->renderSubMenu($name));
+        self::assertSame($expected, $helper->renderSubMenu($container));
     }
 
     /**
@@ -8181,7 +8306,7 @@ final class MenuTest extends TestCase
         $parentPage->setTitle($parentTitle);
         $parentPage->setTextDomain($parentTextDomain);
 
-        $page = $this->getMockBuilder(PageInterface::class)
+        $page = $this->getMockBuilder(AbstractPage::class)
             ->disableOriginalConstructor()
             ->getMock();
         $page->expects(self::never())
@@ -8214,10 +8339,8 @@ final class MenuTest extends TestCase
             ->method('hasPages')
             ->with(true)
             ->willReturn(false);
-
-        $page->expects(self::once())
-            ->method('hashCode')
-            ->willReturn('page');
+        $page->expects(self::never())
+            ->method('getCustomProperties');
 
         $parentPage->addPage($page);
 
@@ -8319,7 +8442,7 @@ final class MenuTest extends TestCase
         $helper->setRole($role);
 
         assert($auth instanceof Acl);
-        $helper->setAuthorization($auth);
+        $helper->setAcl($auth);
 
         $view = $this->getMockBuilder(PhpRenderer::class)
             ->disableOriginalConstructor()
@@ -8392,7 +8515,7 @@ final class MenuTest extends TestCase
         $parentPage->setTitle($parentTitle);
         $parentPage->setTextDomain($parentTextDomain);
 
-        $page = $this->getMockBuilder(PageInterface::class)
+        $page = $this->getMockBuilder(AbstractPage::class)
             ->disableOriginalConstructor()
             ->getMock();
         $page->expects(self::never())
@@ -8435,10 +8558,8 @@ final class MenuTest extends TestCase
             ->method('hasPages')
             ->with(true)
             ->willReturn(true);
-
-        $page->expects(self::once())
-            ->method('hashCode')
-            ->willReturn('page');
+        $page->expects(self::never())
+            ->method('getCustomProperties');
 
         $parentPage->addPage($page);
 
@@ -8571,7 +8692,7 @@ final class MenuTest extends TestCase
         $helper->setRole($role);
 
         assert($auth instanceof Acl);
-        $helper->setAuthorization($auth);
+        $helper->setAcl($auth);
 
         $view = $this->getMockBuilder(PhpRenderer::class)
             ->disableOriginalConstructor()
@@ -8634,7 +8755,7 @@ final class MenuTest extends TestCase
         $parentPage->setTitle($parentTitle);
         $parentPage->setTextDomain($parentTextDomain);
 
-        $page = $this->getMockBuilder(PageInterface::class)
+        $page = $this->getMockBuilder(AbstractPage::class)
             ->disableOriginalConstructor()
             ->getMock();
         $page->expects(self::never())
@@ -8668,10 +8789,8 @@ final class MenuTest extends TestCase
             ->method('hasPages')
             ->with(true)
             ->willReturn(false);
-
-        $page->expects(self::once())
-            ->method('hashCode')
-            ->willReturn('page');
+        $page->expects(self::never())
+            ->method('getCustomProperties');
 
         $parentPage->addPage($page);
 
@@ -8794,7 +8913,7 @@ final class MenuTest extends TestCase
         $helper->setRole($role);
 
         assert($auth instanceof Acl);
-        $helper->setAuthorization($auth);
+        $helper->setAcl($auth);
 
         $view = $this->getMockBuilder(PhpRenderer::class)
             ->disableOriginalConstructor()
@@ -8867,7 +8986,7 @@ final class MenuTest extends TestCase
         $parentPage->setTitle($parentTitle);
         $parentPage->setTextDomain($parentTextDomain);
 
-        $page = $this->getMockBuilder(PageInterface::class)
+        $page = $this->getMockBuilder(AbstractPage::class)
             ->disableOriginalConstructor()
             ->getMock();
         $page->expects(self::never())
@@ -8910,10 +9029,8 @@ final class MenuTest extends TestCase
             ->method('hasPages')
             ->with(true)
             ->willReturn(false);
-
-        $page->expects(self::once())
-            ->method('hashCode')
-            ->willReturn('page');
+        $page->expects(self::never())
+            ->method('getCustomProperties');
 
         $parentPage->addPage($page);
 
@@ -9046,7 +9163,7 @@ final class MenuTest extends TestCase
         $helper->setRole($role);
 
         assert($auth instanceof Acl);
-        $helper->setAuthorization($auth);
+        $helper->setAcl($auth);
 
         $view = $this->getMockBuilder(PhpRenderer::class)
             ->disableOriginalConstructor()
@@ -9161,7 +9278,7 @@ final class MenuTest extends TestCase
         $parentParentPage->setTitle($parentParentTitle);
         $parentParentPage->setTextDomain($parentParentTextDomain);
 
-        $page = $this->getMockBuilder(PageInterface::class)
+        $page = $this->getMockBuilder(AbstractPage::class)
             ->disableOriginalConstructor()
             ->getMock();
         $page->expects(self::once())
@@ -9205,12 +9322,10 @@ final class MenuTest extends TestCase
             ->method('hasPages')
             ->withConsecutive([false], [true])
             ->willReturnOnConsecutiveCalls(false, false);
+        $page->expects(self::never())
+            ->method('getCustomProperties');
 
-        $page->expects(self::once())
-            ->method('hashCode')
-            ->willReturn('page');
-
-        $page2 = $this->getMockBuilder(PageInterface::class)
+        $page2 = $this->getMockBuilder(AbstractPage::class)
             ->disableOriginalConstructor()
             ->getMock();
         $page2->expects(self::never())
@@ -9252,12 +9367,10 @@ final class MenuTest extends TestCase
             ->method('hasPages')
             ->withConsecutive([false], [true])
             ->willReturnOnConsecutiveCalls(false, false);
+        $page2->expects(self::never())
+            ->method('getCustomProperties');
 
-        $page2->expects(self::once())
-            ->method('hashCode')
-            ->willReturn('page2');
-
-        $page3 = $this->getMockBuilder(PageInterface::class)
+        $page3 = $this->getMockBuilder(AbstractPage::class)
             ->disableOriginalConstructor()
             ->getMock();
         $page3->expects(self::never())
@@ -9299,10 +9412,8 @@ final class MenuTest extends TestCase
             ->method('hasPages')
             ->withConsecutive([false], [true])
             ->willReturnOnConsecutiveCalls(false, false);
-
-        $page3->expects(self::once())
-            ->method('hashCode')
-            ->willReturn('page3');
+        $page3->expects(self::never())
+            ->method('getCustomProperties');
 
         $parentPage->addPage($page);
         $parentParentPage->addPage($parentPage);
@@ -9520,7 +9631,7 @@ final class MenuTest extends TestCase
         $helper->setRole($role);
 
         assert($auth instanceof Acl);
-        $helper->setAuthorization($auth);
+        $helper->setAcl($auth);
 
         $view = $this->getMockBuilder(PhpRenderer::class)
             ->disableOriginalConstructor()
@@ -9625,11 +9736,11 @@ final class MenuTest extends TestCase
         $parentParentPage->setTitle($parentParentTitle);
         $parentParentPage->setTextDomain($parentParentTextDomain);
 
-        $page3 = $this->getMockBuilder(PageInterface::class)
+        $page3 = $this->getMockBuilder(AbstractPage::class)
             ->disableOriginalConstructor()
             ->getMock();
 
-        $page = $this->getMockBuilder(PageInterface::class)
+        $page = $this->getMockBuilder(AbstractPage::class)
             ->disableOriginalConstructor()
             ->getMock();
         $page->expects(self::once())
@@ -9675,12 +9786,10 @@ final class MenuTest extends TestCase
             ->method('hasPages')
             ->withConsecutive([false], [true])
             ->willReturnOnConsecutiveCalls(false, false);
+        $page->expects(self::never())
+            ->method('getCustomProperties');
 
-        $page->expects(self::once())
-            ->method('hashCode')
-            ->willReturn('page');
-
-        $page2 = $this->getMockBuilder(PageInterface::class)
+        $page2 = $this->getMockBuilder(AbstractPage::class)
             ->disableOriginalConstructor()
             ->getMock();
         $page2->expects(self::never())
@@ -9713,10 +9822,8 @@ final class MenuTest extends TestCase
             ->method('hasPages')
             ->with(false)
             ->willReturn(false);
-
-        $page2->expects(self::once())
-            ->method('hashCode')
-            ->willReturn('page2');
+        $page2->expects(self::never())
+            ->method('getCustomProperties');
 
         $page3->expects(self::never())
             ->method('isVisible');
@@ -9757,10 +9864,8 @@ final class MenuTest extends TestCase
             ->method('hasPages')
             ->withConsecutive([false], [true])
             ->willReturnOnConsecutiveCalls(false, false);
-
-        $page3->expects(self::once())
-            ->method('hashCode')
-            ->willReturn('page3');
+        $page3->expects(self::never())
+            ->method('getCustomProperties');
 
         $parentPage->addPage($page);
         $parentParentPage->addPage($parentPage);
@@ -9976,7 +10081,7 @@ final class MenuTest extends TestCase
         $helper->setRole($role);
 
         assert($auth instanceof Acl);
-        $helper->setAuthorization($auth);
+        $helper->setAcl($auth);
 
         $view = $this->getMockBuilder(PhpRenderer::class)
             ->disableOriginalConstructor()
@@ -10081,11 +10186,11 @@ final class MenuTest extends TestCase
         $parentParentPage->setTitle($parentParentTitle);
         $parentParentPage->setTextDomain($parentParentTextDomain);
 
-        $page3 = $this->getMockBuilder(PageInterface::class)
+        $page3 = $this->getMockBuilder(AbstractPage::class)
             ->disableOriginalConstructor()
             ->getMock();
 
-        $page = $this->getMockBuilder(PageInterface::class)
+        $page = $this->getMockBuilder(AbstractPage::class)
             ->disableOriginalConstructor()
             ->getMock();
         $page->expects(self::once())
@@ -10131,12 +10236,10 @@ final class MenuTest extends TestCase
             ->method('hasPages')
             ->withConsecutive([false], [true])
             ->willReturnOnConsecutiveCalls(false, false);
+        $page->expects(self::never())
+            ->method('getCustomProperties');
 
-        $page->expects(self::once())
-            ->method('hashCode')
-            ->willReturn('page');
-
-        $page2 = $this->getMockBuilder(PageInterface::class)
+        $page2 = $this->getMockBuilder(AbstractPage::class)
             ->disableOriginalConstructor()
             ->getMock();
         $page2->expects(self::never())
@@ -10169,10 +10272,8 @@ final class MenuTest extends TestCase
             ->method('hasPages')
             ->with(false)
             ->willReturn(false);
-
-        $page2->expects(self::once())
-            ->method('hashCode')
-            ->willReturn('page2');
+        $page2->expects(self::never())
+            ->method('getCustomProperties');
 
         $page3->expects(self::never())
             ->method('isVisible');
@@ -10213,10 +10314,8 @@ final class MenuTest extends TestCase
             ->method('hasPages')
             ->withConsecutive([false], [true])
             ->willReturnOnConsecutiveCalls(false, false);
-
-        $page3->expects(self::once())
-            ->method('hashCode')
-            ->willReturn('page3');
+        $page3->expects(self::never())
+            ->method('getCustomProperties');
 
         $parentPage->addPage($page);
         $parentParentPage->addPage($parentPage);
@@ -10432,7 +10531,7 @@ final class MenuTest extends TestCase
         $helper->setRole($role);
 
         assert($auth instanceof Acl);
-        $helper->setAuthorization($auth);
+        $helper->setAcl($auth);
 
         $view = $this->getMockBuilder(PhpRenderer::class)
             ->disableOriginalConstructor()
@@ -10547,7 +10646,7 @@ final class MenuTest extends TestCase
         $parentParentPage->setTitle($parentParentTitle);
         $parentParentPage->setTextDomain($parentParentTextDomain);
 
-        $page = $this->getMockBuilder(PageInterface::class)
+        $page = $this->getMockBuilder(AbstractPage::class)
             ->disableOriginalConstructor()
             ->getMock();
         $page->expects(self::once())
@@ -10591,12 +10690,10 @@ final class MenuTest extends TestCase
             ->method('hasPages')
             ->withConsecutive([false], [true])
             ->willReturnOnConsecutiveCalls(false, false);
+        $page->expects(self::never())
+            ->method('getCustomProperties');
 
-        $page->expects(self::once())
-            ->method('hashCode')
-            ->willReturn('page');
-
-        $page2 = $this->getMockBuilder(PageInterface::class)
+        $page2 = $this->getMockBuilder(AbstractPage::class)
             ->disableOriginalConstructor()
             ->getMock();
         $page2->expects(self::never())
@@ -10638,12 +10735,10 @@ final class MenuTest extends TestCase
             ->method('hasPages')
             ->withConsecutive([false], [true])
             ->willReturnOnConsecutiveCalls(false, false);
+        $page2->expects(self::never())
+            ->method('getCustomProperties');
 
-        $page2->expects(self::once())
-            ->method('hashCode')
-            ->willReturn('page2');
-
-        $page3 = $this->getMockBuilder(PageInterface::class)
+        $page3 = $this->getMockBuilder(AbstractPage::class)
             ->disableOriginalConstructor()
             ->getMock();
         $page3->expects(self::never())
@@ -10685,10 +10780,8 @@ final class MenuTest extends TestCase
             ->method('hasPages')
             ->withConsecutive([false], [true])
             ->willReturnOnConsecutiveCalls(false, false);
-
-        $page3->expects(self::once())
-            ->method('hashCode')
-            ->willReturn('page3');
+        $page3->expects(self::never())
+            ->method('getCustomProperties');
 
         $parentPage->addPage($page);
         $parentParentPage->addPage($parentPage);
@@ -10906,7 +10999,7 @@ final class MenuTest extends TestCase
         $helper->setRole($role);
 
         assert($auth instanceof Acl);
-        $helper->setAuthorization($auth);
+        $helper->setAcl($auth);
 
         $view = $this->getMockBuilder(PhpRenderer::class)
             ->disableOriginalConstructor()
@@ -11021,7 +11114,7 @@ final class MenuTest extends TestCase
         $parentParentPage->setTitle($parentParentTitle);
         $parentParentPage->setTextDomain($parentParentTextDomain);
 
-        $page = $this->getMockBuilder(PageInterface::class)
+        $page = $this->getMockBuilder(AbstractPage::class)
             ->disableOriginalConstructor()
             ->getMock();
         $page->expects(self::once())
@@ -11065,12 +11158,10 @@ final class MenuTest extends TestCase
             ->method('hasPages')
             ->withConsecutive([false], [true])
             ->willReturnOnConsecutiveCalls(false, false);
+        $page->expects(self::never())
+            ->method('getCustomProperties');
 
-        $page->expects(self::once())
-            ->method('hashCode')
-            ->willReturn('page');
-
-        $page2 = $this->getMockBuilder(PageInterface::class)
+        $page2 = $this->getMockBuilder(AbstractPage::class)
             ->disableOriginalConstructor()
             ->getMock();
         $page2->expects(self::never())
@@ -11112,12 +11203,10 @@ final class MenuTest extends TestCase
             ->method('hasPages')
             ->withConsecutive([false], [true])
             ->willReturnOnConsecutiveCalls(false, false);
+        $page2->expects(self::never())
+            ->method('getCustomProperties');
 
-        $page2->expects(self::once())
-            ->method('hashCode')
-            ->willReturn('page2');
-
-        $page3 = $this->getMockBuilder(PageInterface::class)
+        $page3 = $this->getMockBuilder(AbstractPage::class)
             ->disableOriginalConstructor()
             ->getMock();
         $page3->expects(self::never())
@@ -11159,10 +11248,8 @@ final class MenuTest extends TestCase
             ->method('hasPages')
             ->withConsecutive([false], [true])
             ->willReturnOnConsecutiveCalls(false, false);
-
-        $page3->expects(self::once())
-            ->method('hashCode')
-            ->willReturn('page3');
+        $page3->expects(self::never())
+            ->method('getCustomProperties');
 
         $parentPage->addPage($page);
         $parentParentPage->addPage($parentPage);
@@ -11380,7 +11467,7 @@ final class MenuTest extends TestCase
         $helper->setRole($role);
 
         assert($auth instanceof Acl);
-        $helper->setAuthorization($auth);
+        $helper->setAcl($auth);
 
         $view = $this->getMockBuilder(PhpRenderer::class)
             ->disableOriginalConstructor()
@@ -11498,7 +11585,7 @@ final class MenuTest extends TestCase
         $parentParentPage->setTitle($parentParentTitle);
         $parentParentPage->setTextDomain($parentParentTextDomain);
 
-        $page = $this->getMockBuilder(PageInterface::class)
+        $page = $this->getMockBuilder(AbstractPage::class)
             ->disableOriginalConstructor()
             ->getMock();
         $page->expects(self::once())
@@ -11542,12 +11629,10 @@ final class MenuTest extends TestCase
             ->method('hasPages')
             ->withConsecutive([false], [true])
             ->willReturnOnConsecutiveCalls(false, false);
+        $page->expects(self::never())
+            ->method('getCustomProperties');
 
-        $page->expects(self::once())
-            ->method('hashCode')
-            ->willReturn('page');
-
-        $page2 = $this->getMockBuilder(PageInterface::class)
+        $page2 = $this->getMockBuilder(AbstractPage::class)
             ->disableOriginalConstructor()
             ->getMock();
         $page2->expects(self::never())
@@ -11589,12 +11674,10 @@ final class MenuTest extends TestCase
             ->method('hasPages')
             ->withConsecutive([false], [true])
             ->willReturnOnConsecutiveCalls(false, false);
+        $page2->expects(self::never())
+            ->method('getCustomProperties');
 
-        $page2->expects(self::once())
-            ->method('hashCode')
-            ->willReturn('page2');
-
-        $page3 = $this->getMockBuilder(PageInterface::class)
+        $page3 = $this->getMockBuilder(AbstractPage::class)
             ->disableOriginalConstructor()
             ->getMock();
         $page3->expects(self::never())
@@ -11636,10 +11719,8 @@ final class MenuTest extends TestCase
             ->method('hasPages')
             ->withConsecutive([false], [true])
             ->willReturnOnConsecutiveCalls(false, false);
-
-        $page3->expects(self::once())
-            ->method('hashCode')
-            ->willReturn('page3');
+        $page3->expects(self::never())
+            ->method('getCustomProperties');
 
         $parentPage->addPage($page);
         $parentParentPage->addPage($parentPage);
@@ -11857,7 +11938,7 @@ final class MenuTest extends TestCase
         $helper->setRole($role);
 
         assert($auth instanceof Acl);
-        $helper->setAuthorization($auth);
+        $helper->setAcl($auth);
 
         $view = $this->getMockBuilder(PhpRenderer::class)
             ->disableOriginalConstructor()

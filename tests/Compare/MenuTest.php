@@ -15,6 +15,7 @@ namespace Mimmi20Test\LaminasView\BootstrapNavigation\Compare;
 use ErrorException;
 use Laminas\Config\Exception\RuntimeException;
 use Laminas\Log\Logger;
+use Laminas\Navigation\Page\AbstractPage;
 use Laminas\Permissions\Acl\AclInterface;
 use Laminas\View\Exception\ExceptionInterface;
 use Laminas\View\Helper\EscapeHtml;
@@ -103,7 +104,7 @@ final class MenuTest extends AbstractTest
      */
     public function testCanRenderPartialFromServiceAlias(): void
     {
-        $this->helper->setPartial('test::menu');
+        $this->helper->setPartial('menu.phtml');
 
         $returned = $this->helper->renderPartial('Navigation');
         $expected = $this->getExpected('menu/partial.html');
@@ -197,7 +198,7 @@ final class MenuTest extends AbstractTest
     {
         $acl = $this->getAcl();
         assert($acl['acl'] instanceof AclInterface);
-        $this->helper->setAuthorization($acl['acl']);
+        $this->helper->setAcl($acl['acl']);
         assert(is_string($acl['role']));
         $this->helper->setRole('member');
 
@@ -216,7 +217,7 @@ final class MenuTest extends AbstractTest
     {
         $acl = $this->getAcl();
         assert($acl['acl'] instanceof AclInterface);
-        $this->helper->setAuthorization($acl['acl']);
+        $this->helper->setAcl($acl['acl']);
         assert(is_string($acl['role']));
         $this->helper->setRole($acl['role']);
 
@@ -235,10 +236,10 @@ final class MenuTest extends AbstractTest
     {
         $acl = $this->getAcl();
         assert($acl['acl'] instanceof AclInterface);
-        $this->helper->setAuthorization($acl['acl']);
+        $this->helper->setAcl($acl['acl']);
         assert(is_string($acl['role']));
         $this->helper->setRole($acl['role']);
-        $this->helper->setUseAuthorization(false);
+        $this->helper->setUseAcl(false);
 
         $expected = $this->getExpected('menu/default1.html');
         $actual   = $this->helper->render();
@@ -254,10 +255,10 @@ final class MenuTest extends AbstractTest
     {
         $acl = $this->getAcl();
         assert($acl['acl'] instanceof AclInterface);
-        $this->helper->setAuthorization($acl['acl']);
+        $this->helper->setAcl($acl['acl']);
         assert(is_string($acl['role']));
         $this->helper->setRole($acl['role']);
-        $this->helper->setUseAuthorization(false);
+        $this->helper->setUseAcl(false);
 
         $expected = $this->getExpected('menu/default1.html');
         $actual   = $this->helper->renderMenu(null, ['style' => Menu::STYLE_UL]);
@@ -273,10 +274,10 @@ final class MenuTest extends AbstractTest
     {
         $acl = $this->getAcl();
         assert($acl['acl'] instanceof AclInterface);
-        $this->helper->setAuthorization($acl['acl']);
+        $this->helper->setAcl($acl['acl']);
         assert(is_string($acl['role']));
         $this->helper->setRole($acl['role']);
-        $this->helper->setUseAuthorization(false);
+        $this->helper->setUseAcl(false);
 
         $expected = $this->getExpected('menu/default1_ol.html');
         $actual   = $this->helper->renderMenu(null, ['style' => Menu::STYLE_OL]);
@@ -292,10 +293,10 @@ final class MenuTest extends AbstractTest
     {
         $acl = $this->getAcl();
         assert($acl['acl'] instanceof AclInterface);
-        $this->helper->setAuthorization($acl['acl']);
+        $this->helper->setAcl($acl['acl']);
         assert(is_string($acl['role']));
         $this->helper->setRole($acl['role']);
-        $this->helper->setUseAuthorization(false);
+        $this->helper->setUseAcl(false);
 
         $expected = $this->getExpected('menu/default1_button.html');
         $actual   = $this->helper->renderMenu(null, ['style' => Menu::STYLE_UL, 'sublink' => Menu::STYLE_SUBLINK_BUTTON]);
@@ -311,10 +312,10 @@ final class MenuTest extends AbstractTest
     {
         $acl = $this->getAcl();
         assert($acl['acl'] instanceof AclInterface);
-        $this->helper->setAuthorization($acl['acl']);
+        $this->helper->setAcl($acl['acl']);
         assert(is_string($acl['role']));
         $this->helper->setRole($acl['role']);
-        $this->helper->setUseAuthorization(false);
+        $this->helper->setUseAcl(false);
 
         $expected = $this->getExpected('menu/default1_details.html');
         $actual   = $this->helper->renderMenu(null, ['style' => Menu::STYLE_UL, 'sublink' => Menu::STYLE_SUBLINK_DETAILS]);
@@ -361,7 +362,7 @@ final class MenuTest extends AbstractTest
         $options = ['escapeLabels' => true];
 
         $nav2 = clone $this->nav2;
-        $page = (new PageFactory())->factory(
+        $page = AbstractPage::factory(
             [
                 'label' => 'Badges <span class="badge">1</span>',
                 'uri' => 'badges',
@@ -385,7 +386,7 @@ final class MenuTest extends AbstractTest
         $options = ['escapeLabels' => false];
 
         $nav2 = clone $this->nav2;
-        $page = (new PageFactory())->factory(
+        $page = AbstractPage::factory(
             [
                 'label' => 'Badges <span class="badge">1</span>',
                 'uri' => 'badges',
@@ -407,7 +408,7 @@ final class MenuTest extends AbstractTest
      */
     public function testRenderingPartial(): void
     {
-        $this->helper->setPartial('test::menu');
+        $this->helper->setPartial('menu.phtml');
 
         $expected = $this->getExpected('menu/partial.html');
         $actual   = $this->helper->render();
@@ -422,7 +423,7 @@ final class MenuTest extends AbstractTest
      */
     public function testRenderingPartialBySpecifyingAnArrayAsPartial(): void
     {
-        $this->helper->setPartial(['test::menu', 'application']);
+        $this->helper->setPartial(['menu.phtml', 'application']);
 
         $expected = $this->getExpected('menu/partial.html');
         $actual   = $this->helper->render();
@@ -437,7 +438,7 @@ final class MenuTest extends AbstractTest
      */
     public function testRenderingPartialWithParams(): void
     {
-        $this->helper->setPartial(['test::menu-with-partials', 'application']);
+        $this->helper->setPartial(['menu_with_partial_params.phtml', 'application']);
 
         $expected = $this->getExpected('menu/partial_with_params.html');
         $actual   = $this->helper->renderPartialWithParams(['variable' => 'test value']);
@@ -779,7 +780,7 @@ final class MenuTest extends AbstractTest
     public function testRenderingWithoutPageClassToLi(): void
     {
         $nav2 = clone $this->nav2;
-        $page = (new PageFactory())->factory(
+        $page = AbstractPage::factory(
             [
                 'label' => 'Class test',
                 'uri' => 'test',
@@ -804,7 +805,7 @@ final class MenuTest extends AbstractTest
         $options = ['addClassToListItem' => true];
 
         $nav2 = clone $this->nav2;
-        $page = (new PageFactory())->factory(
+        $page = AbstractPage::factory(
             [
                 'label' => 'Class test',
                 'uri' => 'test',

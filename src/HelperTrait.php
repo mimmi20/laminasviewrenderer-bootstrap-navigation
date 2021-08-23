@@ -231,7 +231,7 @@ trait HelperTrait
             $acceptHelper = $this->serviceLocator->build(
                 AcceptHelperInterface::class,
                 [
-                    'authorization' => $this->getUseAuthorization() ? $this->getAuthorization() : null,
+                    'authorization' => $this->getUseAcl() ? $this->getAcl() : null,
                     'renderInvisible' => $this->getRenderInvisible(),
                     'role' => $this->getRole(),
                 ]

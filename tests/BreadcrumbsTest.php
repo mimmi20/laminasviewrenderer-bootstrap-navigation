@@ -369,7 +369,7 @@ final class BreadcrumbsTest extends TestCase
      * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
-    public function testSetUseAuthorization(): void
+    public function testSetUseAcl(): void
     {
         $logger = $this->getMockBuilder(Logger::class)
             ->disableOriginalConstructor()
@@ -591,7 +591,7 @@ final class BreadcrumbsTest extends TestCase
 
         $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $translatePlugin);
 
-        self::assertNull($helper->getView());
+        self::assertSame($renderer, $helper->getView());
 
         assert($view instanceof RendererInterface);
         $helper->setView($view);
@@ -1384,7 +1384,7 @@ final class BreadcrumbsTest extends TestCase
      * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExceptionInterface
-     * @throws \Mezzio\Navigation\Exception\ExceptionInterface
+     *
      */
     public function testFindActiveOneActivePage(): void
     {
@@ -1634,7 +1634,7 @@ final class BreadcrumbsTest extends TestCase
      * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExceptionInterface
-     * @throws \Mezzio\Navigation\Exception\ExceptionInterface
+     *
      */
     public function testFindActiveNoActivePageWithoutDepth(): void
     {
@@ -1761,7 +1761,7 @@ final class BreadcrumbsTest extends TestCase
      * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExceptionInterface
-     * @throws \Mezzio\Navigation\Exception\ExceptionInterface
+     *
      */
     public function testFindActiveOneActivePageOutOfRange(): void
     {
@@ -1885,7 +1885,7 @@ final class BreadcrumbsTest extends TestCase
      * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExceptionInterface
-     * @throws \Mezzio\Navigation\Exception\ExceptionInterface
+     *
      */
     public function testFindActiveOneActivePageRecursive(): void
     {
@@ -2027,7 +2027,7 @@ final class BreadcrumbsTest extends TestCase
      * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExceptionInterface
-     * @throws \Mezzio\Navigation\Exception\ExceptionInterface
+     *
      */
     public function testFindActiveOneActivePageRecursive2(): void
     {
@@ -2171,7 +2171,7 @@ final class BreadcrumbsTest extends TestCase
      * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExceptionInterface
-     * @throws \Mezzio\Navigation\Exception\ExceptionInterface
+     *
      */
     public function testFindActiveOneActivePageRecursive3(): void
     {
@@ -2736,7 +2736,7 @@ final class BreadcrumbsTest extends TestCase
      * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExceptionInterface
-     * @throws \Mezzio\Navigation\Exception\ExceptionInterface
+     *
      */
     public function testRenderPartialWithParams(): void
     {
@@ -2893,7 +2893,7 @@ final class BreadcrumbsTest extends TestCase
      * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExceptionInterface
-     * @throws \Mezzio\Navigation\Exception\ExceptionInterface
+     *
      */
     public function testRenderPartialWithParamsAndArrayPartial(): void
     {
@@ -3048,7 +3048,7 @@ final class BreadcrumbsTest extends TestCase
      * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExceptionInterface
-     * @throws \Mezzio\Navigation\Exception\ExceptionInterface
+     *
      */
     public function testRenderPartialWithParamsAndArrayPartialRenderingPage(): void
     {
@@ -3208,7 +3208,7 @@ final class BreadcrumbsTest extends TestCase
      * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExceptionInterface
-     * @throws \Mezzio\Navigation\Exception\ExceptionInterface
+     *
      */
     public function testRenderPartialWithParamsNoActivePage(): void
     {
@@ -3547,7 +3547,7 @@ final class BreadcrumbsTest extends TestCase
      * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExceptionInterface
-     * @throws \Mezzio\Navigation\Exception\ExceptionInterface
+     *
      */
     public function testRenderPartial(): void
     {
@@ -3704,7 +3704,7 @@ final class BreadcrumbsTest extends TestCase
      * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExceptionInterface
-     * @throws \Mezzio\Navigation\Exception\ExceptionInterface
+     *
      */
     public function testRenderPartialNoActivePage(): void
     {
@@ -3845,7 +3845,7 @@ final class BreadcrumbsTest extends TestCase
      * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExceptionInterface
-     * @throws \Mezzio\Navigation\Exception\ExceptionInterface
+     *
      */
     public function testRenderPartialWithArrayPartial(): void
     {
@@ -4000,7 +4000,7 @@ final class BreadcrumbsTest extends TestCase
      * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExceptionInterface
-     * @throws \Mezzio\Navigation\Exception\ExceptionInterface
+     *
      */
     public function testRenderPartialWithArrayPartialRenderingPage(): void
     {
@@ -4124,6 +4124,10 @@ final class BreadcrumbsTest extends TestCase
             ->method('render')
             ->with($partial, ['pages' => [$parentPage, $subPage], 'separator' => $seperator])
             ->willReturn($expected);
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translatePlugin = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -4142,17 +4146,6 @@ final class BreadcrumbsTest extends TestCase
         $helper->setLinkLast(true);
         $helper->setContainer($parentPage);
 
-        $view = $this->getMockBuilder(PhpRenderer::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $view->expects(self::never())
-            ->method('plugin');
-        $view->expects(self::never())
-            ->method('getHelperPluginManager');
-
-        assert($view instanceof PhpRenderer);
-        $helper->setView($view);
-
         self::assertSame($expected, $helper->renderPartial(null, [$partial, 'test']));
     }
 
@@ -4160,7 +4153,7 @@ final class BreadcrumbsTest extends TestCase
      * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExceptionInterface
-     * @throws \Mezzio\Navigation\Exception\ExceptionInterface
+     *
      */
     public function testRenderStraightNoActivePage(): void
     {
@@ -4259,6 +4252,10 @@ final class BreadcrumbsTest extends TestCase
             ->getMock();
         $renderer->expects(self::never())
             ->method('render');
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translatePlugin = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -4281,15 +4278,6 @@ final class BreadcrumbsTest extends TestCase
         $helper->setLinkLast(true);
         $helper->setPartial($partial);
 
-        $view = $this->getMockBuilder(PhpRenderer::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $view->expects(self::never())
-            ->method('plugin');
-
-        assert($view instanceof PhpRenderer);
-        $helper->setView($view);
-
         self::assertSame($expected, $helper->renderStraight($name));
     }
 
@@ -4297,7 +4285,7 @@ final class BreadcrumbsTest extends TestCase
      * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExceptionInterface
-     * @throws \Mezzio\Navigation\Exception\ExceptionInterface
+     *
      */
     public function testRenderStraight(): void
     {
@@ -4441,6 +4429,10 @@ final class BreadcrumbsTest extends TestCase
             ->getMock();
         $renderer->expects(self::never())
             ->method('render');
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translatePlugin = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -4472,17 +4464,6 @@ final class BreadcrumbsTest extends TestCase
         $helper->setSeparator($seperator);
         $helper->setLinkLast(true);
 
-        $view = $this->getMockBuilder(PhpRenderer::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $view->expects(self::never())
-            ->method('plugin');
-        $view->expects(self::never())
-            ->method('getHelperPluginManager');
-
-        assert($view instanceof PhpRenderer);
-        $helper->setView($view);
-
         self::assertSame($expected, $helper->renderStraight($name));
     }
 
@@ -4490,7 +4471,7 @@ final class BreadcrumbsTest extends TestCase
      * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExceptionInterface
-     * @throws \Mezzio\Navigation\Exception\ExceptionInterface
+     *
      */
     public function testRenderStraightWithoutLinkAtEnd(): void
     {
@@ -4643,6 +4624,10 @@ final class BreadcrumbsTest extends TestCase
             ->getMock();
         $renderer->expects(self::never())
             ->method('render');
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translatePlugin = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -4677,17 +4662,6 @@ final class BreadcrumbsTest extends TestCase
         $helper->setSeparator($seperator);
         $helper->setLinkLast(false);
 
-        $view = $this->getMockBuilder(PhpRenderer::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $view->expects(self::never())
-            ->method('plugin');
-        $view->expects(self::never())
-            ->method('getHelperPluginManager');
-
-        assert($view instanceof PhpRenderer);
-        $helper->setView($view);
-
         self::assertSame($expected, $helper->renderStraight());
     }
 
@@ -4695,7 +4669,7 @@ final class BreadcrumbsTest extends TestCase
      * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExceptionInterface
-     * @throws \Mezzio\Navigation\Exception\ExceptionInterface
+     *
      */
     public function testRenderStraightWithoutLinkAtEndWithLiClass(): void
     {
@@ -4848,6 +4822,10 @@ final class BreadcrumbsTest extends TestCase
             ->getMock();
         $renderer->expects(self::never())
             ->method('render');
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translatePlugin = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -4882,17 +4860,6 @@ final class BreadcrumbsTest extends TestCase
         $helper->setSeparator($seperator);
         $helper->setLinkLast(false);
 
-        $view = $this->getMockBuilder(PhpRenderer::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $view->expects(self::never())
-            ->method('plugin');
-        $view->expects(self::never())
-            ->method('getHelperPluginManager');
-
-        assert($view instanceof PhpRenderer);
-        $helper->setView($view);
-
         self::assertSame($expected, $helper->renderStraight());
     }
 
@@ -4900,7 +4867,7 @@ final class BreadcrumbsTest extends TestCase
      * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExceptionInterface
-     * @throws \Mezzio\Navigation\Exception\ExceptionInterface
+     *
      */
     public function testRenderStraightWithoutLinkAtEndWithLiClass2(): void
     {
@@ -5055,6 +5022,10 @@ final class BreadcrumbsTest extends TestCase
             ->getMock();
         $renderer->expects(self::never())
             ->method('render');
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translatePlugin = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -5088,17 +5059,6 @@ final class BreadcrumbsTest extends TestCase
 
         $helper->setSeparator($seperator);
         $helper->setLinkLast(false);
-
-        $view = $this->getMockBuilder(PhpRenderer::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $view->expects(self::never())
-            ->method('plugin');
-        $view->expects(self::never())
-            ->method('getHelperPluginManager');
-
-        assert($view instanceof PhpRenderer);
-        $helper->setView($view);
         $helper->setIndent($indent);
 
         self::assertSame($expected, $helper->renderStraight());
@@ -5108,7 +5068,7 @@ final class BreadcrumbsTest extends TestCase
      * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExceptionInterface
-     * @throws \Mezzio\Navigation\Exception\ExceptionInterface
+     *
      */
     public function testRenderWithoutPartial(): void
     {
@@ -5251,6 +5211,10 @@ final class BreadcrumbsTest extends TestCase
             ->getMock();
         $renderer->expects(self::never())
             ->method('render');
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translatePlugin = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -5282,17 +5246,6 @@ final class BreadcrumbsTest extends TestCase
         $helper->setSeparator($seperator);
         $helper->setLinkLast(true);
 
-        $view = $this->getMockBuilder(PhpRenderer::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $view->expects(self::never())
-            ->method('plugin');
-        $view->expects(self::never())
-            ->method('getHelperPluginManager');
-
-        assert($view instanceof PhpRenderer);
-        $helper->setView($view);
-
         self::assertSame($expected, $helper->render($name));
     }
 
@@ -5300,7 +5253,7 @@ final class BreadcrumbsTest extends TestCase
      * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExceptionInterface
-     * @throws \Mezzio\Navigation\Exception\ExceptionInterface
+     *
      */
     public function testRenderWithPartial(): void
     {
@@ -5405,6 +5358,10 @@ final class BreadcrumbsTest extends TestCase
             ->method('render')
             ->with($partial, ['pages' => [], 'separator' => $seperator])
             ->willReturn($expected);
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translatePlugin = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -5423,24 +5380,13 @@ final class BreadcrumbsTest extends TestCase
         $helper->setLinkLast(true);
         $helper->setPartial($partial);
 
-        $view = $this->getMockBuilder(PhpRenderer::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $view->expects(self::never())
-            ->method('plugin');
-        $view->expects(self::never())
-            ->method('getHelperPluginManager');
-
-        assert($view instanceof PhpRenderer);
-        $helper->setView($view);
-
         self::assertSame($expected, $helper->render($name));
     }
 
     /**
      * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \Mezzio\Navigation\Exception\ExceptionInterface
+     *
      */
     public function testToStringWithPartial(): void
     {
@@ -5546,6 +5492,10 @@ final class BreadcrumbsTest extends TestCase
             ->method('render')
             ->with($partial, ['pages' => [], 'separator' => $seperator])
             ->willReturn($expected);
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translatePlugin = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -5560,17 +5510,6 @@ final class BreadcrumbsTest extends TestCase
         $helper->setSeparator($seperator);
         $helper->setLinkLast(true);
         $helper->setPartial($partial);
-
-        $view = $this->getMockBuilder(PhpRenderer::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $view->expects(self::never())
-            ->method('plugin');
-        $view->expects(self::never())
-            ->method('getHelperPluginManager');
-
-        assert($view instanceof PhpRenderer);
-        $helper->setView($view);
 
         self::assertSame($expected, (string) $helper($name));
     }
@@ -5656,7 +5595,7 @@ final class BreadcrumbsTest extends TestCase
      * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExceptionInterface
-     * @throws \Mezzio\Navigation\Exception\ExceptionInterface
+     *
      */
     public function testDoNotRenderIfNoPageIsActive(): void
     {
