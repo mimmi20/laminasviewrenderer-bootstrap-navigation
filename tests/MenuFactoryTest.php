@@ -1,6 +1,6 @@
 <?php
 /**
- * This file is part of the mimmi20/mezzio-navigation-laminasviewrenderer-bootstrap package.
+ * This file is part of the mimmi20/laminasviewrenderer-bootstrap-navigation package.
  *
  * Copyright (c) 2021, Thomas Mueller <mimmi20@live.de>
  *
@@ -12,10 +12,10 @@ declare(strict_types = 1);
 
 namespace Mimmi20Test\LaminasView\BootstrapNavigation;
 
+use AssertionError;
 use Interop\Container\ContainerInterface;
 use Laminas\I18n\View\Helper\Translate;
 use Laminas\Log\Logger;
-use Laminas\ServiceManager\PluginManagerInterface;
 use Laminas\ServiceManager\ServiceLocatorInterface;
 use Laminas\View\Helper\EscapeHtml;
 use Laminas\View\Helper\EscapeHtmlAttr;
@@ -28,8 +28,6 @@ use Mimmi20\NavigationHelper\ContainerParser\ContainerParserInterface;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestCase;
 use SebastianBergmann\RecursionContext\InvalidArgumentException;
-
-use function assert;
 
 final class MenuFactoryTest extends TestCase
 {
@@ -44,7 +42,7 @@ final class MenuFactoryTest extends TestCase
      * @throws Exception
      * @throws InvalidArgumentException
      */
-    public function testInvocation(): void
+    public function testInvocationWithoutTranslator(): void
     {
         $logger = $this->getMockBuilder(Logger::class)
             ->disableOriginalConstructor()
@@ -166,7 +164,7 @@ final class MenuFactoryTest extends TestCase
         $container->expects(self::never())
             ->method('get');
 
-        $this->expectException(\AssertionError::class);
+        $this->expectException(AssertionError::class);
         $this->expectExceptionCode(1);
         $this->expectExceptionMessage('assert($container instanceof ServiceLocatorInterface)');
 

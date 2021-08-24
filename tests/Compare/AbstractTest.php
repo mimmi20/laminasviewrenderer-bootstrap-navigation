@@ -1,6 +1,6 @@
 <?php
 /**
- * This file is part of the mimmi20/mezzio-navigation-laminasviewrenderer-bootstrap package.
+ * This file is part of the mimmi20/laminasviewrenderer-bootstrap-navigation package.
  *
  * Copyright (c) 2021, Thomas Mueller <mimmi20@live.de>
  *
@@ -16,6 +16,7 @@ use Laminas\Config\Exception\RuntimeException;
 use Laminas\Config\Factory as ConfigFactory;
 use Laminas\I18n\Translator\Translator;
 use Laminas\Log\Logger;
+use Laminas\Mvc\Service\ServiceManagerConfig;
 use Laminas\Navigation\Navigation;
 use Laminas\Navigation\Service\ConstructedNavigationFactory;
 use Laminas\Navigation\Service\DefaultNavigationFactory;
@@ -23,26 +24,29 @@ use Laminas\Permissions\Acl\Acl;
 use Laminas\Permissions\Acl\Resource\GenericResource;
 use Laminas\Permissions\Acl\Role\GenericRole;
 use Laminas\Router\ConfigProvider;
+use Laminas\Router\RouteMatch as V3RouteMatch;
 use Laminas\ServiceManager\Config;
 use Laminas\ServiceManager\Exception\ContainerModificationsNotAllowedException;
-use Laminas\ServiceManager\Factory\InvokableFactory;
 use Laminas\ServiceManager\ServiceManager;
 use Laminas\View\Helper\Navigation\AbstractHelper;
 use Laminas\View\HelperPluginManager;
 use Laminas\View\Renderer\PhpRenderer;
 use Mimmi20\LaminasView\Helper\HtmlElement\Helper\HtmlElementFactory;
 use Mimmi20\LaminasView\Helper\HtmlElement\Helper\HtmlElementInterface;
+use Mimmi20\NavigationHelper\Accept\AcceptHelperFactory;
+use Mimmi20\NavigationHelper\Accept\AcceptHelperInterface;
 use Mimmi20\NavigationHelper\ContainerParser\ContainerParserFactory;
 use Mimmi20\NavigationHelper\ContainerParser\ContainerParserInterface;
+use Mimmi20\NavigationHelper\FindActive\FindActiveFactory;
+use Mimmi20\NavigationHelper\FindActive\FindActiveInterface;
 use Mimmi20\NavigationHelper\Htmlify\HtmlifyFactory;
 use Mimmi20\NavigationHelper\Htmlify\HtmlifyInterface;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerExceptionInterface;
 use SebastianBergmann\RecursionContext\InvalidArgumentException;
-use Laminas\Mvc\Service\ServiceManagerConfig;
-use Laminas\Router\RouteMatch as V3RouteMatch;
 
+use function class_exists;
 use function file_get_contents;
 use function sprintf;
 
@@ -125,7 +129,7 @@ abstract class AbstractTest extends TestCase
 
         // read navigation config
         $this->_files = $cwd . '/_files';
-        $config = ConfigFactory::fromFile($this->_files . '/navigation.xml', true);
+        $config       = ConfigFactory::fromFile($this->_files . '/navigation.xml', true);
 
         // setup containers from config
         $this->nav1 = new Navigation($config->get('nav_test1'));
@@ -138,21 +142,19 @@ abstract class AbstractTest extends TestCase
 
         // setup service manager
         $smConfig = [
-            'modules'                 => [],
+            'modules' => [],
             'module_listener_options' => [
                 'config_cache_enabled' => false,
-                'cache_dir'            => 'data/cache',
-                'module_paths'         => [],
-                'extra_config'         => [
+                'cache_dir' => 'data/cache',
+                'module_paths' => [],
+                'extra_config' => [
                     'service_manager' => [
                         'factories' => [
-                            'config' => function () use ($config) {
-                                return [
-                                    'navigation' => [
-                                        'default' => $config->get('nav_test1'),
-                                    ],
-                                ];
-                            }
+                            'config' => static fn () => [
+                                'navigation' => [
+                                    'default' => $config->get('nav_test1'),
+                                ],
+                            ],
                         ],
                     ],
                 ],
@@ -177,6 +179,8 @@ abstract class AbstractTest extends TestCase
         $sm->setFactory(HtmlElementInterface::class, HtmlElementFactory::class);
         $sm->setFactory(HtmlifyInterface::class, HtmlifyFactory::class);
         $sm->setFactory(ContainerParserInterface::class, ContainerParserFactory::class);
+        $sm->setFactory(FindActiveInterface::class, FindActiveFactory::class);
+        $sm->setFactory(AcceptHelperInterface::class, AcceptHelperFactory::class);
         $sm->setFactory(
             'config',
             static fn (): array => [
@@ -210,10 +214,10 @@ abstract class AbstractTest extends TestCase
 
         $app = $this->serviceManager->get('Application');
         $app->getMvcEvent()->setRouteMatch(new V3RouteMatch([
-                                                                         'controller' => 'post',
-                                                                         'action'     => 'view',
-                                                                         'id'         => '1337',
-                                                                     ]));
+            'controller' => 'post',
+            'action' => 'view',
+            'id' => '1337',
+        ]));
     }
 
     /**

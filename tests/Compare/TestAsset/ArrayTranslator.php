@@ -1,6 +1,6 @@
 <?php
 /**
- * This file is part of the mimmi20/mezzio-navigation-laminasviewrenderer-bootstrap package.
+ * This file is part of the mimmi20/laminasviewrenderer-bootstrap-navigation package.
  *
  * Copyright (c) 2021, Thomas Mueller <mimmi20@live.de>
  *

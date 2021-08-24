@@ -1,6 +1,6 @@
 <?php
 /**
- * This file is part of the mimmi20/mezzio-navigation-laminasviewrenderer-bootstrap package.
+ * This file is part of the mimmi20/laminasviewrenderer-bootstrap-navigation package.
  *
  * Copyright (c) 2021, Thomas Mueller <mimmi20@live.de>
  *
@@ -12,7 +12,6 @@ declare(strict_types = 1);
 
 namespace Mimmi20Test\LaminasView\BootstrapNavigation;
 
-use Interop\Container\ContainerInterface;
 use Laminas\I18n\View\Helper\Translate;
 use Laminas\Log\Logger;
 use Laminas\Navigation\AbstractContainer;
@@ -20,7 +19,6 @@ use Laminas\Navigation\Navigation;
 use Laminas\Navigation\Page\AbstractPage;
 use Laminas\Navigation\Page\Uri;
 use Laminas\Permissions\Acl\Acl;
-use Laminas\ServiceManager\PluginManagerInterface;
 use Laminas\ServiceManager\ServiceLocatorInterface;
 use Laminas\View\Exception\ExceptionInterface;
 use Laminas\View\Exception\InvalidArgumentException;
@@ -40,8 +38,6 @@ use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestCase;
 
 use function assert;
-use function get_class;
-use function sprintf;
 
 use const PHP_EOL;
 
@@ -118,6 +114,10 @@ final class MenuTest extends TestCase
             ->getMock();
         $renderer->expects(self::never())
             ->method('render');
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translator = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -208,6 +208,10 @@ final class MenuTest extends TestCase
             ->getMock();
         $renderer->expects(self::never())
             ->method('render');
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translator = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -220,7 +224,6 @@ final class MenuTest extends TestCase
             ->getMock();
         $htmlElement->expects(self::never())
             ->method('toHtml');
-
 
         $helper = new Menu(
             $serviceLocator,
@@ -315,6 +318,10 @@ final class MenuTest extends TestCase
             ->getMock();
         $renderer->expects(self::never())
             ->method('render');
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translator = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -327,7 +334,6 @@ final class MenuTest extends TestCase
             ->getMock();
         $htmlElement->expects(self::never())
             ->method('toHtml');
-
 
         $helper = new Menu(
             $serviceLocator,
@@ -409,6 +415,10 @@ final class MenuTest extends TestCase
             ->getMock();
         $renderer->expects(self::never())
             ->method('render');
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translator = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -421,7 +431,6 @@ final class MenuTest extends TestCase
             ->getMock();
         $htmlElement->expects(self::never())
             ->method('toHtml');
-
 
         $helper = new Menu(
             $serviceLocator,
@@ -507,6 +516,10 @@ final class MenuTest extends TestCase
             ->getMock();
         $renderer->expects(self::never())
             ->method('render');
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translator = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -519,7 +532,6 @@ final class MenuTest extends TestCase
             ->getMock();
         $htmlElement->expects(self::never())
             ->method('toHtml');
-
 
         $helper = new Menu(
             $serviceLocator,
@@ -605,6 +617,10 @@ final class MenuTest extends TestCase
             ->getMock();
         $renderer->expects(self::never())
             ->method('render');
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translator = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -617,7 +633,6 @@ final class MenuTest extends TestCase
             ->getMock();
         $htmlElement->expects(self::never())
             ->method('toHtml');
-
 
         $helper = new Menu(
             $serviceLocator,
@@ -707,6 +722,10 @@ final class MenuTest extends TestCase
             ->getMock();
         $renderer->expects(self::never())
             ->method('render');
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translator = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -719,7 +738,6 @@ final class MenuTest extends TestCase
             ->getMock();
         $htmlElement->expects(self::never())
             ->method('toHtml');
-
 
         $helper = new Menu(
             $serviceLocator,
@@ -805,6 +823,10 @@ final class MenuTest extends TestCase
             ->getMock();
         $renderer->expects(self::never())
             ->method('render');
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translator = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -817,7 +839,6 @@ final class MenuTest extends TestCase
             ->getMock();
         $htmlElement->expects(self::never())
             ->method('toHtml');
-
 
         $helper = new Menu(
             $serviceLocator,
@@ -909,6 +930,10 @@ final class MenuTest extends TestCase
             ->getMock();
         $renderer->expects(self::never())
             ->method('render');
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translator = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -921,7 +946,6 @@ final class MenuTest extends TestCase
             ->getMock();
         $htmlElement->expects(self::never())
             ->method('toHtml');
-
 
         $helper = new Menu(
             $serviceLocator,
@@ -1006,6 +1030,10 @@ final class MenuTest extends TestCase
             ->getMock();
         $renderer->expects(self::never())
             ->method('render');
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translator = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -1018,7 +1046,6 @@ final class MenuTest extends TestCase
             ->getMock();
         $htmlElement->expects(self::never())
             ->method('toHtml');
-
 
         $helper = new Menu(
             $serviceLocator,
@@ -1075,6 +1102,32 @@ final class MenuTest extends TestCase
             ->method('getResource');
         $page->expects(self::never())
             ->method('getPrivilege');
+        $page->expects(self::never())
+            ->method('getParent');
+        $page->expects(self::never())
+            ->method('isActive');
+        $page->expects(self::never())
+            ->method('getLabel');
+        $page->expects(self::never())
+            ->method('getTextDomain');
+        $page->expects(self::never())
+            ->method('getTitle');
+        $page->expects(self::never())
+            ->method('getId');
+        $page->expects(self::never())
+            ->method('getClass');
+        $page->expects(self::never())
+            ->method('getHref');
+        $page->expects(self::never())
+            ->method('getTarget');
+        $page->expects(self::never())
+            ->method('hasPage');
+        $page->expects(self::never())
+            ->method('hasPages');
+        $page->expects(self::never())
+            ->method('getCustomProperties');
+        $page->expects(self::never())
+            ->method('get');
 
         $acceptHelper = $this->getMockBuilder(AcceptHelperInterface::class)
             ->disableOriginalConstructor()
@@ -1134,6 +1187,10 @@ final class MenuTest extends TestCase
             ->getMock();
         $renderer->expects(self::never())
             ->method('render');
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translator = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -1146,7 +1203,6 @@ final class MenuTest extends TestCase
             ->getMock();
         $htmlElement->expects(self::never())
             ->method('toHtml');
-
 
         $helper = new Menu(
             $serviceLocator,
@@ -1232,15 +1288,17 @@ final class MenuTest extends TestCase
             ->method('getPrivilege');
         $page->expects(self::never())
             ->method('getParent');
+        $page->expects(self::never())
+            ->method('isActive');
         $page->expects(self::once())
             ->method('getLabel')
             ->willReturn($pageLabel);
-        $page->expects(self::once())
-            ->method('getTitle')
-            ->willReturn($pageTitle);
         $page->expects(self::exactly(2))
             ->method('getTextDomain')
             ->willReturn($pageTextDomain);
+        $page->expects(self::once())
+            ->method('getTitle')
+            ->willReturn($pageTitle);
         $page->expects(self::once())
             ->method('getId')
             ->willReturn($pageId);
@@ -1256,8 +1314,11 @@ final class MenuTest extends TestCase
             ->method('hasPage');
         $page->expects(self::never())
             ->method('hasPages');
+        $page->expects(self::once())
+            ->method('getCustomProperties')
+            ->willReturn([]);
         $page->expects(self::never())
-            ->method('getCustomProperties');
+            ->method('get');
 
         $containerParser = $this->getMockBuilder(ContainerParserInterface::class)
             ->disableOriginalConstructor()
@@ -1286,6 +1347,10 @@ final class MenuTest extends TestCase
             ->getMock();
         $renderer->expects(self::never())
             ->method('render');
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translator = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -1303,7 +1368,6 @@ final class MenuTest extends TestCase
             ->with('a', ['id' => $pageId, 'title' => $pageTitleTranslated, 'href' => $pageHref, 'target' => $pageTarget], $pageLabelTranslatedEscaped)
             ->willReturn($expected);
 
-
         $helper = new Menu(
             $serviceLocator,
             $logger,
@@ -1316,17 +1380,6 @@ final class MenuTest extends TestCase
         );
 
         $helper->setContainer($name);
-
-        $view = $this->getMockBuilder(PhpRenderer::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $view->expects(self::never())
-            ->method('plugin');
-        $view->expects(self::never())
-            ->method('getHelperPluginManager');
-
-        assert($view instanceof PhpRenderer);
-        $helper->setView($view);
 
         assert($page instanceof AbstractPage);
         self::assertSame($expected, $helper->htmlify($page));
@@ -1391,6 +1444,10 @@ final class MenuTest extends TestCase
             ->getMock();
         $renderer->expects(self::never())
             ->method('render');
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translator = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -1403,7 +1460,6 @@ final class MenuTest extends TestCase
             ->getMock();
         $htmlElement->expects(self::never())
             ->method('toHtml');
-
 
         $helper = new Menu(
             $serviceLocator,
@@ -1457,40 +1513,6 @@ final class MenuTest extends TestCase
 
         $name = 'Mezzio\\Navigation\\Top';
 
-        $parentPage = $this->getMockBuilder(AbstractPage::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $parentPage->expects(self::never())
-            ->method('isVisible');
-        $parentPage->expects(self::never())
-            ->method('getResource');
-        $parentPage->expects(self::never())
-            ->method('getPrivilege');
-        $parentPage->expects(self::never())
-            ->method('getParent');
-        $parentPage->expects(self::never())
-            ->method('isActive');
-        $parentPage->expects(self::never())
-            ->method('getLabel');
-        $parentPage->expects(self::never())
-            ->method('getTextDomain');
-        $parentPage->expects(self::never())
-            ->method('getTitle');
-        $parentPage->expects(self::never())
-            ->method('getId');
-        $parentPage->expects(self::never())
-            ->method('getClass');
-        $parentPage->expects(self::never())
-            ->method('getHref');
-        $parentPage->expects(self::never())
-            ->method('getTarget');
-        $parentPage->expects(self::never())
-            ->method('hasPage');
-        $parentPage->expects(self::never())
-            ->method('hasPages');
-        $parentPage->expects(self::never())
-            ->method('getCustomProperties');
-
         $page = $this->getMockBuilder(AbstractPage::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -1524,6 +1546,8 @@ final class MenuTest extends TestCase
             ->method('hasPages');
         $page->expects(self::never())
             ->method('getCustomProperties');
+        $page->expects(self::never())
+            ->method('get');
 
         $container = new Navigation();
         $container->addPage($page);
@@ -1590,6 +1614,10 @@ final class MenuTest extends TestCase
             ->getMock();
         $renderer->expects(self::never())
             ->method('render');
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translator = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -1602,7 +1630,6 @@ final class MenuTest extends TestCase
             ->getMock();
         $htmlElement->expects(self::never())
             ->method('toHtml');
-
 
         $helper = new Menu(
             $serviceLocator,
@@ -1653,40 +1680,6 @@ final class MenuTest extends TestCase
 
         $name = 'Mezzio\\Navigation\\Top';
 
-        $parentPage = $this->getMockBuilder(AbstractPage::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $parentPage->expects(self::never())
-            ->method('isVisible');
-        $parentPage->expects(self::never())
-            ->method('getResource');
-        $parentPage->expects(self::never())
-            ->method('getPrivilege');
-        $parentPage->expects(self::never())
-            ->method('getParent');
-        $parentPage->expects(self::never())
-            ->method('isActive');
-        $parentPage->expects(self::never())
-            ->method('getLabel');
-        $parentPage->expects(self::never())
-            ->method('getTextDomain');
-        $parentPage->expects(self::never())
-            ->method('getTitle');
-        $parentPage->expects(self::never())
-            ->method('getId');
-        $parentPage->expects(self::never())
-            ->method('getClass');
-        $parentPage->expects(self::never())
-            ->method('getHref');
-        $parentPage->expects(self::never())
-            ->method('getTarget');
-        $parentPage->expects(self::never())
-            ->method('hasPage');
-        $parentPage->expects(self::never())
-            ->method('hasPages');
-        $parentPage->expects(self::never())
-            ->method('getCustomProperties');
-
         $page = $this->getMockBuilder(AbstractPage::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -1720,6 +1713,8 @@ final class MenuTest extends TestCase
             ->method('hasPages');
         $page->expects(self::never())
             ->method('getCustomProperties');
+        $page->expects(self::never())
+            ->method('get');
 
         $container = new Navigation();
         $container->addPage($page);
@@ -1791,6 +1786,10 @@ final class MenuTest extends TestCase
             ->getMock();
         $renderer->expects(self::never())
             ->method('render');
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translator = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -1803,7 +1802,6 @@ final class MenuTest extends TestCase
             ->getMock();
         $htmlElement->expects(self::never())
             ->method('toHtml');
-
 
         $helper = new Menu(
             $serviceLocator,
@@ -1918,6 +1916,10 @@ final class MenuTest extends TestCase
             ->getMock();
         $renderer->expects(self::never())
             ->method('render');
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translator = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -1930,7 +1932,6 @@ final class MenuTest extends TestCase
             ->getMock();
         $htmlElement->expects(self::never())
             ->method('toHtml');
-
 
         $helper = new Menu(
             $serviceLocator,
@@ -1983,40 +1984,6 @@ final class MenuTest extends TestCase
 
         $name = 'Mezzio\\Navigation\\Top';
 
-        $parentPage = $this->getMockBuilder(AbstractPage::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $parentPage->expects(self::never())
-            ->method('isVisible');
-        $parentPage->expects(self::never())
-            ->method('getResource');
-        $parentPage->expects(self::never())
-            ->method('getPrivilege');
-        $parentPage->expects(self::never())
-            ->method('getParent');
-        $parentPage->expects(self::never())
-            ->method('isActive');
-        $parentPage->expects(self::never())
-            ->method('getLabel');
-        $parentPage->expects(self::never())
-            ->method('getTextDomain');
-        $parentPage->expects(self::never())
-            ->method('getTitle');
-        $parentPage->expects(self::never())
-            ->method('getId');
-        $parentPage->expects(self::never())
-            ->method('getClass');
-        $parentPage->expects(self::never())
-            ->method('getHref');
-        $parentPage->expects(self::never())
-            ->method('getTarget');
-        $parentPage->expects(self::never())
-            ->method('hasPage');
-        $parentPage->expects(self::never())
-            ->method('hasPages');
-        $parentPage->expects(self::never())
-            ->method('getCustomProperties');
-
         $page = $this->getMockBuilder(AbstractPage::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -2050,6 +2017,8 @@ final class MenuTest extends TestCase
             ->method('hasPages');
         $page->expects(self::never())
             ->method('getCustomProperties');
+        $page->expects(self::never())
+            ->method('get');
 
         $container = new Navigation();
         $container->addPage($page);
@@ -2121,6 +2090,10 @@ final class MenuTest extends TestCase
             ->getMock();
         $renderer->expects(self::never())
             ->method('render');
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translator = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -2133,7 +2106,6 @@ final class MenuTest extends TestCase
             ->getMock();
         $htmlElement->expects(self::never())
             ->method('toHtml');
-
 
         $helper = new Menu(
             $serviceLocator,
@@ -2225,6 +2197,8 @@ final class MenuTest extends TestCase
             ->method('hasPages');
         $page->expects(self::never())
             ->method('getCustomProperties');
+        $page->expects(self::never())
+            ->method('get');
 
         $container = new Navigation();
         $container->addPage($page);
@@ -2291,6 +2265,10 @@ final class MenuTest extends TestCase
             ->getMock();
         $renderer->expects(self::never())
             ->method('render');
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translator = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -2303,7 +2281,6 @@ final class MenuTest extends TestCase
             ->getMock();
         $htmlElement->expects(self::never())
             ->method('toHtml');
-
 
         $helper = new Menu(
             $serviceLocator,
@@ -2397,6 +2374,8 @@ final class MenuTest extends TestCase
             ->method('hasPages');
         $page->expects(self::never())
             ->method('getCustomProperties');
+        $page->expects(self::never())
+            ->method('get');
 
         $parentPage->addPage($page);
 
@@ -2470,6 +2449,10 @@ final class MenuTest extends TestCase
             ->getMock();
         $renderer->expects(self::never())
             ->method('render');
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translator = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -2482,7 +2465,6 @@ final class MenuTest extends TestCase
             ->getMock();
         $htmlElement->expects(self::never())
             ->method('toHtml');
-
 
         $helper = new Menu(
             $serviceLocator,
@@ -2637,6 +2619,10 @@ final class MenuTest extends TestCase
             ->getMock();
         $renderer->expects(self::never())
             ->method('render');
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translator = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -2649,7 +2635,6 @@ final class MenuTest extends TestCase
             ->getMock();
         $htmlElement->expects(self::never())
             ->method('toHtml');
-
 
         $helper = new Menu(
             $serviceLocator,
@@ -2800,6 +2785,10 @@ final class MenuTest extends TestCase
             ->getMock();
         $renderer->expects(self::never())
             ->method('render');
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translator = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -2812,7 +2801,6 @@ final class MenuTest extends TestCase
             ->getMock();
         $htmlElement->expects(self::never())
             ->method('toHtml');
-
 
         $helper = new Menu(
             $serviceLocator,
@@ -2897,6 +2885,10 @@ final class MenuTest extends TestCase
             ->getMock();
         $renderer->expects(self::never())
             ->method('render');
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translator = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -2909,7 +2901,6 @@ final class MenuTest extends TestCase
             ->getMock();
         $htmlElement->expects(self::never())
             ->method('toHtml');
-
 
         $helper = new Menu(
             $serviceLocator,
@@ -2988,6 +2979,10 @@ final class MenuTest extends TestCase
             ->getMock();
         $renderer->expects(self::never())
             ->method('render');
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translator = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -3000,7 +2995,6 @@ final class MenuTest extends TestCase
             ->getMock();
         $htmlElement->expects(self::never())
             ->method('toHtml');
-
 
         $helper = new Menu(
             $serviceLocator,
@@ -3079,6 +3073,10 @@ final class MenuTest extends TestCase
             ->getMock();
         $renderer->expects(self::never())
             ->method('render');
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translator = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -3091,7 +3089,6 @@ final class MenuTest extends TestCase
             ->getMock();
         $htmlElement->expects(self::never())
             ->method('toHtml');
-
 
         $helper = new Menu(
             $serviceLocator,
@@ -3174,6 +3171,10 @@ final class MenuTest extends TestCase
             ->getMock();
         $renderer->expects(self::never())
             ->method('render');
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translator = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -3186,7 +3187,6 @@ final class MenuTest extends TestCase
             ->getMock();
         $htmlElement->expects(self::never())
             ->method('toHtml');
-
 
         $helper = new Menu(
             $serviceLocator,
@@ -3265,6 +3265,10 @@ final class MenuTest extends TestCase
             ->getMock();
         $renderer->expects(self::never())
             ->method('render');
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translator = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -3277,7 +3281,6 @@ final class MenuTest extends TestCase
             ->getMock();
         $htmlElement->expects(self::never())
             ->method('toHtml');
-
 
         $helper = new Menu(
             $serviceLocator,
@@ -3356,6 +3359,10 @@ final class MenuTest extends TestCase
             ->getMock();
         $renderer->expects(self::never())
             ->method('render');
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translator = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -3368,7 +3375,6 @@ final class MenuTest extends TestCase
             ->getMock();
         $htmlElement->expects(self::never())
             ->method('toHtml');
-
 
         $helper = new Menu(
             $serviceLocator,
@@ -3469,6 +3475,10 @@ final class MenuTest extends TestCase
             ->getMock();
         $renderer->expects(self::never())
             ->method('render');
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translator = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -3481,7 +3491,6 @@ final class MenuTest extends TestCase
             ->getMock();
         $htmlElement->expects(self::never())
             ->method('toHtml');
-
 
         $helper = new Menu(
             $serviceLocator,
@@ -3562,6 +3571,10 @@ final class MenuTest extends TestCase
             ->getMock();
         $renderer->expects(self::never())
             ->method('render');
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translator = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -3574,7 +3587,6 @@ final class MenuTest extends TestCase
             ->getMock();
         $htmlElement->expects(self::never())
             ->method('toHtml');
-
 
         $helper = new Menu(
             $serviceLocator,
@@ -3599,15 +3611,6 @@ final class MenuTest extends TestCase
 
         assert($auth instanceof Acl);
         $helper->setAcl($auth);
-
-        $view = $this->getMockBuilder(PhpRenderer::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $view->expects(self::never())
-            ->method('plugin');
-
-        assert($view instanceof PhpRenderer);
-        $helper->setView($view);
 
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('Unable to render menu: No partial view script provided');
@@ -3679,6 +3682,10 @@ final class MenuTest extends TestCase
             ->getMock();
         $renderer->expects(self::never())
             ->method('render');
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translator = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -3691,7 +3698,6 @@ final class MenuTest extends TestCase
             ->getMock();
         $htmlElement->expects(self::never())
             ->method('toHtml');
-
 
         $helper = new Menu(
             $serviceLocator,
@@ -3716,15 +3722,6 @@ final class MenuTest extends TestCase
 
         assert($auth instanceof Acl);
         $helper->setAcl($auth);
-
-        $view = $this->getMockBuilder(PhpRenderer::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $view->expects(self::never())
-            ->method('plugin');
-
-        assert($view instanceof PhpRenderer);
-        $helper->setView($view);
 
         $helper->setPartial(['a', 'b', 'c']);
 
@@ -3806,6 +3803,8 @@ final class MenuTest extends TestCase
             ->method('hasPages');
         $page->expects(self::never())
             ->method('getCustomProperties');
+        $page->expects(self::never())
+            ->method('get');
 
         $parentPage->addPage($page);
 
@@ -3860,6 +3859,10 @@ final class MenuTest extends TestCase
             ->method('render')
             ->with($partial, ['container' => $container])
             ->willReturn($expected);
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translator = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -3872,7 +3875,6 @@ final class MenuTest extends TestCase
             ->getMock();
         $htmlElement->expects(self::never())
             ->method('toHtml');
-
 
         $helper = new Menu(
             $serviceLocator,
@@ -3891,17 +3893,6 @@ final class MenuTest extends TestCase
         $helper->setAcl($auth);
 
         $helper->setPartial($partial);
-
-        $view = $this->getMockBuilder(PhpRenderer::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $view->expects(self::never())
-            ->method('plugin');
-        $view->expects(self::never())
-            ->method('getHelperPluginManager');
-
-        assert($view instanceof PhpRenderer);
-        $helper->setView($view);
 
         self::assertSame($expected, $helper->renderPartial($name));
     }
@@ -3946,9 +3937,9 @@ final class MenuTest extends TestCase
         $page->expects(self::never())
             ->method('getPrivilege');
         $page->expects(self::never())
-            ->method('isActive');
-        $page->expects(self::never())
             ->method('getParent');
+        $page->expects(self::never())
+            ->method('isActive');
         $page->expects(self::never())
             ->method('getLabel');
         $page->expects(self::never())
@@ -3969,6 +3960,8 @@ final class MenuTest extends TestCase
             ->method('hasPages');
         $page->expects(self::never())
             ->method('getCustomProperties');
+        $page->expects(self::never())
+            ->method('get');
 
         $container = new Navigation();
         $container->addPage($page);
@@ -4021,6 +4014,10 @@ final class MenuTest extends TestCase
             ->method('render')
             ->with($partial, ['container' => $container])
             ->willReturn($expected);
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translator = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -4033,7 +4030,6 @@ final class MenuTest extends TestCase
             ->getMock();
         $htmlElement->expects(self::never())
             ->method('toHtml');
-
 
         $helper = new Menu(
             $serviceLocator,
@@ -4052,17 +4048,6 @@ final class MenuTest extends TestCase
         $helper->setAcl($auth);
 
         $helper->setPartial($partial);
-
-        $view = $this->getMockBuilder(PhpRenderer::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $view->expects(self::never())
-            ->method('plugin');
-        $view->expects(self::never())
-            ->method('getHelperPluginManager');
-
-        assert($view instanceof PhpRenderer);
-        $helper->setView($view);
 
         self::assertSame($expected, $helper->renderPartial($name));
     }
@@ -4136,6 +4121,8 @@ final class MenuTest extends TestCase
             ->method('hasPages');
         $page->expects(self::never())
             ->method('getCustomProperties');
+        $page->expects(self::never())
+            ->method('get');
 
         $parentPage->addPage($page);
 
@@ -4190,6 +4177,10 @@ final class MenuTest extends TestCase
             ->method('render')
             ->with($partial, ['container' => $container])
             ->willReturn($expected);
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translator = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -4202,7 +4193,6 @@ final class MenuTest extends TestCase
             ->getMock();
         $htmlElement->expects(self::never())
             ->method('toHtml');
-
 
         $helper = new Menu(
             $serviceLocator,
@@ -4221,17 +4211,6 @@ final class MenuTest extends TestCase
         $helper->setAcl($auth);
 
         $helper->setContainer($container);
-
-        $view = $this->getMockBuilder(PhpRenderer::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $view->expects(self::never())
-            ->method('plugin');
-        $view->expects(self::never())
-            ->method('getHelperPluginManager');
-
-        assert($view instanceof PhpRenderer);
-        $helper->setView($view);
 
         self::assertSame($expected, $helper->renderPartial(null, [$partial, 'test']));
     }
@@ -4312,6 +4291,8 @@ final class MenuTest extends TestCase
             ->method('hasPages');
         $subPage->expects(self::never())
             ->method('getCustomProperties');
+        $subPage->expects(self::never())
+            ->method('get');
 
         $page->addPage($subPage);
         $parentPage->addPage($page);
@@ -4364,6 +4345,10 @@ final class MenuTest extends TestCase
             ->method('render')
             ->with($partial, ['container' => $parentPage])
             ->willReturn($expected);
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translator = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -4376,7 +4361,6 @@ final class MenuTest extends TestCase
             ->getMock();
         $htmlElement->expects(self::never())
             ->method('toHtml');
-
 
         $helper = new Menu(
             $serviceLocator,
@@ -4395,17 +4379,6 @@ final class MenuTest extends TestCase
         $helper->setAcl($auth);
 
         $helper->setContainer($parentPage);
-
-        $view = $this->getMockBuilder(PhpRenderer::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $view->expects(self::never())
-            ->method('plugin');
-        $view->expects(self::never())
-            ->method('getHelperPluginManager');
-
-        assert($view instanceof PhpRenderer);
-        $helper->setView($view);
 
         self::assertSame($expected, $helper->renderPartial(null, [$partial, 'test']));
     }
@@ -4490,6 +4463,10 @@ final class MenuTest extends TestCase
             ->getMock();
         $renderer->expects(self::never())
             ->method('render');
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translator = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -4502,7 +4479,6 @@ final class MenuTest extends TestCase
             ->getMock();
         $htmlElement->expects(self::never())
             ->method('toHtml');
-
 
         $helper = new Menu(
             $serviceLocator,
@@ -4558,9 +4534,9 @@ final class MenuTest extends TestCase
         $page->expects(self::never())
             ->method('getPrivilege');
         $page->expects(self::never())
-            ->method('isActive');
-        $page->expects(self::never())
             ->method('getParent');
+        $page->expects(self::never())
+            ->method('isActive');
         $page->expects(self::never())
             ->method('getLabel');
         $page->expects(self::never())
@@ -4577,10 +4553,14 @@ final class MenuTest extends TestCase
             ->method('getTarget');
         $page->expects(self::never())
             ->method('hasPage');
-        $page->expects(self::never())
-            ->method('hasPages');
+        $page->expects(self::once())
+            ->method('hasPages')
+            ->with(false)
+            ->willReturn(false);
         $page->expects(self::never())
             ->method('getCustomProperties');
+        $page->expects(self::never())
+            ->method('get');
 
         $container = new Navigation();
         $container->addPage($page);
@@ -4663,6 +4643,10 @@ final class MenuTest extends TestCase
             ->getMock();
         $renderer->expects(self::never())
             ->method('render');
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translator = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -4675,7 +4659,6 @@ final class MenuTest extends TestCase
             ->getMock();
         $htmlElement->expects(self::never())
             ->method('toHtml');
-
 
         $helper = new Menu(
             $serviceLocator,
@@ -4697,15 +4680,6 @@ final class MenuTest extends TestCase
         $partial  = 'testPartial';
 
         $helper->setPartial($partial);
-
-        $view = $this->getMockBuilder(PhpRenderer::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $view->expects(self::never())
-            ->method('plugin');
-
-        assert($view instanceof PhpRenderer);
-        $helper->setView($view);
 
         self::assertSame($expected, $helper->renderMenu($name));
     }
@@ -4814,8 +4788,13 @@ final class MenuTest extends TestCase
             ->method('hasPages')
             ->withConsecutive([false], [true])
             ->willReturnOnConsecutiveCalls(false, false);
-        $page->expects(self::never())
-            ->method('getCustomProperties');
+        $page->expects(self::once())
+            ->method('getCustomProperties')
+            ->willReturn([]);
+        $page->expects(self::exactly(2))
+            ->method('get')
+            ->withConsecutive(['li-active-class'], ['li-class'])
+            ->willReturnOnConsecutiveCalls(null, null);
 
         $parentPage->addPage($page);
 
@@ -4924,6 +4903,10 @@ final class MenuTest extends TestCase
             ->getMock();
         $renderer->expects(self::never())
             ->method('render');
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translator = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -4946,7 +4929,6 @@ final class MenuTest extends TestCase
             )
             ->willReturnOnConsecutiveCalls($expected1, $expected2);
 
-
         $helper = new Menu(
             $serviceLocator,
             $logger,
@@ -4963,17 +4945,6 @@ final class MenuTest extends TestCase
         assert($auth instanceof Acl);
         $helper->setAcl($auth);
 
-        $view = $this->getMockBuilder(PhpRenderer::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $view->expects(self::never())
-            ->method('plugin');
-        $view->expects(self::never())
-            ->method('getHelperPluginManager');
-
-        assert($view instanceof PhpRenderer);
-        $helper->setView($view);
-
         self::assertSame($expected, $helper->renderMenu($name));
     }
 
@@ -4981,7 +4952,7 @@ final class MenuTest extends TestCase
      * @throws Exception
      * @throws \InvalidArgumentException
      */
-    public function testRenderMenuWithhIndent(): void
+    public function testRenderMenuWithIndent(): void
     {
         $indent = '    ';
 
@@ -5083,8 +5054,13 @@ final class MenuTest extends TestCase
             ->method('hasPages')
             ->withConsecutive([false], [true])
             ->willReturnOnConsecutiveCalls(false, false);
-        $page->expects(self::never())
-            ->method('getCustomProperties');
+        $page->expects(self::once())
+            ->method('getCustomProperties')
+            ->willReturn([]);
+        $page->expects(self::exactly(2))
+            ->method('get')
+            ->withConsecutive(['li-active-class'], ['li-class'])
+            ->willReturnOnConsecutiveCalls(null, null);
 
         $parentPage->addPage($page);
 
@@ -5193,6 +5169,10 @@ final class MenuTest extends TestCase
             ->getMock();
         $renderer->expects(self::never())
             ->method('render');
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translator = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -5215,7 +5195,6 @@ final class MenuTest extends TestCase
             )
             ->willReturnOnConsecutiveCalls($expected1, $expected2);
 
-
         $helper = new Menu(
             $serviceLocator,
             $logger,
@@ -5231,17 +5210,6 @@ final class MenuTest extends TestCase
 
         assert($auth instanceof Acl);
         $helper->setAcl($auth);
-
-        $view = $this->getMockBuilder(PhpRenderer::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $view->expects(self::never())
-            ->method('plugin');
-        $view->expects(self::never())
-            ->method('getHelperPluginManager');
-
-        assert($view instanceof PhpRenderer);
-        $helper->setView($view);
         $helper->setIndent($indent);
 
         self::assertSame($expected, $helper->renderMenu($name));
@@ -5327,6 +5295,8 @@ final class MenuTest extends TestCase
             ->method('hasPages');
         $page->expects(self::never())
             ->method('getCustomProperties');
+        $page->expects(self::never())
+            ->method('get');
 
         $parentPage->addPage($page);
 
@@ -5376,6 +5346,10 @@ final class MenuTest extends TestCase
             ->getMock();
         $renderer->expects(self::never())
             ->method('render');
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translator = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -5388,7 +5362,6 @@ final class MenuTest extends TestCase
             ->getMock();
         $htmlElement->expects(self::never())
             ->method('toHtml');
-
 
         $helper = new Menu(
             $serviceLocator,
@@ -5405,17 +5378,6 @@ final class MenuTest extends TestCase
 
         assert($auth instanceof Acl);
         $helper->setAcl($auth);
-
-        $view = $this->getMockBuilder(PhpRenderer::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $view->expects(self::never())
-            ->method('plugin');
-        $view->expects(self::never())
-            ->method('getHelperPluginManager');
-
-        assert($view instanceof PhpRenderer);
-        $helper->setView($view);
 
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Size "xy" does not exist');
@@ -5528,8 +5490,13 @@ final class MenuTest extends TestCase
             ->method('hasPages')
             ->withConsecutive([false], [true])
             ->willReturnOnConsecutiveCalls(false, false);
-        $page->expects(self::never())
-            ->method('getCustomProperties');
+        $page->expects(self::once())
+            ->method('getCustomProperties')
+            ->willReturn([]);
+        $page->expects(self::exactly(2))
+            ->method('get')
+            ->withConsecutive(['li-active-class'], ['li-class'])
+            ->willReturnOnConsecutiveCalls(null, null);
 
         $parentPage->addPage($page);
 
@@ -5638,6 +5605,10 @@ final class MenuTest extends TestCase
             ->getMock();
         $renderer->expects(self::never())
             ->method('render');
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translator = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -5660,7 +5631,6 @@ final class MenuTest extends TestCase
             )
             ->willReturnOnConsecutiveCalls($expected1, $expected2);
 
-
         $helper = new Menu(
             $serviceLocator,
             $logger,
@@ -5676,17 +5646,6 @@ final class MenuTest extends TestCase
 
         assert($auth instanceof Acl);
         $helper->setAcl($auth);
-
-        $view = $this->getMockBuilder(PhpRenderer::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $view->expects(self::never())
-            ->method('plugin');
-        $view->expects(self::never())
-            ->method('getHelperPluginManager');
-
-        assert($view instanceof PhpRenderer);
-        $helper->setView($view);
 
         self::assertSame($expected, $helper->renderMenu($name, ['vertical' => 'md']));
     }
@@ -5795,8 +5754,13 @@ final class MenuTest extends TestCase
             ->method('hasPages')
             ->withConsecutive([false], [true])
             ->willReturnOnConsecutiveCalls(false, false);
-        $page->expects(self::never())
-            ->method('getCustomProperties');
+        $page->expects(self::once())
+            ->method('getCustomProperties')
+            ->willReturn([]);
+        $page->expects(self::exactly(2))
+            ->method('get')
+            ->withConsecutive(['li-active-class'], ['li-class'])
+            ->willReturnOnConsecutiveCalls(null, null);
 
         $parentPage->addPage($page);
 
@@ -5905,6 +5869,10 @@ final class MenuTest extends TestCase
             ->getMock();
         $renderer->expects(self::never())
             ->method('render');
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translator = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -5927,7 +5895,6 @@ final class MenuTest extends TestCase
             )
             ->willReturnOnConsecutiveCalls($expected1, $expected2);
 
-
         $helper = new Menu(
             $serviceLocator,
             $logger,
@@ -5943,17 +5910,6 @@ final class MenuTest extends TestCase
 
         assert($auth instanceof Acl);
         $helper->setAcl($auth);
-
-        $view = $this->getMockBuilder(PhpRenderer::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $view->expects(self::never())
-            ->method('plugin');
-        $view->expects(self::never())
-            ->method('getHelperPluginManager');
-
-        assert($view instanceof PhpRenderer);
-        $helper->setView($view);
 
         self::assertSame($expected, $helper->renderMenu($name, ['vertical' => 'md', 'direction' => Menu::DROP_ORIENTATION_START]));
     }
@@ -6018,6 +5974,7 @@ final class MenuTest extends TestCase
         $parentPage->setLabel($parentLabel);
         $parentPage->setTitle($parentTitle);
         $parentPage->setTextDomain($parentTextDomain);
+        //$parentPage->set('li-class', 'li-class');
 
         $page = $this->getMockBuilder(AbstractPage::class)
             ->disableOriginalConstructor()
@@ -6063,8 +6020,13 @@ final class MenuTest extends TestCase
             ->method('hasPages')
             ->withConsecutive([false], [true])
             ->willReturnOnConsecutiveCalls(false, false);
-        $page->expects(self::never())
-            ->method('getCustomProperties');
+        $page->expects(self::once())
+            ->method('getCustomProperties')
+            ->willReturn([]);
+        $page->expects(self::exactly(2))
+            ->method('get')
+            ->withConsecutive(['li-active-class'], ['li-class'])
+            ->willReturnOnConsecutiveCalls('li-class', null);
 
         $parentPage->addPage($page);
 
@@ -6173,6 +6135,10 @@ final class MenuTest extends TestCase
             ->getMock();
         $renderer->expects(self::never())
             ->method('render');
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translator = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -6195,7 +6161,6 @@ final class MenuTest extends TestCase
             )
             ->willReturnOnConsecutiveCalls($expected1, $expected2);
 
-
         $helper = new Menu(
             $serviceLocator,
             $logger,
@@ -6211,17 +6176,6 @@ final class MenuTest extends TestCase
 
         assert($auth instanceof Acl);
         $helper->setAcl($auth);
-
-        $view = $this->getMockBuilder(PhpRenderer::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $view->expects(self::never())
-            ->method('plugin');
-        $view->expects(self::never())
-            ->method('getHelperPluginManager');
-
-        assert($view instanceof PhpRenderer);
-        $helper->setView($view);
 
         self::assertSame($expected, $helper->renderMenu($name, ['style' => Menu::STYLE_OL, 'maxDepth' => $maxDepth]));
     }
@@ -6330,8 +6284,13 @@ final class MenuTest extends TestCase
             ->method('hasPages')
             ->withConsecutive([false], [true])
             ->willReturnOnConsecutiveCalls(false, false);
-        $page->expects(self::never())
-            ->method('getCustomProperties');
+        $page->expects(self::once())
+            ->method('getCustomProperties')
+            ->willReturn([]);
+        $page->expects(self::exactly(2))
+            ->method('get')
+            ->withConsecutive(['li-active-class'], ['li-class'])
+            ->willReturnOnConsecutiveCalls('li-class', null);
 
         $parentPage->addPage($page);
 
@@ -6440,6 +6399,10 @@ final class MenuTest extends TestCase
             ->getMock();
         $renderer->expects(self::never())
             ->method('render');
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translator = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -6462,7 +6425,6 @@ final class MenuTest extends TestCase
             )
             ->willReturnOnConsecutiveCalls($expected1, $expected2);
 
-
         $helper = new Menu(
             $serviceLocator,
             $logger,
@@ -6478,17 +6440,6 @@ final class MenuTest extends TestCase
 
         assert($auth instanceof Acl);
         $helper->setAcl($auth);
-
-        $view = $this->getMockBuilder(PhpRenderer::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $view->expects(self::never())
-            ->method('plugin');
-        $view->expects(self::never())
-            ->method('getHelperPluginManager');
-
-        assert($view instanceof PhpRenderer);
-        $helper->setView($view);
 
         self::assertSame($expected, $helper->renderMenu($name, ['tabs' => true, 'dark' => true, 'in-navbar' => true]));
     }
@@ -6569,6 +6520,8 @@ final class MenuTest extends TestCase
             ->method('hasPages');
         $subPage->expects(self::never())
             ->method('getCustomProperties');
+        $subPage->expects(self::never())
+            ->method('get');
 
         $page->addPage($subPage);
         $parentPage->addPage($page);
@@ -6598,12 +6551,6 @@ final class MenuTest extends TestCase
             ->method('parseContainer')
             ->withConsecutive([$parentPage], [null])
             ->willReturnOnConsecutiveCalls($parentPage, null);
-
-        $escapePlugin = $this->getMockBuilder(EscapeHtmlAttr::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $escapePlugin->expects(self::never())
-            ->method('__invoke');
 
         $expected = 'renderedPartial';
         $data     = ['container' => $parentPage];
@@ -6635,6 +6582,10 @@ final class MenuTest extends TestCase
             ->method('render')
             ->with($model, $data)
             ->willReturn($expected);
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translator = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -6647,7 +6598,6 @@ final class MenuTest extends TestCase
             ->getMock();
         $htmlElement->expects(self::never())
             ->method('toHtml');
-
 
         $helper = new Menu(
             $serviceLocator,
@@ -6666,207 +6616,8 @@ final class MenuTest extends TestCase
         $helper->setAcl($auth);
 
         $helper->setContainer($parentPage);
-
-        $view = $this->getMockBuilder(PhpRenderer::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $view->expects(self::never())
-            ->method('plugin');
-        $view->expects(self::never())
-            ->method('getHelperPluginManager');
-
-        assert($view instanceof PhpRenderer);
-        $helper->setView($view);
 
         self::assertSame($expected, $helper->renderPartial(null, $model));
-    }
-
-    /**
-     * @throws Exception
-     * @throws ExceptionInterface
-     * @throws \InvalidArgumentException
-     */
-    public function testRenderWithPartialModel(): void
-    {
-        $logger = $this->getMockBuilder(Logger::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $logger->expects(self::never())
-            ->method('emerg');
-        $logger->expects(self::never())
-            ->method('alert');
-        $logger->expects(self::never())
-            ->method('crit');
-        $logger->expects(self::never())
-            ->method('err');
-        $logger->expects(self::never())
-            ->method('warn');
-        $logger->expects(self::never())
-            ->method('notice');
-        $logger->expects(self::never())
-            ->method('info');
-        $logger->expects(self::never())
-            ->method('debug');
-
-        $resource  = 'testResource';
-        $privilege = 'testPrivilege';
-
-        $parentPage = new Uri();
-        $parentPage->setVisible(true);
-        $parentPage->setResource($resource);
-        $parentPage->setPrivilege($privilege);
-        $parentPage->setActive(true);
-
-        $page = new Uri();
-        $page->setVisible(true);
-        $page->setResource($resource);
-        $page->setPrivilege($privilege);
-        $page->setActive(true);
-
-        $subPage = $this->getMockBuilder(AbstractPage::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $subPage->expects(self::never())
-            ->method('isVisible');
-        $subPage->expects(self::never())
-            ->method('getResource');
-        $subPage->expects(self::never())
-            ->method('getPrivilege');
-        $subPage->expects(self::never())
-            ->method('getParent');
-        $subPage->expects(self::never())
-            ->method('isActive');
-        $subPage->expects(self::never())
-            ->method('getLabel');
-        $subPage->expects(self::never())
-            ->method('getTextDomain');
-        $subPage->expects(self::never())
-            ->method('getTitle');
-        $subPage->expects(self::never())
-            ->method('getId');
-        $subPage->expects(self::never())
-            ->method('getClass');
-        $subPage->expects(self::never())
-            ->method('getHref');
-        $subPage->expects(self::never())
-            ->method('getTarget');
-        $subPage->expects(self::never())
-            ->method('hasPage');
-        $subPage->expects(self::never())
-            ->method('hasPages');
-        $subPage->expects(self::never())
-            ->method('getCustomProperties');
-
-        $page->addPage($subPage);
-        $parentPage->addPage($page);
-
-        $role = 'testRole';
-
-        $auth = $this->getMockBuilder(Acl::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $auth->expects(self::never())
-            ->method('isAllowed');
-
-        $serviceLocator = $this->getMockBuilder(ServiceLocatorInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $serviceLocator->expects(self::never())
-            ->method('has');
-        $serviceLocator->expects(self::never())
-            ->method('get');
-        $serviceLocator->expects(self::never())
-            ->method('build');
-
-        $containerParser = $this->getMockBuilder(ContainerParserInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $containerParser->expects(self::exactly(2))
-            ->method('parseContainer')
-            ->withConsecutive([$parentPage], [null])
-            ->willReturnOnConsecutiveCalls($parentPage, null);
-
-        $escapePlugin = $this->getMockBuilder(EscapeHtmlAttr::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $escapePlugin->expects(self::never())
-            ->method('__invoke');
-
-        $expected = 'renderedPartial';
-        $data     = ['container' => $parentPage];
-
-        $model = $this->getMockBuilder(ModelInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $model->expects(self::never())
-            ->method('setVariables');
-        $model->expects(self::never())
-            ->method('getTemplate');
-
-        $escapeHtmlAttr = $this->getMockBuilder(EscapeHtmlAttr::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $escapeHtmlAttr->expects(self::never())
-            ->method('__invoke');
-
-        $escapeHtml = $this->getMockBuilder(EscapeHtml::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $escapeHtml->expects(self::never())
-            ->method('__invoke');
-
-        $renderer = $this->getMockBuilder(PhpRenderer::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $renderer->expects(self::once())
-            ->method('render')
-            ->with($model, $data)
-            ->willReturn($expected);
-
-        $translator = $this->getMockBuilder(Translate::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $translator->expects(self::never())
-            ->method('__invoke');
-
-        $htmlElement = $this->getMockBuilder(HtmlElementInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $htmlElement->expects(self::never())
-            ->method('toHtml');
-
-
-        $helper = new Menu(
-            $serviceLocator,
-            $logger,
-            $containerParser,
-            $escapeHtmlAttr,
-            $renderer,
-            $escapeHtml,
-            $htmlElement,
-            $translator
-        );
-
-        $helper->setRole($role);
-
-        assert($auth instanceof Acl);
-        $helper->setAcl($auth);
-
-        $helper->setContainer($parentPage);
-
-        $view = $this->getMockBuilder(PhpRenderer::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $view->expects(self::never())
-            ->method('plugin');
-        $view->expects(self::never())
-            ->method('getHelperPluginManager');
-
-        assert($view instanceof PhpRenderer);
-        $helper->setView($view);
-        $helper->setPartial($model);
-
-        self::assertSame($expected, $helper->render());
     }
 
     /**
@@ -6969,8 +6720,13 @@ final class MenuTest extends TestCase
             ->method('hasPages')
             ->with(true)
             ->willReturn(false);
-        $page->expects(self::never())
-            ->method('getCustomProperties');
+        $page->expects(self::once())
+            ->method('getCustomProperties')
+            ->willReturn([]);
+        $page->expects(self::exactly(2))
+            ->method('get')
+            ->withConsecutive(['li-active-class'], ['li-class'])
+            ->willReturnOnConsecutiveCalls(null, null);
 
         $parentPage->addPage($page);
 
@@ -7069,6 +6825,10 @@ final class MenuTest extends TestCase
             ->getMock();
         $renderer->expects(self::never())
             ->method('render');
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translator = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -7088,7 +6848,6 @@ final class MenuTest extends TestCase
             ->with('a', ['aria-current' => 'page', 'class' => 'nav-link xxxx', 'id' => $pageId, 'title' => $pageTitleTranslated, 'href' => $pageHref, 'target' => $pageTarget, 'role' => 'tab'], $pageLabelTranslatedEscaped)
             ->willReturn($expected2);
 
-
         $helper = new Menu(
             $serviceLocator,
             $logger,
@@ -7104,17 +6863,6 @@ final class MenuTest extends TestCase
 
         assert($auth instanceof Acl);
         $helper->setAcl($auth);
-
-        $view = $this->getMockBuilder(PhpRenderer::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $view->expects(self::never())
-            ->method('plugin');
-        $view->expects(self::never())
-            ->method('getHelperPluginManager');
-
-        assert($view instanceof PhpRenderer);
-        $helper->setView($view);
 
         self::assertSame($expected, $helper->renderMenu($name, ['tabs' => true, 'dark' => true, 'in-navbar' => true, 'onlyActiveBranch' => true, 'renderParents' => false]));
     }
@@ -7220,8 +6968,13 @@ final class MenuTest extends TestCase
             ->method('hasPages')
             ->with(true)
             ->willReturn(false);
-        $page->expects(self::never())
-            ->method('getCustomProperties');
+        $page->expects(self::once())
+            ->method('getCustomProperties')
+            ->willReturn([]);
+        $page->expects(self::exactly(2))
+            ->method('get')
+            ->withConsecutive(['li-active-class'], ['li-class'])
+            ->willReturnOnConsecutiveCalls(null, null);
 
         $parentPage->addPage($page);
 
@@ -7320,6 +7073,10 @@ final class MenuTest extends TestCase
             ->getMock();
         $renderer->expects(self::never())
             ->method('render');
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translator = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -7339,7 +7096,6 @@ final class MenuTest extends TestCase
             ->with('a', ['aria-current' => 'page', 'class' => 'nav-link xxxx', 'id' => $pageId, 'title' => $pageTitleTranslated, 'href' => $pageHref, 'target' => $pageTarget, 'role' => 'tab'], $pageLabelTranslatedEscaped)
             ->willReturn($expected2);
 
-
         $helper = new Menu(
             $serviceLocator,
             $logger,
@@ -7355,17 +7111,6 @@ final class MenuTest extends TestCase
 
         assert($auth instanceof Acl);
         $helper->setAcl($auth);
-
-        $view = $this->getMockBuilder(PhpRenderer::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $view->expects(self::never())
-            ->method('plugin');
-        $view->expects(self::never())
-            ->method('getHelperPluginManager');
-
-        assert($view instanceof PhpRenderer);
-        $helper->setView($view);
         $helper->setIndent($indent);
 
         self::assertSame($expected, $helper->renderMenu($name, ['tabs' => true, 'dark' => true, 'in-navbar' => true, 'onlyActiveBranch' => true, 'renderParents' => false]));
@@ -7397,8 +7142,6 @@ final class MenuTest extends TestCase
         $logger->expects(self::never())
             ->method('debug');
 
-        $name = 'Mezzio\\Navigation\\Top';
-
         $resource  = 'testResource';
         $privilege = 'testPrivilege';
 
@@ -7471,8 +7214,13 @@ final class MenuTest extends TestCase
             ->method('hasPages')
             ->with(true)
             ->willReturn(false);
-        $page->expects(self::never())
-            ->method('getCustomProperties');
+        $page->expects(self::once())
+            ->method('getCustomProperties')
+            ->willReturn([]);
+        $page->expects(self::exactly(2))
+            ->method('get')
+            ->withConsecutive(['li-active-class'], ['li-class'])
+            ->willReturnOnConsecutiveCalls('li-class', null);
 
         $parentPage->addPage($page);
 
@@ -7547,7 +7295,7 @@ final class MenuTest extends TestCase
             ->getMock();
         $containerParser->expects(self::exactly(2))
             ->method('parseContainer')
-            ->withConsecutive([$name], [$container])
+            ->withConsecutive([$container], [$container])
             ->willReturnOnConsecutiveCalls($container, $container);
 
         $escapeHtmlAttr = $this->getMockBuilder(EscapeHtmlAttr::class)
@@ -7571,6 +7319,10 @@ final class MenuTest extends TestCase
             ->getMock();
         $renderer->expects(self::never())
             ->method('render');
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translator = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -7590,7 +7342,6 @@ final class MenuTest extends TestCase
             ->with('a', ['aria-current' => 'page', 'class' => 'nav-link xxxx', 'id' => $pageId, 'title' => $pageTitleTranslated, 'href' => $pageHref, 'target' => $pageTarget], $pageLabelTranslatedEscaped)
             ->willReturn($expected2);
 
-
         $helper = new Menu(
             $serviceLocator,
             $logger,
@@ -7606,17 +7357,6 @@ final class MenuTest extends TestCase
 
         assert($auth instanceof Acl);
         $helper->setAcl($auth);
-
-        $view = $this->getMockBuilder(PhpRenderer::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $view->expects(self::never())
-            ->method('plugin');
-        $view->expects(self::never())
-            ->method('getHelperPluginManager');
-
-        assert($view instanceof PhpRenderer);
-        $helper->setView($view);
 
         self::assertSame($expected, $helper->renderSubMenu($container));
     }
@@ -7646,8 +7386,6 @@ final class MenuTest extends TestCase
             ->method('info');
         $logger->expects(self::never())
             ->method('debug');
-
-        $name = 'Mezzio\\Navigation\\Top';
 
         $resource  = 'testResource';
         $privilege = 'testPrivilege';
@@ -7701,6 +7439,8 @@ final class MenuTest extends TestCase
             ->method('hasPages');
         $page->expects(self::never())
             ->method('getCustomProperties');
+        $page->expects(self::never())
+            ->method('get');
 
         $parentPage->addPage($page);
 
@@ -7747,7 +7487,7 @@ final class MenuTest extends TestCase
             ->getMock();
         $containerParser->expects(self::exactly(2))
             ->method('parseContainer')
-            ->withConsecutive([$name], [$container])
+            ->withConsecutive([$container], [$container])
             ->willReturnOnConsecutiveCalls($container, $container);
 
         $escapeHtmlAttr = $this->getMockBuilder(EscapeHtmlAttr::class)
@@ -7767,6 +7507,10 @@ final class MenuTest extends TestCase
             ->getMock();
         $renderer->expects(self::never())
             ->method('render');
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translator = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -7781,7 +7525,6 @@ final class MenuTest extends TestCase
             ->getMock();
         $htmlElement->expects(self::never())
             ->method('toHtml');
-
 
         $helper = new Menu(
             $serviceLocator,
@@ -7798,17 +7541,6 @@ final class MenuTest extends TestCase
 
         assert($auth instanceof Acl);
         $helper->setAcl($auth);
-
-        $view = $this->getMockBuilder(PhpRenderer::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $view->expects(self::never())
-            ->method('plugin');
-        $view->expects(self::never())
-            ->method('getHelperPluginManager');
-
-        assert($view instanceof PhpRenderer);
-        $helper->setView($view);
 
         self::assertSame($expected, $helper->renderSubMenu($container));
     }
@@ -7840,8 +7572,6 @@ final class MenuTest extends TestCase
         $logger->expects(self::never())
             ->method('debug');
 
-        $name = 'Mezzio\\Navigation\\Top';
-
         $resource  = 'testResource';
         $privilege = 'testPrivilege';
 
@@ -7894,6 +7624,8 @@ final class MenuTest extends TestCase
             ->method('hasPages');
         $page->expects(self::never())
             ->method('getCustomProperties');
+        $page->expects(self::never())
+            ->method('get');
 
         $parentPage->addPage($page);
 
@@ -7940,7 +7672,7 @@ final class MenuTest extends TestCase
             ->getMock();
         $containerParser->expects(self::exactly(2))
             ->method('parseContainer')
-            ->withConsecutive([$name], [$container])
+            ->withConsecutive([$container], [$container])
             ->willReturnOnConsecutiveCalls($container, $container);
 
         $escapeHtmlAttr = $this->getMockBuilder(EscapeHtmlAttr::class)
@@ -7960,6 +7692,10 @@ final class MenuTest extends TestCase
             ->getMock();
         $renderer->expects(self::never())
             ->method('render');
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translator = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -7974,7 +7710,6 @@ final class MenuTest extends TestCase
             ->getMock();
         $htmlElement->expects(self::never())
             ->method('toHtml');
-
 
         $helper = new Menu(
             $serviceLocator,
@@ -7991,18 +7726,6 @@ final class MenuTest extends TestCase
 
         assert($auth instanceof Acl);
         $helper->setAcl($auth);
-
-        $view = $this->getMockBuilder(PhpRenderer::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $view->expects(self::never())
-            ->method('plugin');
-        $view->expects(self::never())
-            ->method('getHelperPluginManager');
-
-        assert($view instanceof PhpRenderer);
-        $helper->setView($view);
-        $helper->setIndent($indent);
 
         self::assertSame($expected, $helper->renderSubMenu($container));
     }
@@ -8033,8 +7756,6 @@ final class MenuTest extends TestCase
             ->method('info');
         $logger->expects(self::never())
             ->method('debug');
-
-        $name = 'Mezzio\\Navigation\\Top';
 
         $resource  = 'testResource';
         $privilege = 'testPrivilege';
@@ -8108,8 +7829,13 @@ final class MenuTest extends TestCase
             ->method('hasPages')
             ->with(true)
             ->willReturn(false);
-        $page->expects(self::never())
-            ->method('getCustomProperties');
+        $page->expects(self::once())
+            ->method('getCustomProperties')
+            ->willReturn([]);
+        $page->expects(self::exactly(2))
+            ->method('get')
+            ->withConsecutive(['li-active-class'], ['li-class'])
+            ->willReturnOnConsecutiveCalls('li-class', null);
 
         $parentPage->addPage($page);
 
@@ -8184,7 +7910,7 @@ final class MenuTest extends TestCase
             ->getMock();
         $containerParser->expects(self::exactly(2))
             ->method('parseContainer')
-            ->withConsecutive([$name], [$container])
+            ->withConsecutive([$container], [$container])
             ->willReturnOnConsecutiveCalls($container, $container);
 
         $escapeHtmlAttr = $this->getMockBuilder(EscapeHtmlAttr::class)
@@ -8208,6 +7934,10 @@ final class MenuTest extends TestCase
             ->getMock();
         $renderer->expects(self::never())
             ->method('render');
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translator = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -8227,7 +7957,6 @@ final class MenuTest extends TestCase
             ->with('a', ['aria-current' => 'page', 'class' => 'nav-link xxxx', 'id' => $pageId, 'title' => $pageTitleTranslated, 'href' => $pageHref, 'target' => $pageTarget], $pageLabelTranslatedEscaped)
             ->willReturn($expected2);
 
-
         $helper = new Menu(
             $serviceLocator,
             $logger,
@@ -8243,17 +7972,6 @@ final class MenuTest extends TestCase
 
         assert($auth instanceof Acl);
         $helper->setAcl($auth);
-
-        $view = $this->getMockBuilder(PhpRenderer::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $view->expects(self::never())
-            ->method('plugin');
-        $view->expects(self::never())
-            ->method('getHelperPluginManager');
-
-        assert($view instanceof PhpRenderer);
-        $helper->setView($view);
         $helper->setIndent($indent);
 
         self::assertSame($expected, $helper->renderSubMenu($container));
@@ -8341,6 +8059,8 @@ final class MenuTest extends TestCase
             ->willReturn(false);
         $page->expects(self::never())
             ->method('getCustomProperties');
+        $page->expects(self::never())
+            ->method('get');
 
         $parentPage->addPage($page);
 
@@ -8412,6 +8132,10 @@ final class MenuTest extends TestCase
             ->getMock();
         $renderer->expects(self::never())
             ->method('render');
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translator = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -8426,7 +8150,6 @@ final class MenuTest extends TestCase
             ->getMock();
         $htmlElement->expects(self::never())
             ->method('toHtml');
-
 
         $helper = new Menu(
             $serviceLocator,
@@ -8443,17 +8166,6 @@ final class MenuTest extends TestCase
 
         assert($auth instanceof Acl);
         $helper->setAcl($auth);
-
-        $view = $this->getMockBuilder(PhpRenderer::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $view->expects(self::never())
-            ->method('plugin');
-        $view->expects(self::never())
-            ->method('getHelperPluginManager');
-
-        assert($view instanceof PhpRenderer);
-        $helper->setView($view);
 
         self::assertSame($expected, $helper->renderMenu($name, ['tabs' => true, 'dark' => true, 'in-navbar' => true, 'onlyActiveBranch' => true, 'renderParents' => false, 'minDepth' => 2]));
     }
@@ -8558,8 +8270,13 @@ final class MenuTest extends TestCase
             ->method('hasPages')
             ->with(true)
             ->willReturn(true);
-        $page->expects(self::never())
-            ->method('getCustomProperties');
+        $page->expects(self::once())
+            ->method('getCustomProperties')
+            ->willReturn([]);
+        $page->expects(self::exactly(2))
+            ->method('get')
+            ->withConsecutive(['li-active-class'], ['li-class'])
+            ->willReturnOnConsecutiveCalls(null, null);
 
         $parentPage->addPage($page);
 
@@ -8658,6 +8375,10 @@ final class MenuTest extends TestCase
             ->getMock();
         $renderer->expects(self::never())
             ->method('render');
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translator = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -8677,7 +8398,6 @@ final class MenuTest extends TestCase
             ->with('a', ['aria-current' => 'page', 'class' => 'nav-link xxxx', 'id' => $pageId, 'title' => $pageTitleTranslated, 'href' => $pageHref, 'target' => $pageTarget, 'role' => 'tab'], $pageLabelTranslatedEscaped)
             ->willReturn($expected2);
 
-
         $helper = new Menu(
             $serviceLocator,
             $logger,
@@ -8693,17 +8413,6 @@ final class MenuTest extends TestCase
 
         assert($auth instanceof Acl);
         $helper->setAcl($auth);
-
-        $view = $this->getMockBuilder(PhpRenderer::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $view->expects(self::never())
-            ->method('plugin');
-        $view->expects(self::never())
-            ->method('getHelperPluginManager');
-
-        assert($view instanceof PhpRenderer);
-        $helper->setView($view);
 
         self::assertSame($expected, $helper->renderMenu($name, ['tabs' => true, 'dark' => true, 'in-navbar' => true, 'onlyActiveBranch' => true, 'renderParents' => false, 'minDepth' => 0, 'maxDepth' => 1]));
     }
@@ -8791,6 +8500,8 @@ final class MenuTest extends TestCase
             ->willReturn(false);
         $page->expects(self::never())
             ->method('getCustomProperties');
+        $page->expects(self::never())
+            ->method('get');
 
         $parentPage->addPage($page);
 
@@ -8883,6 +8594,10 @@ final class MenuTest extends TestCase
             ->getMock();
         $renderer->expects(self::never())
             ->method('render');
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translator = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -8897,7 +8612,6 @@ final class MenuTest extends TestCase
             ->getMock();
         $htmlElement->expects(self::never())
             ->method('toHtml');
-
 
         $helper = new Menu(
             $serviceLocator,
@@ -8914,17 +8628,6 @@ final class MenuTest extends TestCase
 
         assert($auth instanceof Acl);
         $helper->setAcl($auth);
-
-        $view = $this->getMockBuilder(PhpRenderer::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $view->expects(self::never())
-            ->method('plugin');
-        $view->expects(self::never())
-            ->method('getHelperPluginManager');
-
-        assert($view instanceof PhpRenderer);
-        $helper->setView($view);
 
         self::assertSame($expected, $helper->renderMenu($name, ['tabs' => true, 'dark' => true, 'in-navbar' => true, 'onlyActiveBranch' => true, 'renderParents' => false]));
     }
@@ -9029,8 +8732,13 @@ final class MenuTest extends TestCase
             ->method('hasPages')
             ->with(true)
             ->willReturn(false);
-        $page->expects(self::never())
-            ->method('getCustomProperties');
+        $page->expects(self::once())
+            ->method('getCustomProperties')
+            ->willReturn([]);
+        $page->expects(self::exactly(2))
+            ->method('get')
+            ->withConsecutive(['li-active-class'], ['li-class'])
+            ->willReturnOnConsecutiveCalls(null, null);
 
         $parentPage->addPage($page);
 
@@ -9129,6 +8837,10 @@ final class MenuTest extends TestCase
             ->getMock();
         $renderer->expects(self::never())
             ->method('render');
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translator = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -9148,7 +8860,6 @@ final class MenuTest extends TestCase
             ->with('a', ['aria-current' => 'page', 'class' => 'nav-link', 'id' => $pageId, 'title' => $pageTitleTranslated, 'href' => $pageHref, 'target' => $pageTarget, 'role' => 'tab'], $pageLabelTranslatedEscaped)
             ->willReturn($expected2);
 
-
         $helper = new Menu(
             $serviceLocator,
             $logger,
@@ -9164,17 +8875,6 @@ final class MenuTest extends TestCase
 
         assert($auth instanceof Acl);
         $helper->setAcl($auth);
-
-        $view = $this->getMockBuilder(PhpRenderer::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $view->expects(self::never())
-            ->method('plugin');
-        $view->expects(self::never())
-            ->method('getHelperPluginManager');
-
-        assert($view instanceof PhpRenderer);
-        $helper->setView($view);
 
         self::assertSame($expected, $helper->renderMenu($name, ['tabs' => true, 'dark' => true, 'in-navbar' => true, 'onlyActiveBranch' => true, 'renderParents' => false, 'liClass' => 'li-class', 'addClassToListItem' => true]));
     }
@@ -9322,8 +9022,13 @@ final class MenuTest extends TestCase
             ->method('hasPages')
             ->withConsecutive([false], [true])
             ->willReturnOnConsecutiveCalls(false, false);
-        $page->expects(self::never())
-            ->method('getCustomProperties');
+        $page->expects(self::once())
+            ->method('getCustomProperties')
+            ->willReturn([]);
+        $page->expects(self::exactly(2))
+            ->method('get')
+            ->withConsecutive(['li-active-class'], ['li-class'])
+            ->willReturnOnConsecutiveCalls(null, null);
 
         $page2 = $this->getMockBuilder(AbstractPage::class)
             ->disableOriginalConstructor()
@@ -9367,8 +9072,13 @@ final class MenuTest extends TestCase
             ->method('hasPages')
             ->withConsecutive([false], [true])
             ->willReturnOnConsecutiveCalls(false, false);
-        $page2->expects(self::never())
-            ->method('getCustomProperties');
+        $page2->expects(self::once())
+            ->method('getCustomProperties')
+            ->willReturn([]);
+        $page2->expects(self::exactly(2))
+            ->method('get')
+            ->withConsecutive(['li-active-class'], ['li-class'])
+            ->willReturnOnConsecutiveCalls(null, null);
 
         $page3 = $this->getMockBuilder(AbstractPage::class)
             ->disableOriginalConstructor()
@@ -9412,8 +9122,13 @@ final class MenuTest extends TestCase
             ->method('hasPages')
             ->withConsecutive([false], [true])
             ->willReturnOnConsecutiveCalls(false, false);
-        $page3->expects(self::never())
-            ->method('getCustomProperties');
+        $page3->expects(self::once())
+            ->method('getCustomProperties')
+            ->willReturn([]);
+        $page3->expects(self::exactly(2))
+            ->method('get')
+            ->withConsecutive(['li-active-class'], ['li-class'])
+            ->willReturnOnConsecutiveCalls(null, null);
 
         $parentPage->addPage($page);
         $parentParentPage->addPage($parentPage);
@@ -9585,6 +9300,10 @@ final class MenuTest extends TestCase
             ->getMock();
         $renderer->expects(self::never())
             ->method('render');
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translator = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -9616,7 +9335,6 @@ final class MenuTest extends TestCase
             )
             ->willReturnOnConsecutiveCalls($expected1, $expected2, $expected3, $expected4, $expected5);
 
-
         $helper = new Menu(
             $serviceLocator,
             $logger,
@@ -9632,17 +9350,6 @@ final class MenuTest extends TestCase
 
         assert($auth instanceof Acl);
         $helper->setAcl($auth);
-
-        $view = $this->getMockBuilder(PhpRenderer::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $view->expects(self::never())
-            ->method('plugin');
-        $view->expects(self::never())
-            ->method('getHelperPluginManager');
-
-        assert($view instanceof PhpRenderer);
-        $helper->setView($view);
 
         self::assertSame($expected, $helper->renderMenu($name));
     }
@@ -9786,8 +9493,13 @@ final class MenuTest extends TestCase
             ->method('hasPages')
             ->withConsecutive([false], [true])
             ->willReturnOnConsecutiveCalls(false, false);
-        $page->expects(self::never())
-            ->method('getCustomProperties');
+        $page->expects(self::once())
+            ->method('getCustomProperties')
+            ->willReturn([]);
+        $page->expects(self::exactly(2))
+            ->method('get')
+            ->withConsecutive(['li-active-class'], ['li-class'])
+            ->willReturnOnConsecutiveCalls(null, null);
 
         $page2 = $this->getMockBuilder(AbstractPage::class)
             ->disableOriginalConstructor()
@@ -9824,6 +9536,8 @@ final class MenuTest extends TestCase
             ->willReturn(false);
         $page2->expects(self::never())
             ->method('getCustomProperties');
+        $page2->expects(self::never())
+            ->method('get');
 
         $page3->expects(self::never())
             ->method('isVisible');
@@ -9864,8 +9578,13 @@ final class MenuTest extends TestCase
             ->method('hasPages')
             ->withConsecutive([false], [true])
             ->willReturnOnConsecutiveCalls(false, false);
-        $page3->expects(self::never())
-            ->method('getCustomProperties');
+        $page3->expects(self::once())
+            ->method('getCustomProperties')
+            ->willReturn([]);
+        $page3->expects(self::once())
+            ->method('get')
+            ->with('li-class')
+            ->willReturn(null);
 
         $parentPage->addPage($page);
         $parentParentPage->addPage($parentPage);
@@ -10037,6 +9756,10 @@ final class MenuTest extends TestCase
             ->getMock();
         $renderer->expects(self::never())
             ->method('render');
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translator = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -10066,7 +9789,6 @@ final class MenuTest extends TestCase
             )
             ->willReturnOnConsecutiveCalls($expected1, $expected2, $expected3, $expected5);
 
-
         $helper = new Menu(
             $serviceLocator,
             $logger,
@@ -10082,17 +9804,6 @@ final class MenuTest extends TestCase
 
         assert($auth instanceof Acl);
         $helper->setAcl($auth);
-
-        $view = $this->getMockBuilder(PhpRenderer::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $view->expects(self::never())
-            ->method('plugin');
-        $view->expects(self::never())
-            ->method('getHelperPluginManager');
-
-        assert($view instanceof PhpRenderer);
-        $helper->setView($view);
 
         self::assertSame($expected, $helper->renderMenu($name, ['onlyActiveBranch' => true, 'direction' => Menu::DROP_ORIENTATION_START, 'sublink' => Menu::STYLE_SUBLINK_SPAN]));
     }
@@ -10236,8 +9947,13 @@ final class MenuTest extends TestCase
             ->method('hasPages')
             ->withConsecutive([false], [true])
             ->willReturnOnConsecutiveCalls(false, false);
-        $page->expects(self::never())
-            ->method('getCustomProperties');
+        $page->expects(self::once())
+            ->method('getCustomProperties')
+            ->willReturn([]);
+        $page->expects(self::exactly(2))
+            ->method('get')
+            ->withConsecutive(['li-active-class'], ['li-class'])
+            ->willReturnOnConsecutiveCalls(null, null);
 
         $page2 = $this->getMockBuilder(AbstractPage::class)
             ->disableOriginalConstructor()
@@ -10274,6 +9990,8 @@ final class MenuTest extends TestCase
             ->willReturn(false);
         $page2->expects(self::never())
             ->method('getCustomProperties');
+        $page2->expects(self::never())
+            ->method('get');
 
         $page3->expects(self::never())
             ->method('isVisible');
@@ -10314,8 +10032,13 @@ final class MenuTest extends TestCase
             ->method('hasPages')
             ->withConsecutive([false], [true])
             ->willReturnOnConsecutiveCalls(false, false);
-        $page3->expects(self::never())
-            ->method('getCustomProperties');
+        $page3->expects(self::once())
+            ->method('getCustomProperties')
+            ->willReturn([]);
+        $page3->expects(self::once())
+            ->method('get')
+            ->with('li-class')
+            ->willReturn(null);
 
         $parentPage->addPage($page);
         $parentParentPage->addPage($parentPage);
@@ -10487,6 +10210,10 @@ final class MenuTest extends TestCase
             ->getMock();
         $renderer->expects(self::never())
             ->method('render');
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translator = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -10516,7 +10243,6 @@ final class MenuTest extends TestCase
             )
             ->willReturnOnConsecutiveCalls($expected1, $expected2, $expected3, $expected5);
 
-
         $helper = new Menu(
             $serviceLocator,
             $logger,
@@ -10532,17 +10258,6 @@ final class MenuTest extends TestCase
 
         assert($auth instanceof Acl);
         $helper->setAcl($auth);
-
-        $view = $this->getMockBuilder(PhpRenderer::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $view->expects(self::never())
-            ->method('plugin');
-        $view->expects(self::never())
-            ->method('getHelperPluginManager');
-
-        assert($view instanceof PhpRenderer);
-        $helper->setView($view);
 
         self::assertSame($expected, $helper->renderMenu($name, ['onlyActiveBranch' => true, 'direction' => Menu::DROP_ORIENTATION_END, 'sublink' => Menu::STYLE_SUBLINK_BUTTON]));
     }
@@ -10690,8 +10405,13 @@ final class MenuTest extends TestCase
             ->method('hasPages')
             ->withConsecutive([false], [true])
             ->willReturnOnConsecutiveCalls(false, false);
-        $page->expects(self::never())
-            ->method('getCustomProperties');
+        $page->expects(self::once())
+            ->method('getCustomProperties')
+            ->willReturn([]);
+        $page->expects(self::exactly(2))
+            ->method('get')
+            ->withConsecutive(['li-active-class'], ['li-class'])
+            ->willReturnOnConsecutiveCalls(null, null);
 
         $page2 = $this->getMockBuilder(AbstractPage::class)
             ->disableOriginalConstructor()
@@ -10735,8 +10455,13 @@ final class MenuTest extends TestCase
             ->method('hasPages')
             ->withConsecutive([false], [true])
             ->willReturnOnConsecutiveCalls(false, false);
-        $page2->expects(self::never())
-            ->method('getCustomProperties');
+        $page2->expects(self::once())
+            ->method('getCustomProperties')
+            ->willReturn([]);
+        $page2->expects(self::exactly(2))
+            ->method('get')
+            ->withConsecutive(['li-active-class'], ['li-class'])
+            ->willReturnOnConsecutiveCalls(null, null);
 
         $page3 = $this->getMockBuilder(AbstractPage::class)
             ->disableOriginalConstructor()
@@ -10780,8 +10505,13 @@ final class MenuTest extends TestCase
             ->method('hasPages')
             ->withConsecutive([false], [true])
             ->willReturnOnConsecutiveCalls(false, false);
-        $page3->expects(self::never())
-            ->method('getCustomProperties');
+        $page3->expects(self::once())
+            ->method('getCustomProperties')
+            ->willReturn([]);
+        $page3->expects(self::exactly(2))
+            ->method('get')
+            ->withConsecutive(['li-active-class'], ['li-class'])
+            ->willReturnOnConsecutiveCalls(null, null);
 
         $parentPage->addPage($page);
         $parentParentPage->addPage($parentPage);
@@ -10953,6 +10683,10 @@ final class MenuTest extends TestCase
             ->getMock();
         $renderer->expects(self::never())
             ->method('render');
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translator = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -10984,7 +10718,6 @@ final class MenuTest extends TestCase
             )
             ->willReturnOnConsecutiveCalls($expected1, $expected2, $expected3, $expected4, $expected5);
 
-
         $helper = new Menu(
             $serviceLocator,
             $logger,
@@ -11000,17 +10733,6 @@ final class MenuTest extends TestCase
 
         assert($auth instanceof Acl);
         $helper->setAcl($auth);
-
-        $view = $this->getMockBuilder(PhpRenderer::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $view->expects(self::never())
-            ->method('plugin');
-        $view->expects(self::never())
-            ->method('getHelperPluginManager');
-
-        assert($view instanceof PhpRenderer);
-        $helper->setView($view);
 
         self::assertSame($expected, $helper->renderMenu($name, ['direction' => Menu::DROP_ORIENTATION_END, 'sublink' => Menu::STYLE_SUBLINK_BUTTON]));
     }
@@ -11158,8 +10880,13 @@ final class MenuTest extends TestCase
             ->method('hasPages')
             ->withConsecutive([false], [true])
             ->willReturnOnConsecutiveCalls(false, false);
-        $page->expects(self::never())
-            ->method('getCustomProperties');
+        $page->expects(self::once())
+            ->method('getCustomProperties')
+            ->willReturn([]);
+        $page->expects(self::exactly(2))
+            ->method('get')
+            ->withConsecutive(['li-active-class'], ['li-class'])
+            ->willReturnOnConsecutiveCalls(null, null);
 
         $page2 = $this->getMockBuilder(AbstractPage::class)
             ->disableOriginalConstructor()
@@ -11203,8 +10930,13 @@ final class MenuTest extends TestCase
             ->method('hasPages')
             ->withConsecutive([false], [true])
             ->willReturnOnConsecutiveCalls(false, false);
-        $page2->expects(self::never())
-            ->method('getCustomProperties');
+        $page2->expects(self::once())
+            ->method('getCustomProperties')
+            ->willReturn([]);
+        $page2->expects(self::exactly(2))
+            ->method('get')
+            ->withConsecutive(['li-active-class'], ['li-class'])
+            ->willReturnOnConsecutiveCalls(null, null);
 
         $page3 = $this->getMockBuilder(AbstractPage::class)
             ->disableOriginalConstructor()
@@ -11248,8 +10980,13 @@ final class MenuTest extends TestCase
             ->method('hasPages')
             ->withConsecutive([false], [true])
             ->willReturnOnConsecutiveCalls(false, false);
-        $page3->expects(self::never())
-            ->method('getCustomProperties');
+        $page3->expects(self::once())
+            ->method('getCustomProperties')
+            ->willReturn([]);
+        $page3->expects(self::exactly(2))
+            ->method('get')
+            ->withConsecutive(['li-active-class'], ['li-class'])
+            ->willReturnOnConsecutiveCalls(null, null);
 
         $parentPage->addPage($page);
         $parentParentPage->addPage($parentPage);
@@ -11421,6 +11158,10 @@ final class MenuTest extends TestCase
             ->getMock();
         $renderer->expects(self::never())
             ->method('render');
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translator = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -11452,7 +11193,6 @@ final class MenuTest extends TestCase
             )
             ->willReturnOnConsecutiveCalls($expected1, $expected2, $expected3, $expected4, $expected5);
 
-
         $helper = new Menu(
             $serviceLocator,
             $logger,
@@ -11468,17 +11208,6 @@ final class MenuTest extends TestCase
 
         assert($auth instanceof Acl);
         $helper->setAcl($auth);
-
-        $view = $this->getMockBuilder(PhpRenderer::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $view->expects(self::never())
-            ->method('plugin');
-        $view->expects(self::never())
-            ->method('getHelperPluginManager');
-
-        assert($view instanceof PhpRenderer);
-        $helper->setView($view);
 
         self::assertSame($expected, $helper->renderMenu($name, ['direction' => Menu::DROP_ORIENTATION_UP, 'sublink' => Menu::STYLE_SUBLINK_DETAILS]));
     }
@@ -11629,8 +11358,13 @@ final class MenuTest extends TestCase
             ->method('hasPages')
             ->withConsecutive([false], [true])
             ->willReturnOnConsecutiveCalls(false, false);
-        $page->expects(self::never())
-            ->method('getCustomProperties');
+        $page->expects(self::once())
+            ->method('getCustomProperties')
+            ->willReturn([]);
+        $page->expects(self::exactly(2))
+            ->method('get')
+            ->withConsecutive(['li-active-class'], ['li-class'])
+            ->willReturnOnConsecutiveCalls(null, null);
 
         $page2 = $this->getMockBuilder(AbstractPage::class)
             ->disableOriginalConstructor()
@@ -11674,8 +11408,13 @@ final class MenuTest extends TestCase
             ->method('hasPages')
             ->withConsecutive([false], [true])
             ->willReturnOnConsecutiveCalls(false, false);
-        $page2->expects(self::never())
-            ->method('getCustomProperties');
+        $page2->expects(self::once())
+            ->method('getCustomProperties')
+            ->willReturn([]);
+        $page2->expects(self::exactly(2))
+            ->method('get')
+            ->withConsecutive(['li-active-class'], ['li-class'])
+            ->willReturnOnConsecutiveCalls(null, null);
 
         $page3 = $this->getMockBuilder(AbstractPage::class)
             ->disableOriginalConstructor()
@@ -11719,8 +11458,13 @@ final class MenuTest extends TestCase
             ->method('hasPages')
             ->withConsecutive([false], [true])
             ->willReturnOnConsecutiveCalls(false, false);
-        $page3->expects(self::never())
-            ->method('getCustomProperties');
+        $page3->expects(self::once())
+            ->method('getCustomProperties')
+            ->willReturn([]);
+        $page3->expects(self::exactly(2))
+            ->method('get')
+            ->withConsecutive(['li-active-class'], ['li-class'])
+            ->willReturnOnConsecutiveCalls(null, null);
 
         $parentPage->addPage($page);
         $parentParentPage->addPage($parentPage);
@@ -11892,6 +11636,10 @@ final class MenuTest extends TestCase
             ->getMock();
         $renderer->expects(self::never())
             ->method('render');
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translator = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -11923,7 +11671,6 @@ final class MenuTest extends TestCase
             )
             ->willReturnOnConsecutiveCalls($expected1, $expected2, $expected3, $expected4, $expected5);
 
-
         $helper = new Menu(
             $serviceLocator,
             $logger,
@@ -11939,17 +11686,6 @@ final class MenuTest extends TestCase
 
         assert($auth instanceof Acl);
         $helper->setAcl($auth);
-
-        $view = $this->getMockBuilder(PhpRenderer::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $view->expects(self::never())
-            ->method('plugin');
-        $view->expects(self::never())
-            ->method('getHelperPluginManager');
-
-        assert($view instanceof PhpRenderer);
-        $helper->setView($view);
 
         self::assertSame($expected, $helper->renderMenu($name, ['direction' => Menu::DROP_ORIENTATION_UP, 'sublink' => Menu::STYLE_SUBLINK_DETAILS, 'ulClass' => $ulClass, 'liActiveClass' => $liActiveClass]));
     }

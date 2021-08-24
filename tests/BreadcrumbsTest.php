@@ -1,6 +1,6 @@
 <?php
 /**
- * This file is part of the mimmi20/mezzio-navigation-laminasviewrenderer-bootstrap package.
+ * This file is part of the mimmi20/laminasviewrenderer-bootstrap-navigation package.
  *
  * Copyright (c) 2021, Thomas Mueller <mimmi20@live.de>
  *
@@ -20,7 +20,6 @@ use Laminas\Navigation\Page\AbstractPage;
 use Laminas\Navigation\Page\Uri;
 use Laminas\Permissions\Acl\Acl;
 use Laminas\ServiceManager\Exception\ServiceNotFoundException;
-use Laminas\ServiceManager\PluginManagerInterface;
 use Laminas\ServiceManager\ServiceLocatorInterface;
 use Laminas\View\Exception\ExceptionInterface;
 use Laminas\View\Exception\InvalidArgumentException;
@@ -103,13 +102,21 @@ final class BreadcrumbsTest extends TestCase
         $containerParser->expects(self::never())
             ->method('parseContainer');
 
-
+        $escapeHtml = $this->getMockBuilder(EscapeHtml::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $escapeHtml->expects(self::never())
+            ->method('__invoke');
 
         $renderer = $this->getMockBuilder(PhpRenderer::class)
             ->disableOriginalConstructor()
             ->getMock();
         $renderer->expects(self::never())
             ->method('render');
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translatePlugin = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -117,7 +124,7 @@ final class BreadcrumbsTest extends TestCase
         $translatePlugin->expects(self::never())
             ->method('__invoke');
 
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $translatePlugin);
+        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml, $translatePlugin);
 
         self::assertNull($helper->getMaxDepth());
 
@@ -174,13 +181,21 @@ final class BreadcrumbsTest extends TestCase
         $containerParser->expects(self::never())
             ->method('parseContainer');
 
-
+        $escapeHtml = $this->getMockBuilder(EscapeHtml::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $escapeHtml->expects(self::never())
+            ->method('__invoke');
 
         $renderer = $this->getMockBuilder(PhpRenderer::class)
             ->disableOriginalConstructor()
             ->getMock();
         $renderer->expects(self::never())
             ->method('render');
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translatePlugin = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -188,7 +203,7 @@ final class BreadcrumbsTest extends TestCase
         $translatePlugin->expects(self::never())
             ->method('__invoke');
 
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $translatePlugin);
+        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml, $translatePlugin);
 
         self::assertSame(1, $helper->getMinDepth());
 
@@ -261,13 +276,21 @@ final class BreadcrumbsTest extends TestCase
         $containerParser->expects(self::never())
             ->method('parseContainer');
 
-
+        $escapeHtml = $this->getMockBuilder(EscapeHtml::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $escapeHtml->expects(self::never())
+            ->method('__invoke');
 
         $renderer = $this->getMockBuilder(PhpRenderer::class)
             ->disableOriginalConstructor()
             ->getMock();
         $renderer->expects(self::never())
             ->method('render');
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translatePlugin = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -275,7 +298,7 @@ final class BreadcrumbsTest extends TestCase
         $translatePlugin->expects(self::never())
             ->method('__invoke');
 
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $translatePlugin);
+        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml, $translatePlugin);
 
         self::assertFalse($helper->getRenderInvisible());
 
@@ -335,13 +358,21 @@ final class BreadcrumbsTest extends TestCase
         $containerParser->expects(self::never())
             ->method('parseContainer');
 
-
+        $escapeHtml = $this->getMockBuilder(EscapeHtml::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $escapeHtml->expects(self::never())
+            ->method('__invoke');
 
         $renderer = $this->getMockBuilder(PhpRenderer::class)
             ->disableOriginalConstructor()
             ->getMock();
         $renderer->expects(self::never())
             ->method('render');
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translatePlugin = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -349,7 +380,7 @@ final class BreadcrumbsTest extends TestCase
         $translatePlugin->expects(self::never())
             ->method('__invoke');
 
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $translatePlugin);
+        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml, $translatePlugin);
 
         self::assertNull($helper->getRole());
         self::assertFalse($helper->hasRole());
@@ -413,13 +444,21 @@ final class BreadcrumbsTest extends TestCase
         $containerParser->expects(self::never())
             ->method('parseContainer');
 
-
+        $escapeHtml = $this->getMockBuilder(EscapeHtml::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $escapeHtml->expects(self::never())
+            ->method('__invoke');
 
         $renderer = $this->getMockBuilder(PhpRenderer::class)
             ->disableOriginalConstructor()
             ->getMock();
         $renderer->expects(self::never())
             ->method('render');
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translatePlugin = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -427,7 +466,7 @@ final class BreadcrumbsTest extends TestCase
         $translatePlugin->expects(self::never())
             ->method('__invoke');
 
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $translatePlugin);
+        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml, $translatePlugin);
 
         self::assertTrue($helper->getUseAcl());
 
@@ -491,13 +530,21 @@ final class BreadcrumbsTest extends TestCase
         $containerParser->expects(self::never())
             ->method('parseContainer');
 
-
+        $escapeHtml = $this->getMockBuilder(EscapeHtml::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $escapeHtml->expects(self::never())
+            ->method('__invoke');
 
         $renderer = $this->getMockBuilder(PhpRenderer::class)
             ->disableOriginalConstructor()
             ->getMock();
         $renderer->expects(self::never())
             ->method('render');
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translatePlugin = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -505,12 +552,11 @@ final class BreadcrumbsTest extends TestCase
         $translatePlugin->expects(self::never())
             ->method('__invoke');
 
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $translatePlugin);
+        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml, $translatePlugin);
 
         self::assertNull($helper->getAcl());
         self::assertFalse($helper->hasAcl());
 
-        assert($defaultAuth instanceof Acl);
         assert($defaultAuth instanceof Acl);
 
         Breadcrumbs::setDefaultAcl($defaultAuth);
@@ -575,13 +621,21 @@ final class BreadcrumbsTest extends TestCase
         $containerParser->expects(self::never())
             ->method('parseContainer');
 
-
+        $escapeHtml = $this->getMockBuilder(EscapeHtml::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $escapeHtml->expects(self::never())
+            ->method('__invoke');
 
         $renderer = $this->getMockBuilder(PhpRenderer::class)
             ->disableOriginalConstructor()
             ->getMock();
         $renderer->expects(self::never())
             ->method('render');
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translatePlugin = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -589,7 +643,7 @@ final class BreadcrumbsTest extends TestCase
         $translatePlugin->expects(self::never())
             ->method('__invoke');
 
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $translatePlugin);
+        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml, $translatePlugin);
 
         self::assertSame($renderer, $helper->getView());
 
@@ -653,11 +707,21 @@ final class BreadcrumbsTest extends TestCase
             ->withConsecutive([null], [$container])
             ->willReturnOnConsecutiveCalls(null, $container);
 
+        $escapeHtml = $this->getMockBuilder(EscapeHtml::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $escapeHtml->expects(self::never())
+            ->method('__invoke');
+
         $renderer = $this->getMockBuilder(PhpRenderer::class)
             ->disableOriginalConstructor()
             ->getMock();
         $renderer->expects(self::never())
             ->method('render');
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translatePlugin = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -665,7 +729,7 @@ final class BreadcrumbsTest extends TestCase
         $translatePlugin->expects(self::never())
             ->method('__invoke');
 
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $translatePlugin);
+        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml, $translatePlugin);
 
         $container1 = $helper->getContainer();
 
@@ -735,13 +799,21 @@ final class BreadcrumbsTest extends TestCase
             ->with($name)
             ->willThrowException(new InvalidArgumentException('test'));
 
-
+        $escapeHtml = $this->getMockBuilder(EscapeHtml::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $escapeHtml->expects(self::never())
+            ->method('__invoke');
 
         $renderer = $this->getMockBuilder(PhpRenderer::class)
             ->disableOriginalConstructor()
             ->getMock();
         $renderer->expects(self::never())
             ->method('render');
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translatePlugin = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -749,7 +821,7 @@ final class BreadcrumbsTest extends TestCase
         $translatePlugin->expects(self::never())
             ->method('__invoke');
 
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $translatePlugin);
+        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml, $translatePlugin);
 
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('test');
@@ -812,13 +884,21 @@ final class BreadcrumbsTest extends TestCase
             ->with($name)
             ->willReturn($container);
 
-
+        $escapeHtml = $this->getMockBuilder(EscapeHtml::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $escapeHtml->expects(self::never())
+            ->method('__invoke');
 
         $renderer = $this->getMockBuilder(PhpRenderer::class)
             ->disableOriginalConstructor()
             ->getMock();
         $renderer->expects(self::never())
             ->method('render');
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translatePlugin = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -826,7 +906,7 @@ final class BreadcrumbsTest extends TestCase
         $translatePlugin->expects(self::never())
             ->method('__invoke');
 
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $translatePlugin);
+        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml, $translatePlugin);
 
         $helper->setContainer($name);
 
@@ -872,6 +952,32 @@ final class BreadcrumbsTest extends TestCase
             ->method('getResource');
         $page->expects(self::never())
             ->method('getPrivilege');
+        $page->expects(self::never())
+            ->method('getParent');
+        $page->expects(self::never())
+            ->method('isActive');
+        $page->expects(self::never())
+            ->method('getLabel');
+        $page->expects(self::never())
+            ->method('getTextDomain');
+        $page->expects(self::never())
+            ->method('getTitle');
+        $page->expects(self::never())
+            ->method('getId');
+        $page->expects(self::never())
+            ->method('getClass');
+        $page->expects(self::never())
+            ->method('getHref');
+        $page->expects(self::never())
+            ->method('getTarget');
+        $page->expects(self::never())
+            ->method('hasPage');
+        $page->expects(self::never())
+            ->method('hasPages');
+        $page->expects(self::never())
+            ->method('getCustomProperties');
+        $page->expects(self::never())
+            ->method('get');
 
         $acceptHelper = $this->getMockBuilder(AcceptHelperInterface::class)
             ->disableOriginalConstructor()
@@ -920,13 +1026,21 @@ final class BreadcrumbsTest extends TestCase
             ->with($name)
             ->willReturn($container);
 
-
+        $escapeHtml = $this->getMockBuilder(EscapeHtml::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $escapeHtml->expects(self::never())
+            ->method('__invoke');
 
         $renderer = $this->getMockBuilder(PhpRenderer::class)
             ->disableOriginalConstructor()
             ->getMock();
         $renderer->expects(self::never())
             ->method('render');
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translatePlugin = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -934,7 +1048,7 @@ final class BreadcrumbsTest extends TestCase
         $translatePlugin->expects(self::never())
             ->method('__invoke');
 
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $translatePlugin);
+        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml, $translatePlugin);
 
         $helper->setContainer($name);
         $helper->setRole($role);
@@ -987,6 +1101,32 @@ final class BreadcrumbsTest extends TestCase
             ->method('getResource');
         $page->expects(self::never())
             ->method('getPrivilege');
+        $page->expects(self::never())
+            ->method('getParent');
+        $page->expects(self::never())
+            ->method('isActive');
+        $page->expects(self::never())
+            ->method('getLabel');
+        $page->expects(self::never())
+            ->method('getTextDomain');
+        $page->expects(self::never())
+            ->method('getTitle');
+        $page->expects(self::never())
+            ->method('getId');
+        $page->expects(self::never())
+            ->method('getClass');
+        $page->expects(self::never())
+            ->method('getHref');
+        $page->expects(self::never())
+            ->method('getTarget');
+        $page->expects(self::never())
+            ->method('hasPage');
+        $page->expects(self::never())
+            ->method('hasPages');
+        $page->expects(self::never())
+            ->method('getCustomProperties');
+        $page->expects(self::never())
+            ->method('get');
 
         $auth = $this->getMockBuilder(Acl::class)
             ->disableOriginalConstructor()
@@ -1027,13 +1167,21 @@ final class BreadcrumbsTest extends TestCase
             ->with($name)
             ->willReturn($container);
 
-
+        $escapeHtml = $this->getMockBuilder(EscapeHtml::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $escapeHtml->expects(self::never())
+            ->method('__invoke');
 
         $renderer = $this->getMockBuilder(PhpRenderer::class)
             ->disableOriginalConstructor()
             ->getMock();
         $renderer->expects(self::never())
             ->method('render');
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translatePlugin = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -1041,7 +1189,7 @@ final class BreadcrumbsTest extends TestCase
         $translatePlugin->expects(self::never())
             ->method('__invoke');
 
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $translatePlugin);
+        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml, $translatePlugin);
 
         $helper->setContainer($name);
         $helper->setRole($role);
@@ -1106,11 +1254,13 @@ final class BreadcrumbsTest extends TestCase
         $page->expects(self::never())
             ->method('getParent');
         $page->expects(self::never())
+            ->method('isActive');
+        $page->expects(self::never())
             ->method('getLabel');
         $page->expects(self::never())
-            ->method('getTitle');
-        $page->expects(self::never())
             ->method('getTextDomain');
+        $page->expects(self::never())
+            ->method('getTitle');
         $page->expects(self::never())
             ->method('getId');
         $page->expects(self::never())
@@ -1119,7 +1269,14 @@ final class BreadcrumbsTest extends TestCase
             ->method('getHref');
         $page->expects(self::never())
             ->method('getTarget');
-
+        $page->expects(self::never())
+            ->method('hasPage');
+        $page->expects(self::never())
+            ->method('hasPages');
+        $page->expects(self::never())
+            ->method('getCustomProperties');
+        $page->expects(self::never())
+            ->method('get');
 
         $htmlify = $this->getMockBuilder(HtmlifyInterface::class)
             ->disableOriginalConstructor()
@@ -1137,13 +1294,21 @@ final class BreadcrumbsTest extends TestCase
             ->with($name)
             ->willReturn($container);
 
-
+        $escapeHtml = $this->getMockBuilder(EscapeHtml::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $escapeHtml->expects(self::never())
+            ->method('__invoke');
 
         $renderer = $this->getMockBuilder(PhpRenderer::class)
             ->disableOriginalConstructor()
             ->getMock();
         $renderer->expects(self::never())
             ->method('render');
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translatePlugin = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -1151,21 +1316,9 @@ final class BreadcrumbsTest extends TestCase
         $translatePlugin->expects(self::never())
             ->method('__invoke');
 
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $translatePlugin);
+        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml, $translatePlugin);
 
         $helper->setContainer($name);
-
-        $view = $this->getMockBuilder(PhpRenderer::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $view->expects(self::never())
-            ->method('plugin');
-        $view->expects(self::never())
-            ->method('getHelperPluginManager');
-
-        assert($view instanceof PhpRenderer);
-        $helper->setView($view);
-
 
         self::assertSame($expected, $helper->htmlify($page));
     }
@@ -1218,13 +1371,21 @@ final class BreadcrumbsTest extends TestCase
         $containerParser->expects(self::never())
             ->method('parseContainer');
 
-
+        $escapeHtml = $this->getMockBuilder(EscapeHtml::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $escapeHtml->expects(self::never())
+            ->method('__invoke');
 
         $renderer = $this->getMockBuilder(PhpRenderer::class)
             ->disableOriginalConstructor()
             ->getMock();
         $renderer->expects(self::never())
             ->method('render');
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translatePlugin = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -1232,7 +1393,7 @@ final class BreadcrumbsTest extends TestCase
         $translatePlugin->expects(self::never())
             ->method('__invoke');
 
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $translatePlugin);
+        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml, $translatePlugin);
 
         self::assertSame('', $helper->getIndent());
 
@@ -1274,20 +1435,6 @@ final class BreadcrumbsTest extends TestCase
 
         $name = 'Mezzio\\Navigation\\Top';
 
-        $parentPage = $this->getMockBuilder(AbstractPage::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $parentPage->expects(self::never())
-            ->method('isVisible');
-        $parentPage->expects(self::never())
-            ->method('getResource');
-        $parentPage->expects(self::never())
-            ->method('getPrivilege');
-        $parentPage->expects(self::never())
-            ->method('getParent');
-        $parentPage->expects(self::never())
-            ->method('isActive');
-
         $page = $this->getMockBuilder(AbstractPage::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -1301,6 +1448,28 @@ final class BreadcrumbsTest extends TestCase
             ->method('getParent');
         $page->expects(self::never())
             ->method('isActive');
+        $page->expects(self::never())
+            ->method('getLabel');
+        $page->expects(self::never())
+            ->method('getTextDomain');
+        $page->expects(self::never())
+            ->method('getTitle');
+        $page->expects(self::never())
+            ->method('getId');
+        $page->expects(self::never())
+            ->method('getClass');
+        $page->expects(self::never())
+            ->method('getHref');
+        $page->expects(self::never())
+            ->method('getTarget');
+        $page->expects(self::never())
+            ->method('hasPage');
+        $page->expects(self::never())
+            ->method('hasPages');
+        $page->expects(self::never())
+            ->method('getCustomProperties');
+        $page->expects(self::never())
+            ->method('get');
 
         $container = new Navigation();
         $container->addPage($page);
@@ -1356,13 +1525,21 @@ final class BreadcrumbsTest extends TestCase
             ->with($name)
             ->willReturn($container);
 
-
+        $escapeHtml = $this->getMockBuilder(EscapeHtml::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $escapeHtml->expects(self::never())
+            ->method('__invoke');
 
         $renderer = $this->getMockBuilder(PhpRenderer::class)
             ->disableOriginalConstructor()
             ->getMock();
         $renderer->expects(self::never())
             ->method('render');
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translatePlugin = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -1370,7 +1547,7 @@ final class BreadcrumbsTest extends TestCase
         $translatePlugin->expects(self::never())
             ->method('__invoke');
 
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $translatePlugin);
+        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml, $translatePlugin);
 
         $helper->setRole($role);
 
@@ -1384,7 +1561,6 @@ final class BreadcrumbsTest extends TestCase
      * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExceptionInterface
-     *
      */
     public function testFindActiveOneActivePage(): void
     {
@@ -1410,20 +1586,6 @@ final class BreadcrumbsTest extends TestCase
 
         $name = 'Mezzio\\Navigation\\Top';
 
-        $parentPage = $this->getMockBuilder(AbstractPage::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $parentPage->expects(self::never())
-            ->method('isVisible');
-        $parentPage->expects(self::never())
-            ->method('getResource');
-        $parentPage->expects(self::never())
-            ->method('getPrivilege');
-        $parentPage->expects(self::never())
-            ->method('getParent');
-        $parentPage->expects(self::never())
-            ->method('isActive');
-
         $page = $this->getMockBuilder(AbstractPage::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -1437,6 +1599,28 @@ final class BreadcrumbsTest extends TestCase
             ->method('getParent');
         $page->expects(self::never())
             ->method('isActive');
+        $page->expects(self::never())
+            ->method('getLabel');
+        $page->expects(self::never())
+            ->method('getTextDomain');
+        $page->expects(self::never())
+            ->method('getTitle');
+        $page->expects(self::never())
+            ->method('getId');
+        $page->expects(self::never())
+            ->method('getClass');
+        $page->expects(self::never())
+            ->method('getHref');
+        $page->expects(self::never())
+            ->method('getTarget');
+        $page->expects(self::never())
+            ->method('hasPage');
+        $page->expects(self::never())
+            ->method('hasPages');
+        $page->expects(self::never())
+            ->method('getCustomProperties');
+        $page->expects(self::never())
+            ->method('get');
 
         $container = new Navigation();
         $container->addPage($page);
@@ -1497,13 +1681,21 @@ final class BreadcrumbsTest extends TestCase
             ->with($name)
             ->willReturn($container);
 
-
+        $escapeHtml = $this->getMockBuilder(EscapeHtml::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $escapeHtml->expects(self::never())
+            ->method('__invoke');
 
         $renderer = $this->getMockBuilder(PhpRenderer::class)
             ->disableOriginalConstructor()
             ->getMock();
         $renderer->expects(self::never())
             ->method('render');
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translatePlugin = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -1511,7 +1703,7 @@ final class BreadcrumbsTest extends TestCase
         $translatePlugin->expects(self::never())
             ->method('__invoke');
 
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $translatePlugin);
+        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml, $translatePlugin);
 
         $helper->setRole($role);
 
@@ -1604,13 +1796,21 @@ final class BreadcrumbsTest extends TestCase
             ->with(null)
             ->willReturn(null);
 
-
+        $escapeHtml = $this->getMockBuilder(EscapeHtml::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $escapeHtml->expects(self::never())
+            ->method('__invoke');
 
         $renderer = $this->getMockBuilder(PhpRenderer::class)
             ->disableOriginalConstructor()
             ->getMock();
         $renderer->expects(self::never())
             ->method('render');
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translatePlugin = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -1618,7 +1818,7 @@ final class BreadcrumbsTest extends TestCase
         $translatePlugin->expects(self::never())
             ->method('__invoke');
 
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $translatePlugin);
+        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml, $translatePlugin);
 
         $helper->setRole($role);
 
@@ -1634,7 +1834,6 @@ final class BreadcrumbsTest extends TestCase
      * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExceptionInterface
-     *
      */
     public function testFindActiveNoActivePageWithoutDepth(): void
     {
@@ -1673,6 +1872,28 @@ final class BreadcrumbsTest extends TestCase
             ->method('getParent');
         $page->expects(self::never())
             ->method('isActive');
+        $page->expects(self::never())
+            ->method('getLabel');
+        $page->expects(self::never())
+            ->method('getTextDomain');
+        $page->expects(self::never())
+            ->method('getTitle');
+        $page->expects(self::never())
+            ->method('getId');
+        $page->expects(self::never())
+            ->method('getClass');
+        $page->expects(self::never())
+            ->method('getHref');
+        $page->expects(self::never())
+            ->method('getTarget');
+        $page->expects(self::never())
+            ->method('hasPage');
+        $page->expects(self::never())
+            ->method('hasPages');
+        $page->expects(self::never())
+            ->method('getCustomProperties');
+        $page->expects(self::never())
+            ->method('get');
 
         $container = new Navigation();
         $container->addPage($page);
@@ -1728,13 +1949,21 @@ final class BreadcrumbsTest extends TestCase
             ->with($name)
             ->willReturn($container);
 
-
+        $escapeHtml = $this->getMockBuilder(EscapeHtml::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $escapeHtml->expects(self::never())
+            ->method('__invoke');
 
         $renderer = $this->getMockBuilder(PhpRenderer::class)
             ->disableOriginalConstructor()
             ->getMock();
         $renderer->expects(self::never())
             ->method('render');
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translatePlugin = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -1742,7 +1971,7 @@ final class BreadcrumbsTest extends TestCase
         $translatePlugin->expects(self::never())
             ->method('__invoke');
 
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $translatePlugin);
+        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml, $translatePlugin);
 
         $helper->setRole($role);
 
@@ -1761,7 +1990,6 @@ final class BreadcrumbsTest extends TestCase
      * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExceptionInterface
-     *
      */
     public function testFindActiveOneActivePageOutOfRange(): void
     {
@@ -1800,6 +2028,28 @@ final class BreadcrumbsTest extends TestCase
             ->method('getParent');
         $page->expects(self::never())
             ->method('isActive');
+        $page->expects(self::never())
+            ->method('getLabel');
+        $page->expects(self::never())
+            ->method('getTextDomain');
+        $page->expects(self::never())
+            ->method('getTitle');
+        $page->expects(self::never())
+            ->method('getId');
+        $page->expects(self::never())
+            ->method('getClass');
+        $page->expects(self::never())
+            ->method('getHref');
+        $page->expects(self::never())
+            ->method('getTarget');
+        $page->expects(self::never())
+            ->method('hasPage');
+        $page->expects(self::never())
+            ->method('hasPages');
+        $page->expects(self::never())
+            ->method('getCustomProperties');
+        $page->expects(self::never())
+            ->method('get');
 
         $container = new Navigation();
         $container->addPage($page);
@@ -1855,13 +2105,21 @@ final class BreadcrumbsTest extends TestCase
             ->with($name)
             ->willReturn($container);
 
-
+        $escapeHtml = $this->getMockBuilder(EscapeHtml::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $escapeHtml->expects(self::never())
+            ->method('__invoke');
 
         $renderer = $this->getMockBuilder(PhpRenderer::class)
             ->disableOriginalConstructor()
             ->getMock();
         $renderer->expects(self::never())
             ->method('render');
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translatePlugin = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -1869,7 +2127,7 @@ final class BreadcrumbsTest extends TestCase
         $translatePlugin->expects(self::never())
             ->method('__invoke');
 
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $translatePlugin);
+        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml, $translatePlugin);
 
         $helper->setRole($role);
 
@@ -1885,7 +2143,6 @@ final class BreadcrumbsTest extends TestCase
      * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExceptionInterface
-     *
      */
     public function testFindActiveOneActivePageRecursive(): void
     {
@@ -1932,6 +2189,28 @@ final class BreadcrumbsTest extends TestCase
             ->method('getParent');
         $page->expects(self::never())
             ->method('isActive');
+        $page->expects(self::never())
+            ->method('getLabel');
+        $page->expects(self::never())
+            ->method('getTextDomain');
+        $page->expects(self::never())
+            ->method('getTitle');
+        $page->expects(self::never())
+            ->method('getId');
+        $page->expects(self::never())
+            ->method('getClass');
+        $page->expects(self::never())
+            ->method('getHref');
+        $page->expects(self::never())
+            ->method('getTarget');
+        $page->expects(self::never())
+            ->method('hasPage');
+        $page->expects(self::never())
+            ->method('hasPages');
+        $page->expects(self::never())
+            ->method('getCustomProperties');
+        $page->expects(self::never())
+            ->method('get');
 
         $parentPage->addPage($page);
 
@@ -1994,13 +2273,21 @@ final class BreadcrumbsTest extends TestCase
             ->with($name)
             ->willReturn($container);
 
-
+        $escapeHtml = $this->getMockBuilder(EscapeHtml::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $escapeHtml->expects(self::never())
+            ->method('__invoke');
 
         $renderer = $this->getMockBuilder(PhpRenderer::class)
             ->disableOriginalConstructor()
             ->getMock();
         $renderer->expects(self::never())
             ->method('render');
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translatePlugin = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -2008,7 +2295,7 @@ final class BreadcrumbsTest extends TestCase
         $translatePlugin->expects(self::never())
             ->method('__invoke');
 
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $translatePlugin);
+        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml, $translatePlugin);
 
         $helper->setRole($role);
 
@@ -2027,7 +2314,6 @@ final class BreadcrumbsTest extends TestCase
      * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExceptionInterface
-     *
      */
     public function testFindActiveOneActivePageRecursive2(): void
     {
@@ -2141,13 +2427,21 @@ final class BreadcrumbsTest extends TestCase
             ->with($name)
             ->willReturn($container);
 
-
+        $escapeHtml = $this->getMockBuilder(EscapeHtml::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $escapeHtml->expects(self::never())
+            ->method('__invoke');
 
         $renderer = $this->getMockBuilder(PhpRenderer::class)
             ->disableOriginalConstructor()
             ->getMock();
         $renderer->expects(self::never())
             ->method('render');
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translatePlugin = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -2155,7 +2449,7 @@ final class BreadcrumbsTest extends TestCase
         $translatePlugin->expects(self::never())
             ->method('__invoke');
 
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $translatePlugin);
+        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml, $translatePlugin);
 
         $helper->setRole($role);
 
@@ -2171,7 +2465,6 @@ final class BreadcrumbsTest extends TestCase
      * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExceptionInterface
-     *
      */
     public function testFindActiveOneActivePageRecursive3(): void
     {
@@ -2284,13 +2577,21 @@ final class BreadcrumbsTest extends TestCase
             ->with($name)
             ->willReturn($container);
 
-
+        $escapeHtml = $this->getMockBuilder(EscapeHtml::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $escapeHtml->expects(self::never())
+            ->method('__invoke');
 
         $renderer = $this->getMockBuilder(PhpRenderer::class)
             ->disableOriginalConstructor()
             ->getMock();
         $renderer->expects(self::never())
             ->method('render');
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translatePlugin = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -2298,7 +2599,7 @@ final class BreadcrumbsTest extends TestCase
         $translatePlugin->expects(self::never())
             ->method('__invoke');
 
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $translatePlugin);
+        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml, $translatePlugin);
 
         $helper->setRole($role);
 
@@ -2361,13 +2662,21 @@ final class BreadcrumbsTest extends TestCase
         $containerParser->expects(self::never())
             ->method('parseContainer');
 
-
+        $escapeHtml = $this->getMockBuilder(EscapeHtml::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $escapeHtml->expects(self::never())
+            ->method('__invoke');
 
         $renderer = $this->getMockBuilder(PhpRenderer::class)
             ->disableOriginalConstructor()
             ->getMock();
         $renderer->expects(self::never())
             ->method('render');
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translatePlugin = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -2375,7 +2684,7 @@ final class BreadcrumbsTest extends TestCase
         $translatePlugin->expects(self::never())
             ->method('__invoke');
 
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $translatePlugin);
+        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml, $translatePlugin);
 
         self::assertNull($helper->getPartial());
 
@@ -2436,13 +2745,21 @@ final class BreadcrumbsTest extends TestCase
         $containerParser->expects(self::never())
             ->method('parseContainer');
 
-
+        $escapeHtml = $this->getMockBuilder(EscapeHtml::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $escapeHtml->expects(self::never())
+            ->method('__invoke');
 
         $renderer = $this->getMockBuilder(PhpRenderer::class)
             ->disableOriginalConstructor()
             ->getMock();
         $renderer->expects(self::never())
             ->method('render');
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translatePlugin = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -2450,7 +2767,7 @@ final class BreadcrumbsTest extends TestCase
         $translatePlugin->expects(self::never())
             ->method('__invoke');
 
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $translatePlugin);
+        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml, $translatePlugin);
 
         self::assertFalse($helper->getLinkLast());
 
@@ -2511,13 +2828,21 @@ final class BreadcrumbsTest extends TestCase
         $containerParser->expects(self::never())
             ->method('parseContainer');
 
-
+        $escapeHtml = $this->getMockBuilder(EscapeHtml::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $escapeHtml->expects(self::never())
+            ->method('__invoke');
 
         $renderer = $this->getMockBuilder(PhpRenderer::class)
             ->disableOriginalConstructor()
             ->getMock();
         $renderer->expects(self::never())
             ->method('render');
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translatePlugin = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -2525,7 +2850,7 @@ final class BreadcrumbsTest extends TestCase
         $translatePlugin->expects(self::never())
             ->method('__invoke');
 
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $translatePlugin);
+        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml, $translatePlugin);
 
         self::assertSame(' &gt; ', $helper->getSeparator());
 
@@ -2584,13 +2909,21 @@ final class BreadcrumbsTest extends TestCase
         $containerParser->expects(self::never())
             ->method('parseContainer');
 
-
+        $escapeHtml = $this->getMockBuilder(EscapeHtml::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $escapeHtml->expects(self::never())
+            ->method('__invoke');
 
         $renderer = $this->getMockBuilder(PhpRenderer::class)
             ->disableOriginalConstructor()
             ->getMock();
         $renderer->expects(self::never())
             ->method('render');
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translatePlugin = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -2598,7 +2931,7 @@ final class BreadcrumbsTest extends TestCase
         $translatePlugin->expects(self::never())
             ->method('__invoke');
 
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $translatePlugin);
+        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml, $translatePlugin);
 
         $role = 'testRole';
 
@@ -2615,15 +2948,6 @@ final class BreadcrumbsTest extends TestCase
 
         $helper->setSeparator('/');
         $helper->setLinkLast(true);
-
-        $view = $this->getMockBuilder(PhpRenderer::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $view->expects(self::never())
-            ->method('plugin');
-
-        assert($view instanceof PhpRenderer);
-        $helper->setView($view);
 
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('Unable to render breadcrumbs: No partial view script provided');
@@ -2682,13 +3006,21 @@ final class BreadcrumbsTest extends TestCase
         $containerParser->expects(self::never())
             ->method('parseContainer');
 
-
+        $escapeHtml = $this->getMockBuilder(EscapeHtml::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $escapeHtml->expects(self::never())
+            ->method('__invoke');
 
         $renderer = $this->getMockBuilder(PhpRenderer::class)
             ->disableOriginalConstructor()
             ->getMock();
         $renderer->expects(self::never())
             ->method('render');
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translatePlugin = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -2696,7 +3028,7 @@ final class BreadcrumbsTest extends TestCase
         $translatePlugin->expects(self::never())
             ->method('__invoke');
 
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $translatePlugin);
+        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml, $translatePlugin);
 
         $role = 'testRole';
 
@@ -2714,15 +3046,6 @@ final class BreadcrumbsTest extends TestCase
         $helper->setSeparator('/');
         $helper->setLinkLast(true);
 
-        $view = $this->getMockBuilder(PhpRenderer::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $view->expects(self::never())
-            ->method('plugin');
-
-        assert($view instanceof PhpRenderer);
-        $helper->setView($view);
-
         $helper->setPartial(['a', 'b', 'c']);
 
         $this->expectException(InvalidArgumentException::class);
@@ -2736,7 +3059,6 @@ final class BreadcrumbsTest extends TestCase
      * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExceptionInterface
-     *
      */
     public function testRenderPartialWithParams(): void
     {
@@ -2784,6 +3106,28 @@ final class BreadcrumbsTest extends TestCase
             ->willReturn($parentPage);
         $page->expects(self::never())
             ->method('isActive');
+        $page->expects(self::never())
+            ->method('getLabel');
+        $page->expects(self::never())
+            ->method('getTextDomain');
+        $page->expects(self::never())
+            ->method('getTitle');
+        $page->expects(self::never())
+            ->method('getId');
+        $page->expects(self::never())
+            ->method('getClass');
+        $page->expects(self::never())
+            ->method('getHref');
+        $page->expects(self::never())
+            ->method('getTarget');
+        $page->expects(self::never())
+            ->method('hasPage');
+        $page->expects(self::never())
+            ->method('hasPages');
+        $page->expects(self::never())
+            ->method('getCustomProperties');
+        $page->expects(self::never())
+            ->method('get');
 
         $parentPage->addPage($page);
 
@@ -2844,7 +3188,11 @@ final class BreadcrumbsTest extends TestCase
             ->withConsecutive([$name], [$container])
             ->willReturnOnConsecutiveCalls($container, $container);
 
-
+        $escapeHtml = $this->getMockBuilder(EscapeHtml::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $escapeHtml->expects(self::never())
+            ->method('__invoke');
 
         $partial   = 'testPartial';
         $expected  = 'renderedPartial';
@@ -2857,6 +3205,10 @@ final class BreadcrumbsTest extends TestCase
             ->method('render')
             ->with($partial, ['abc' => 'test', 'pages' => [$parentPage, $page], 'separator' => $seperator])
             ->willReturn($expected);
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translatePlugin = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -2864,7 +3216,7 @@ final class BreadcrumbsTest extends TestCase
         $translatePlugin->expects(self::never())
             ->method('__invoke');
 
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $translatePlugin);
+        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml, $translatePlugin);
 
         $helper->setRole($role);
 
@@ -2875,17 +3227,6 @@ final class BreadcrumbsTest extends TestCase
         $helper->setLinkLast(true);
         $helper->setPartial($partial);
 
-        $view = $this->getMockBuilder(PhpRenderer::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $view->expects(self::never())
-            ->method('plugin');
-        $view->expects(self::never())
-            ->method('getHelperPluginManager');
-
-        assert($view instanceof PhpRenderer);
-        $helper->setView($view);
-
         self::assertSame($expected, $helper->renderPartialWithParams(['abc' => 'test'], $name));
     }
 
@@ -2893,7 +3234,6 @@ final class BreadcrumbsTest extends TestCase
      * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExceptionInterface
-     *
      */
     public function testRenderPartialWithParamsAndArrayPartial(): void
     {
@@ -2939,6 +3279,28 @@ final class BreadcrumbsTest extends TestCase
             ->willReturn($parentPage);
         $page->expects(self::never())
             ->method('isActive');
+        $page->expects(self::never())
+            ->method('getLabel');
+        $page->expects(self::never())
+            ->method('getTextDomain');
+        $page->expects(self::never())
+            ->method('getTitle');
+        $page->expects(self::never())
+            ->method('getId');
+        $page->expects(self::never())
+            ->method('getClass');
+        $page->expects(self::never())
+            ->method('getHref');
+        $page->expects(self::never())
+            ->method('getTarget');
+        $page->expects(self::never())
+            ->method('hasPage');
+        $page->expects(self::never())
+            ->method('hasPages');
+        $page->expects(self::never())
+            ->method('getCustomProperties');
+        $page->expects(self::never())
+            ->method('get');
 
         $parentPage->addPage($page);
 
@@ -2999,7 +3361,11 @@ final class BreadcrumbsTest extends TestCase
             ->withConsecutive([$container], [null], [$container])
             ->willReturnOnConsecutiveCalls($container, null, $container);
 
-
+        $escapeHtml = $this->getMockBuilder(EscapeHtml::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $escapeHtml->expects(self::never())
+            ->method('__invoke');
 
         $partial   = 'testPartial';
         $expected  = 'renderedPartial';
@@ -3012,6 +3378,10 @@ final class BreadcrumbsTest extends TestCase
             ->method('render')
             ->with($partial, ['pages' => [$parentPage, $page], 'separator' => $seperator, 'abc' => 'test'])
             ->willReturn($expected);
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translatePlugin = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -3019,7 +3389,7 @@ final class BreadcrumbsTest extends TestCase
         $translatePlugin->expects(self::never())
             ->method('__invoke');
 
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $translatePlugin);
+        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml, $translatePlugin);
 
         $helper->setRole($role);
 
@@ -3030,17 +3400,6 @@ final class BreadcrumbsTest extends TestCase
         $helper->setLinkLast(true);
         $helper->setContainer($container);
 
-        $view = $this->getMockBuilder(PhpRenderer::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $view->expects(self::never())
-            ->method('plugin');
-        $view->expects(self::never())
-            ->method('getHelperPluginManager');
-
-        assert($view instanceof PhpRenderer);
-        $helper->setView($view);
-
         self::assertSame($expected, $helper->renderPartialWithParams(['abc' => 'test'], null, [$partial, 'test']));
     }
 
@@ -3048,7 +3407,6 @@ final class BreadcrumbsTest extends TestCase
      * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExceptionInterface
-     *
      */
     public function testRenderPartialWithParamsAndArrayPartialRenderingPage(): void
     {
@@ -3098,9 +3456,31 @@ final class BreadcrumbsTest extends TestCase
             ->method('getPrivilege');
         $subPage->expects(self::once())
             ->method('getParent')
-            ->willReturn($parentPage);
+            ->willReturn($page);
         $subPage->expects(self::never())
             ->method('isActive');
+        $subPage->expects(self::never())
+            ->method('getLabel');
+        $subPage->expects(self::never())
+            ->method('getTextDomain');
+        $subPage->expects(self::never())
+            ->method('getTitle');
+        $subPage->expects(self::never())
+            ->method('getId');
+        $subPage->expects(self::never())
+            ->method('getClass');
+        $subPage->expects(self::never())
+            ->method('getHref');
+        $subPage->expects(self::never())
+            ->method('getTarget');
+        $subPage->expects(self::never())
+            ->method('hasPage');
+        $subPage->expects(self::never())
+            ->method('hasPages');
+        $subPage->expects(self::never())
+            ->method('getCustomProperties');
+        $subPage->expects(self::never())
+            ->method('get');
 
         $page->addPage($subPage);
         $parentPage->addPage($page);
@@ -3159,7 +3539,11 @@ final class BreadcrumbsTest extends TestCase
             ->withConsecutive([$parentPage], [null], [$parentPage])
             ->willReturnOnConsecutiveCalls($parentPage, null, $parentPage);
 
-
+        $escapeHtml = $this->getMockBuilder(EscapeHtml::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $escapeHtml->expects(self::never())
+            ->method('__invoke');
 
         $partial   = 'testPartial';
         $expected  = 'renderedPartial';
@@ -3170,8 +3554,12 @@ final class BreadcrumbsTest extends TestCase
             ->getMock();
         $renderer->expects(self::once())
             ->method('render')
-            ->with($partial, ['pages' => [$parentPage, $subPage], 'separator' => $seperator, 'abc' => 'test'])
+            ->with($partial, ['pages' => [$parentPage, $page, $subPage], 'separator' => $seperator, 'abc' => 'test'])
             ->willReturn($expected);
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translatePlugin = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -3179,7 +3567,7 @@ final class BreadcrumbsTest extends TestCase
         $translatePlugin->expects(self::never())
             ->method('__invoke');
 
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $translatePlugin);
+        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml, $translatePlugin);
 
         $helper->setRole($role);
 
@@ -3190,17 +3578,6 @@ final class BreadcrumbsTest extends TestCase
         $helper->setLinkLast(true);
         $helper->setContainer($parentPage);
 
-        $view = $this->getMockBuilder(PhpRenderer::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $view->expects(self::never())
-            ->method('plugin');
-        $view->expects(self::never())
-            ->method('getHelperPluginManager');
-
-        assert($view instanceof PhpRenderer);
-        $helper->setView($view);
-
         self::assertSame($expected, $helper->renderPartialWithParams(['abc' => 'test'], null, [$partial, 'test']));
     }
 
@@ -3208,7 +3585,6 @@ final class BreadcrumbsTest extends TestCase
      * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExceptionInterface
-     *
      */
     public function testRenderPartialWithParamsNoActivePage(): void
     {
@@ -3244,9 +3620,31 @@ final class BreadcrumbsTest extends TestCase
         $page->expects(self::never())
             ->method('getPrivilege');
         $page->expects(self::never())
+            ->method('getParent');
+        $page->expects(self::never())
             ->method('isActive');
         $page->expects(self::never())
-            ->method('getParent');
+            ->method('getLabel');
+        $page->expects(self::never())
+            ->method('getTextDomain');
+        $page->expects(self::never())
+            ->method('getTitle');
+        $page->expects(self::never())
+            ->method('getId');
+        $page->expects(self::never())
+            ->method('getClass');
+        $page->expects(self::never())
+            ->method('getHref');
+        $page->expects(self::never())
+            ->method('getTarget');
+        $page->expects(self::never())
+            ->method('hasPage');
+        $page->expects(self::never())
+            ->method('hasPages');
+        $page->expects(self::never())
+            ->method('getCustomProperties');
+        $page->expects(self::never())
+            ->method('get');
 
         $container = new Navigation();
         $container->addPage($page);
@@ -3300,7 +3698,11 @@ final class BreadcrumbsTest extends TestCase
             ->withConsecutive([$name], [$container])
             ->willReturnOnConsecutiveCalls($container, $container);
 
-
+        $escapeHtml = $this->getMockBuilder(EscapeHtml::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $escapeHtml->expects(self::never())
+            ->method('__invoke');
 
         $partial   = 'testPartial';
         $expected  = 'renderedPartial';
@@ -3313,6 +3715,10 @@ final class BreadcrumbsTest extends TestCase
             ->method('render')
             ->with($partial, ['pages' => [], 'separator' => $seperator, 'abc' => 'test'])
             ->willReturn($expected);
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translatePlugin = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -3320,7 +3726,7 @@ final class BreadcrumbsTest extends TestCase
         $translatePlugin->expects(self::never())
             ->method('__invoke');
 
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $translatePlugin);
+        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml, $translatePlugin);
 
         $helper->setRole($role);
 
@@ -3330,17 +3736,6 @@ final class BreadcrumbsTest extends TestCase
         $helper->setSeparator($seperator);
         $helper->setLinkLast(true);
         $helper->setPartial($partial);
-
-        $view = $this->getMockBuilder(PhpRenderer::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $view->expects(self::never())
-            ->method('plugin');
-        $view->expects(self::never())
-            ->method('getHelperPluginManager');
-
-        assert($view instanceof PhpRenderer);
-        $helper->setView($view);
 
         self::assertSame($expected, $helper->renderPartialWithParams(['abc' => 'test'], $name));
     }
@@ -3395,13 +3790,21 @@ final class BreadcrumbsTest extends TestCase
         $containerParser->expects(self::never())
             ->method('parseContainer');
 
-
+        $escapeHtml = $this->getMockBuilder(EscapeHtml::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $escapeHtml->expects(self::never())
+            ->method('__invoke');
 
         $renderer = $this->getMockBuilder(PhpRenderer::class)
             ->disableOriginalConstructor()
             ->getMock();
         $renderer->expects(self::never())
             ->method('render');
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translatePlugin = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -3409,7 +3812,7 @@ final class BreadcrumbsTest extends TestCase
         $translatePlugin->expects(self::never())
             ->method('__invoke');
 
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $translatePlugin);
+        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml, $translatePlugin);
 
         $role = 'testRole';
 
@@ -3426,15 +3829,6 @@ final class BreadcrumbsTest extends TestCase
 
         $helper->setSeparator('/');
         $helper->setLinkLast(true);
-
-        $view = $this->getMockBuilder(PhpRenderer::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $view->expects(self::never())
-            ->method('plugin');
-
-        assert($view instanceof PhpRenderer);
-        $helper->setView($view);
 
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('Unable to render breadcrumbs: No partial view script provided');
@@ -3493,13 +3887,21 @@ final class BreadcrumbsTest extends TestCase
         $containerParser->expects(self::never())
             ->method('parseContainer');
 
-
+        $escapeHtml = $this->getMockBuilder(EscapeHtml::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $escapeHtml->expects(self::never())
+            ->method('__invoke');
 
         $renderer = $this->getMockBuilder(PhpRenderer::class)
             ->disableOriginalConstructor()
             ->getMock();
         $renderer->expects(self::never())
             ->method('render');
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translatePlugin = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -3507,7 +3909,7 @@ final class BreadcrumbsTest extends TestCase
         $translatePlugin->expects(self::never())
             ->method('__invoke');
 
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $translatePlugin);
+        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml, $translatePlugin);
 
         $role = 'testRole';
 
@@ -3525,15 +3927,6 @@ final class BreadcrumbsTest extends TestCase
         $helper->setSeparator('/');
         $helper->setLinkLast(true);
 
-        $view = $this->getMockBuilder(PhpRenderer::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $view->expects(self::never())
-            ->method('plugin');
-
-        assert($view instanceof PhpRenderer);
-        $helper->setView($view);
-
         $helper->setPartial(['a', 'b', 'c']);
 
         $this->expectException(InvalidArgumentException::class);
@@ -3547,7 +3940,6 @@ final class BreadcrumbsTest extends TestCase
      * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExceptionInterface
-     *
      */
     public function testRenderPartial(): void
     {
@@ -3595,6 +3987,28 @@ final class BreadcrumbsTest extends TestCase
             ->willReturn($parentPage);
         $page->expects(self::never())
             ->method('isActive');
+        $page->expects(self::never())
+            ->method('getLabel');
+        $page->expects(self::never())
+            ->method('getTextDomain');
+        $page->expects(self::never())
+            ->method('getTitle');
+        $page->expects(self::never())
+            ->method('getId');
+        $page->expects(self::never())
+            ->method('getClass');
+        $page->expects(self::never())
+            ->method('getHref');
+        $page->expects(self::never())
+            ->method('getTarget');
+        $page->expects(self::never())
+            ->method('hasPage');
+        $page->expects(self::never())
+            ->method('hasPages');
+        $page->expects(self::never())
+            ->method('getCustomProperties');
+        $page->expects(self::never())
+            ->method('get');
 
         $parentPage->addPage($page);
 
@@ -3655,7 +4069,11 @@ final class BreadcrumbsTest extends TestCase
             ->withConsecutive([$name], [$container])
             ->willReturnOnConsecutiveCalls($container, $container);
 
-
+        $escapeHtml = $this->getMockBuilder(EscapeHtml::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $escapeHtml->expects(self::never())
+            ->method('__invoke');
 
         $partial   = 'testPartial';
         $expected  = 'renderedPartial';
@@ -3668,6 +4086,10 @@ final class BreadcrumbsTest extends TestCase
             ->method('render')
             ->with($partial, ['pages' => [$parentPage, $page], 'separator' => $seperator])
             ->willReturn($expected);
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translatePlugin = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -3675,7 +4097,7 @@ final class BreadcrumbsTest extends TestCase
         $translatePlugin->expects(self::never())
             ->method('__invoke');
 
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $translatePlugin);
+        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml, $translatePlugin);
 
         $helper->setRole($role);
 
@@ -3686,17 +4108,6 @@ final class BreadcrumbsTest extends TestCase
         $helper->setLinkLast(true);
         $helper->setPartial($partial);
 
-        $view = $this->getMockBuilder(PhpRenderer::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $view->expects(self::never())
-            ->method('plugin');
-        $view->expects(self::never())
-            ->method('getHelperPluginManager');
-
-        assert($view instanceof PhpRenderer);
-        $helper->setView($view);
-
         self::assertSame($expected, $helper->renderPartial($name));
     }
 
@@ -3704,7 +4115,6 @@ final class BreadcrumbsTest extends TestCase
      * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExceptionInterface
-     *
      */
     public function testRenderPartialNoActivePage(): void
     {
@@ -3740,9 +4150,31 @@ final class BreadcrumbsTest extends TestCase
         $page->expects(self::never())
             ->method('getPrivilege');
         $page->expects(self::never())
+            ->method('getParent');
+        $page->expects(self::never())
             ->method('isActive');
         $page->expects(self::never())
-            ->method('getParent');
+            ->method('getLabel');
+        $page->expects(self::never())
+            ->method('getTextDomain');
+        $page->expects(self::never())
+            ->method('getTitle');
+        $page->expects(self::never())
+            ->method('getId');
+        $page->expects(self::never())
+            ->method('getClass');
+        $page->expects(self::never())
+            ->method('getHref');
+        $page->expects(self::never())
+            ->method('getTarget');
+        $page->expects(self::never())
+            ->method('hasPage');
+        $page->expects(self::never())
+            ->method('hasPages');
+        $page->expects(self::never())
+            ->method('getCustomProperties');
+        $page->expects(self::never())
+            ->method('get');
 
         $container = new Navigation();
         $container->addPage($page);
@@ -3796,7 +4228,11 @@ final class BreadcrumbsTest extends TestCase
             ->withConsecutive([$name], [$container])
             ->willReturnOnConsecutiveCalls($container, $container);
 
-
+        $escapeHtml = $this->getMockBuilder(EscapeHtml::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $escapeHtml->expects(self::never())
+            ->method('__invoke');
 
         $partial   = 'testPartial';
         $expected  = 'renderedPartial';
@@ -3809,6 +4245,10 @@ final class BreadcrumbsTest extends TestCase
             ->method('render')
             ->with($partial, ['pages' => [], 'separator' => $seperator])
             ->willReturn($expected);
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translatePlugin = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -3816,7 +4256,7 @@ final class BreadcrumbsTest extends TestCase
         $translatePlugin->expects(self::never())
             ->method('__invoke');
 
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $translatePlugin);
+        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml, $translatePlugin);
 
         $helper->setRole($role);
 
@@ -3827,17 +4267,6 @@ final class BreadcrumbsTest extends TestCase
         $helper->setLinkLast(true);
         $helper->setPartial($partial);
 
-        $view = $this->getMockBuilder(PhpRenderer::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $view->expects(self::never())
-            ->method('plugin');
-        $view->expects(self::never())
-            ->method('getHelperPluginManager');
-
-        assert($view instanceof PhpRenderer);
-        $helper->setView($view);
-
         self::assertSame($expected, $helper->renderPartial($name));
     }
 
@@ -3845,7 +4274,6 @@ final class BreadcrumbsTest extends TestCase
      * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExceptionInterface
-     *
      */
     public function testRenderPartialWithArrayPartial(): void
     {
@@ -3891,6 +4319,28 @@ final class BreadcrumbsTest extends TestCase
             ->willReturn($parentPage);
         $page->expects(self::never())
             ->method('isActive');
+        $page->expects(self::never())
+            ->method('getLabel');
+        $page->expects(self::never())
+            ->method('getTextDomain');
+        $page->expects(self::never())
+            ->method('getTitle');
+        $page->expects(self::never())
+            ->method('getId');
+        $page->expects(self::never())
+            ->method('getClass');
+        $page->expects(self::never())
+            ->method('getHref');
+        $page->expects(self::never())
+            ->method('getTarget');
+        $page->expects(self::never())
+            ->method('hasPage');
+        $page->expects(self::never())
+            ->method('hasPages');
+        $page->expects(self::never())
+            ->method('getCustomProperties');
+        $page->expects(self::never())
+            ->method('get');
 
         $parentPage->addPage($page);
 
@@ -3951,7 +4401,11 @@ final class BreadcrumbsTest extends TestCase
             ->withConsecutive([$container], [null], [$container])
             ->willReturnOnConsecutiveCalls($container, null, $container);
 
-
+        $escapeHtml = $this->getMockBuilder(EscapeHtml::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $escapeHtml->expects(self::never())
+            ->method('__invoke');
 
         $partial   = 'testPartial';
         $expected  = 'renderedPartial';
@@ -3964,6 +4418,10 @@ final class BreadcrumbsTest extends TestCase
             ->method('render')
             ->with($partial, ['pages' => [$parentPage, $page], 'separator' => $seperator])
             ->willReturn($expected);
+        $renderer->expects(self::never())
+            ->method('plugin');
+        $renderer->expects(self::never())
+            ->method('getHelperPluginManager');
 
         $translatePlugin = $this->getMockBuilder(Translate::class)
             ->disableOriginalConstructor()
@@ -3971,7 +4429,7 @@ final class BreadcrumbsTest extends TestCase
         $translatePlugin->expects(self::never())
             ->method('__invoke');
 
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $translatePlugin);
+        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml, $translatePlugin);
 
         $helper->setRole($role);
 
@@ -3982,17 +4440,6 @@ final class BreadcrumbsTest extends TestCase
         $helper->setLinkLast(true);
         $helper->setContainer($container);
 
-        $view = $this->getMockBuilder(PhpRenderer::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $view->expects(self::never())
-            ->method('plugin');
-        $view->expects(self::never())
-            ->method('getHelperPluginManager');
-
-        assert($view instanceof PhpRenderer);
-        $helper->setView($view);
-
         self::assertSame($expected, $helper->renderPartial(null, [$partial, 'test']));
     }
 
@@ -4000,7 +4447,6 @@ final class BreadcrumbsTest extends TestCase
      * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExceptionInterface
-     *
      */
     public function testRenderPartialWithArrayPartialRenderingPage(): void
     {
@@ -4050,9 +4496,31 @@ final class BreadcrumbsTest extends TestCase
             ->method('getPrivilege');
         $subPage->expects(self::once())
             ->method('getParent')
-            ->willReturn($parentPage);
+            ->willReturn($page);
         $subPage->expects(self::never())
             ->method('isActive');
+        $subPage->expects(self::never())
+            ->method('getLabel');
+        $subPage->expects(self::never())
+            ->method('getTextDomain');
+        $subPage->expects(self::never())
+            ->method('getTitle');
+        $subPage->expects(self::never())
+            ->method('getId');
+        $subPage->expects(self::never())
+            ->method('getClass');
+        $subPage->expects(self::never())
+            ->method('getHref');
+        $subPage->expects(self::never())
+            ->method('getTarget');
+        $subPage->expects(self::never())
+            ->method('hasPage');
+        $subPage->expects(self::never())
+            ->method('hasPages');
+        $subPage->expects(self::never())
+            ->method('getCustomProperties');
+        $subPage->expects(self::never())
+            ->method('get');
 
         $page->addPage($subPage);
         $parentPage->addPage($page);
@@ -4111,7 +4579,11 @@ final class BreadcrumbsTest extends TestCase
             ->withConsecutive([$parentPage], [null], [$parentPage])
             ->willReturnOnConsecutiveCalls($parentPage, null, $parentPage);
 
-
+        $escapeHtml = $this->getMockBuilder(EscapeHtml::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $escapeHtml->expects(self::never())
+            ->method('__invoke');
 
         $expected  = 'renderedPartial';
         $partial   = 'testPartial';
@@ -4122,7 +4594,7 @@ final class BreadcrumbsTest extends TestCase
             ->getMock();
         $renderer->expects(self::once())
             ->method('render')
-            ->with($partial, ['pages' => [$parentPage, $subPage], 'separator' => $seperator])
+            ->with($partial, ['pages' => [$parentPage, $page, $subPage], 'separator' => $seperator])
             ->willReturn($expected);
         $renderer->expects(self::never())
             ->method('plugin');
@@ -4135,7 +4607,7 @@ final class BreadcrumbsTest extends TestCase
         $translatePlugin->expects(self::never())
             ->method('__invoke');
 
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $translatePlugin);
+        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml, $translatePlugin);
 
         $helper->setRole($role);
 
@@ -4153,7 +4625,6 @@ final class BreadcrumbsTest extends TestCase
      * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExceptionInterface
-     *
      */
     public function testRenderStraightNoActivePage(): void
     {
@@ -4189,9 +4660,31 @@ final class BreadcrumbsTest extends TestCase
         $page->expects(self::never())
             ->method('getPrivilege');
         $page->expects(self::never())
+            ->method('getParent');
+        $page->expects(self::never())
             ->method('isActive');
         $page->expects(self::never())
-            ->method('getParent');
+            ->method('getLabel');
+        $page->expects(self::never())
+            ->method('getTextDomain');
+        $page->expects(self::never())
+            ->method('getTitle');
+        $page->expects(self::never())
+            ->method('getId');
+        $page->expects(self::never())
+            ->method('getClass');
+        $page->expects(self::never())
+            ->method('getHref');
+        $page->expects(self::never())
+            ->method('getTarget');
+        $page->expects(self::never())
+            ->method('hasPage');
+        $page->expects(self::never())
+            ->method('hasPages');
+        $page->expects(self::never())
+            ->method('getCustomProperties');
+        $page->expects(self::never())
+            ->method('get');
 
         $container = new Navigation();
         $container->addPage($page);
@@ -4245,7 +4738,11 @@ final class BreadcrumbsTest extends TestCase
             ->withConsecutive([$name], [$container])
             ->willReturnOnConsecutiveCalls($container, $container);
 
-
+        $escapeHtml = $this->getMockBuilder(EscapeHtml::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $escapeHtml->expects(self::never())
+            ->method('__invoke');
 
         $renderer = $this->getMockBuilder(PhpRenderer::class)
             ->disableOriginalConstructor()
@@ -4263,7 +4760,7 @@ final class BreadcrumbsTest extends TestCase
         $translatePlugin->expects(self::never())
             ->method('__invoke');
 
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $translatePlugin);
+        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml, $translatePlugin);
 
         $helper->setRole($role);
 
@@ -4285,7 +4782,6 @@ final class BreadcrumbsTest extends TestCase
      * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExceptionInterface
-     *
      */
     public function testRenderStraight(): void
     {
@@ -4356,7 +4852,15 @@ final class BreadcrumbsTest extends TestCase
             ->method('getHref');
         $page->expects(self::never())
             ->method('getTarget');
-
+        $page->expects(self::never())
+            ->method('hasPage');
+        $page->expects(self::never())
+            ->method('hasPages');
+        $page->expects(self::once())
+            ->method('getCustomProperties')
+            ->willReturn([]);
+        $page->expects(self::never())
+            ->method('get');
 
         $parentPage->addPage($page);
 
@@ -4422,7 +4926,11 @@ final class BreadcrumbsTest extends TestCase
             ->withConsecutive([$name], [$container])
             ->willReturn($container, $container);
 
-
+        $escapeHtml = $this->getMockBuilder(EscapeHtml::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $escapeHtml->expects(self::never())
+            ->method('__invoke');
 
         $renderer = $this->getMockBuilder(PhpRenderer::class)
             ->disableOriginalConstructor()
@@ -4440,7 +4948,7 @@ final class BreadcrumbsTest extends TestCase
         $translatePlugin->expects(self::never())
             ->method('__invoke');
 
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $translatePlugin);
+        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml, $translatePlugin);
 
         $helper->setRole($role);
 
@@ -4448,15 +4956,15 @@ final class BreadcrumbsTest extends TestCase
         $helper->setAcl($auth);
 
         $expected  = '<nav aria-label="breadcrumb">'
-            . PHP_EOL . '<ul class="breadcrumb">'
-            . PHP_EOL . '<li class="breadcrumb-item">'
-            . PHP_EOL . '<a parent-id-escaped="parent-id-escaped" parent-title-escaped="parent-title-escaped" parent-class-escaped="parent-class-escaped" parent-href-escaped="##-escaped" parent-target-escaped="self-escaped">parent-label-escaped</a>'
-            . PHP_EOL . '</li>'
-            . PHP_EOL . '/'
-            . PHP_EOL . '<li class="breadcrumb-item active" aria-current="page">'
-            . PHP_EOL . '<a idEscaped="testIdEscaped" titleEscaped="testTitleTranslatedAndEscaped" classEscaped="testClassEscaped" hrefEscaped="#Escaped">testLabelTranslatedAndEscaped</a>'
-            . PHP_EOL . '</li>'
-            . PHP_EOL . '</ul>'
+            . PHP_EOL . '    <ul class="breadcrumb">'
+            . PHP_EOL . '        <li class="breadcrumb-item">'
+            . PHP_EOL . '            <a parent-id-escaped="parent-id-escaped" parent-title-escaped="parent-title-escaped" parent-class-escaped="parent-class-escaped" parent-href-escaped="##-escaped" parent-target-escaped="self-escaped">parent-label-escaped</a>'
+            . PHP_EOL . '        </li>'
+            . PHP_EOL . '        /'
+            . PHP_EOL . '        <li class="breadcrumb-item active" aria-current="page">'
+            . PHP_EOL . '            <a idEscaped="testIdEscaped" titleEscaped="testTitleTranslatedAndEscaped" classEscaped="testClassEscaped" hrefEscaped="#Escaped">testLabelTranslatedAndEscaped</a>'
+            . PHP_EOL . '        </li>'
+            . PHP_EOL . '    </ul>'
             . PHP_EOL . '</nav>'
             . PHP_EOL;
         $seperator = '/';
@@ -4471,7 +4979,6 @@ final class BreadcrumbsTest extends TestCase
      * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExceptionInterface
-     *
      */
     public function testRenderStraightWithoutLinkAtEnd(): void
     {
@@ -4546,7 +5053,15 @@ final class BreadcrumbsTest extends TestCase
             ->method('getHref');
         $page->expects(self::never())
             ->method('getTarget');
-
+        $page->expects(self::never())
+            ->method('hasPage');
+        $page->expects(self::never())
+            ->method('hasPages');
+        $page->expects(self::once())
+            ->method('getCustomProperties')
+            ->willReturn([]);
+        $page->expects(self::never())
+            ->method('get');
 
         $parentPage->addPage($page);
 
@@ -4611,10 +5126,10 @@ final class BreadcrumbsTest extends TestCase
             ->withConsecutive([$container], [null], [$container])
             ->willReturnOnConsecutiveCalls($container, null, $container);
 
-        $escapePlugin = $this->getMockBuilder(EscapeHtml::class)
+        $escapeHtml = $this->getMockBuilder(EscapeHtml::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $escapePlugin->expects(self::once())
+        $escapeHtml->expects(self::once())
             ->method('__invoke')
             ->with($tranalatedLabel)
             ->willReturn($escapedTranalatedLabel);
@@ -4637,7 +5152,7 @@ final class BreadcrumbsTest extends TestCase
             ->with($label, $textDomain)
             ->willReturn($tranalatedLabel);
 
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $translatePlugin);
+        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml, $translatePlugin);
 
         $helper->setRole($role);
         $helper->setContainer($container);
@@ -4646,15 +5161,15 @@ final class BreadcrumbsTest extends TestCase
         $helper->setAcl($auth);
 
         $expected  = '<nav aria-label="breadcrumb">'
-            . PHP_EOL . '<ul class="breadcrumb">'
-            . PHP_EOL . '<li class="breadcrumb-item">'
-            . PHP_EOL . '<a parent-id-escaped="parent-id-escaped" parent-title-escaped="parent-title-escaped" parent-class-escaped="parent-class-escaped" parent-href-escaped="##-escaped" parent-target-escaped="self-escaped">parent-label-escaped</a>'
-            . PHP_EOL . '</li>'
-            . PHP_EOL . '/'
-            . PHP_EOL . '<li class="breadcrumb-item">'
-            . PHP_EOL . 'testLabelTranslatedAndEscaped'
-            . PHP_EOL . '</li>'
-            . PHP_EOL . '</ul>'
+            . PHP_EOL . '    <ul class="breadcrumb">'
+            . PHP_EOL . '        <li class="breadcrumb-item">'
+            . PHP_EOL . '            <a parent-id-escaped="parent-id-escaped" parent-title-escaped="parent-title-escaped" parent-class-escaped="parent-class-escaped" parent-href-escaped="##-escaped" parent-target-escaped="self-escaped">parent-label-escaped</a>'
+            . PHP_EOL . '        </li>'
+            . PHP_EOL . '        /'
+            . PHP_EOL . '        <li class="breadcrumb-item">'
+            . PHP_EOL . '            testLabelTranslatedAndEscaped'
+            . PHP_EOL . '        </li>'
+            . PHP_EOL . '    </ul>'
             . PHP_EOL . '</nav>'
             . PHP_EOL;
         $seperator = '/';
@@ -4669,7 +5184,6 @@ final class BreadcrumbsTest extends TestCase
      * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExceptionInterface
-     *
      */
     public function testRenderStraightWithoutLinkAtEndWithLiClass(): void
     {
@@ -4744,7 +5258,17 @@ final class BreadcrumbsTest extends TestCase
             ->method('getHref');
         $page->expects(self::never())
             ->method('getTarget');
-
+        $page->expects(self::never())
+            ->method('hasPage');
+        $page->expects(self::never())
+            ->method('hasPages');
+        $page->expects(self::once())
+            ->method('getCustomProperties')
+            ->willReturn(
+                ['liClass' => 'li-class']
+            );
+        $page->expects(self::never())
+            ->method('get');
 
         $parentPage->addPage($page);
 
@@ -4809,10 +5333,10 @@ final class BreadcrumbsTest extends TestCase
             ->withConsecutive([$container], [null], [$container])
             ->willReturnOnConsecutiveCalls($container, null, $container);
 
-        $escapePlugin = $this->getMockBuilder(EscapeHtml::class)
+        $escapeHtml = $this->getMockBuilder(EscapeHtml::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $escapePlugin->expects(self::once())
+        $escapeHtml->expects(self::once())
             ->method('__invoke')
             ->with($tranalatedLabel)
             ->willReturn($escapedTranalatedLabel);
@@ -4835,7 +5359,7 @@ final class BreadcrumbsTest extends TestCase
             ->with($label, $textDomain)
             ->willReturn($tranalatedLabel);
 
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $translatePlugin);
+        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml, $translatePlugin);
 
         $helper->setRole($role);
         $helper->setContainer($container);
@@ -4844,15 +5368,15 @@ final class BreadcrumbsTest extends TestCase
         $helper->setAcl($auth);
 
         $expected  = '<nav aria-label="breadcrumb">'
-            . PHP_EOL . '<ul class="breadcrumb">'
-            . PHP_EOL . '<li class="breadcrumb-item">'
-            . PHP_EOL . '<a parent-id-escaped="parent-id-escaped" parent-title-escaped="parent-title-escaped" parent-class-escaped="parent-class-escaped" parent-href-escaped="##-escaped" parent-target-escaped="self-escaped">parent-label-escaped</a>'
-            . PHP_EOL . '</li>'
-            . PHP_EOL . '/'
-            . PHP_EOL . '<li class="breadcrumb-item li-class">'
-            . PHP_EOL . 'testLabelTranslatedAndEscaped'
-            . PHP_EOL . '</li>'
-            . PHP_EOL . '</ul>'
+            . PHP_EOL . '    <ul class="breadcrumb">'
+            . PHP_EOL . '        <li class="breadcrumb-item">'
+            . PHP_EOL . '            <a parent-id-escaped="parent-id-escaped" parent-title-escaped="parent-title-escaped" parent-class-escaped="parent-class-escaped" parent-href-escaped="##-escaped" parent-target-escaped="self-escaped">parent-label-escaped</a>'
+            . PHP_EOL . '        </li>'
+            . PHP_EOL . '        /'
+            . PHP_EOL . '        <li class="breadcrumb-item li-class">'
+            . PHP_EOL . '            testLabelTranslatedAndEscaped'
+            . PHP_EOL . '        </li>'
+            . PHP_EOL . '    </ul>'
             . PHP_EOL . '</nav>'
             . PHP_EOL;
         $seperator = '/';
@@ -4867,7 +5391,6 @@ final class BreadcrumbsTest extends TestCase
      * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExceptionInterface
-     *
      */
     public function testRenderStraightWithoutLinkAtEndWithLiClass2(): void
     {
@@ -4944,7 +5467,17 @@ final class BreadcrumbsTest extends TestCase
             ->method('getHref');
         $page->expects(self::never())
             ->method('getTarget');
-
+        $page->expects(self::never())
+            ->method('hasPage');
+        $page->expects(self::never())
+            ->method('hasPages');
+        $page->expects(self::once())
+            ->method('getCustomProperties')
+            ->willReturn(
+                ['liClass' => 'li-class']
+            );
+        $page->expects(self::never())
+            ->method('get');
 
         $parentPage->addPage($page);
 
@@ -5009,10 +5542,10 @@ final class BreadcrumbsTest extends TestCase
             ->withConsecutive([$container], [null], [$container])
             ->willReturnOnConsecutiveCalls($container, null, $container);
 
-        $escapePlugin = $this->getMockBuilder(EscapeHtml::class)
+        $escapeHtml = $this->getMockBuilder(EscapeHtml::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $escapePlugin->expects(self::once())
+        $escapeHtml->expects(self::once())
             ->method('__invoke')
             ->with($tranalatedLabel)
             ->willReturn($escapedTranalatedLabel);
@@ -5035,7 +5568,7 @@ final class BreadcrumbsTest extends TestCase
             ->with($label, $textDomain)
             ->willReturn($tranalatedLabel);
 
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $translatePlugin);
+        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml, $translatePlugin);
 
         $helper->setRole($role);
         $helper->setContainer($container);
@@ -5068,7 +5601,6 @@ final class BreadcrumbsTest extends TestCase
      * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExceptionInterface
-     *
      */
     public function testRenderWithoutPartial(): void
     {
@@ -5138,7 +5670,15 @@ final class BreadcrumbsTest extends TestCase
             ->method('getHref');
         $page->expects(self::never())
             ->method('getTarget');
-
+        $page->expects(self::never())
+            ->method('hasPage');
+        $page->expects(self::never())
+            ->method('hasPages');
+        $page->expects(self::once())
+            ->method('getCustomProperties')
+            ->willReturn([]);
+        $page->expects(self::never())
+            ->method('get');
 
         $parentPage->addPage($page);
 
@@ -5204,7 +5744,11 @@ final class BreadcrumbsTest extends TestCase
             ->withConsecutive([$name], [$container])
             ->willReturnOnConsecutiveCalls($container, $container);
 
-
+        $escapeHtml = $this->getMockBuilder(EscapeHtml::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $escapeHtml->expects(self::never())
+            ->method('__invoke');
 
         $renderer = $this->getMockBuilder(PhpRenderer::class)
             ->disableOriginalConstructor()
@@ -5222,7 +5766,7 @@ final class BreadcrumbsTest extends TestCase
         $translatePlugin->expects(self::never())
             ->method('__invoke');
 
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $translatePlugin);
+        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml, $translatePlugin);
 
         $helper->setRole($role);
 
@@ -5230,15 +5774,15 @@ final class BreadcrumbsTest extends TestCase
         $helper->setAcl($auth);
 
         $expected  = '<nav aria-label="breadcrumb">'
-            . PHP_EOL . '<ul class="breadcrumb">'
-            . PHP_EOL . '<li class="breadcrumb-item">'
-            . PHP_EOL . '<a parent-id-escaped="parent-id-escaped" parent-title-escaped="parent-title-escaped" parent-class-escaped="parent-class-escaped" parent-href-escaped="##-escaped" parent-target-escaped="self-escaped">parent-label-escaped</a>'
-            . PHP_EOL . '</li>'
-            . PHP_EOL . '/'
-            . PHP_EOL . '<li class="breadcrumb-item">'
-            . PHP_EOL . '<a idEscaped="testIdEscaped" titleEscaped="testTitleTranslatedAndEscaped" classEscaped="testClassEscaped" hrefEscaped="#Escaped">testLabelTranslatedAndEscaped</a>'
-            . PHP_EOL . '</li>'
-            . PHP_EOL . '</ul>'
+            . PHP_EOL . '    <ul class="breadcrumb">'
+            . PHP_EOL . '        <li class="breadcrumb-item">'
+            . PHP_EOL . '            <a parent-id-escaped="parent-id-escaped" parent-title-escaped="parent-title-escaped" parent-class-escaped="parent-class-escaped" parent-href-escaped="##-escaped" parent-target-escaped="self-escaped">parent-label-escaped</a>'
+            . PHP_EOL . '        </li>'
+            . PHP_EOL . '        /'
+            . PHP_EOL . '        <li class="breadcrumb-item">'
+            . PHP_EOL . '            <a idEscaped="testIdEscaped" titleEscaped="testTitleTranslatedAndEscaped" classEscaped="testClassEscaped" hrefEscaped="#Escaped">testLabelTranslatedAndEscaped</a>'
+            . PHP_EOL . '        </li>'
+            . PHP_EOL . '    </ul>'
             . PHP_EOL . '</nav>'
             . PHP_EOL;
         $seperator = '/';
@@ -5253,7 +5797,6 @@ final class BreadcrumbsTest extends TestCase
      * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExceptionInterface
-     *
      */
     public function testRenderWithPartial(): void
     {
@@ -5289,9 +5832,31 @@ final class BreadcrumbsTest extends TestCase
         $page->expects(self::never())
             ->method('getPrivilege');
         $page->expects(self::never())
+            ->method('getParent');
+        $page->expects(self::never())
             ->method('isActive');
         $page->expects(self::never())
-            ->method('getParent');
+            ->method('getLabel');
+        $page->expects(self::never())
+            ->method('getTextDomain');
+        $page->expects(self::never())
+            ->method('getTitle');
+        $page->expects(self::never())
+            ->method('getId');
+        $page->expects(self::never())
+            ->method('getClass');
+        $page->expects(self::never())
+            ->method('getHref');
+        $page->expects(self::never())
+            ->method('getTarget');
+        $page->expects(self::never())
+            ->method('hasPage');
+        $page->expects(self::never())
+            ->method('hasPages');
+        $page->expects(self::never())
+            ->method('getCustomProperties');
+        $page->expects(self::never())
+            ->method('get');
 
         $container = new Navigation();
         $container->addPage($page);
@@ -5345,7 +5910,11 @@ final class BreadcrumbsTest extends TestCase
             ->withConsecutive([$name], [$container])
             ->willReturnOnConsecutiveCalls($container, $container);
 
-
+        $escapeHtml = $this->getMockBuilder(EscapeHtml::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $escapeHtml->expects(self::never())
+            ->method('__invoke');
 
         $expected  = 'renderedPartial';
         $partial   = 'testPartial';
@@ -5369,7 +5938,7 @@ final class BreadcrumbsTest extends TestCase
         $translatePlugin->expects(self::never())
             ->method('__invoke');
 
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $translatePlugin);
+        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml, $translatePlugin);
 
         $helper->setRole($role);
 
@@ -5386,7 +5955,6 @@ final class BreadcrumbsTest extends TestCase
     /**
      * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     *
      */
     public function testToStringWithPartial(): void
     {
@@ -5429,9 +5997,31 @@ final class BreadcrumbsTest extends TestCase
         $page->expects(self::never())
             ->method('getPrivilege');
         $page->expects(self::never())
+            ->method('getParent');
+        $page->expects(self::never())
             ->method('isActive');
         $page->expects(self::never())
-            ->method('getParent');
+            ->method('getLabel');
+        $page->expects(self::never())
+            ->method('getTextDomain');
+        $page->expects(self::never())
+            ->method('getTitle');
+        $page->expects(self::never())
+            ->method('getId');
+        $page->expects(self::never())
+            ->method('getClass');
+        $page->expects(self::never())
+            ->method('getHref');
+        $page->expects(self::never())
+            ->method('getTarget');
+        $page->expects(self::never())
+            ->method('hasPage');
+        $page->expects(self::never())
+            ->method('hasPages');
+        $page->expects(self::never())
+            ->method('getCustomProperties');
+        $page->expects(self::never())
+            ->method('get');
 
         $container = new Navigation();
         $container->addPage($page);
@@ -5479,7 +6069,11 @@ final class BreadcrumbsTest extends TestCase
             ->withConsecutive([$name], [null], [$container])
             ->willReturnOnConsecutiveCalls($container, null, $container);
 
-
+        $escapeHtml = $this->getMockBuilder(EscapeHtml::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $escapeHtml->expects(self::never())
+            ->method('__invoke');
 
         $expected  = 'renderedPartial';
         $partial   = 'testPartial';
@@ -5503,7 +6097,7 @@ final class BreadcrumbsTest extends TestCase
         $translatePlugin->expects(self::never())
             ->method('__invoke');
 
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $translatePlugin);
+        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml, $translatePlugin);
 
         $helper->setRole($role);
         $helper->setAcl($auth);
@@ -5566,7 +6160,11 @@ final class BreadcrumbsTest extends TestCase
             ->with($container)
             ->willReturn($container);
 
-
+        $escapeHtml = $this->getMockBuilder(EscapeHtml::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $escapeHtml->expects(self::never())
+            ->method('__invoke');
 
         $renderer = $this->getMockBuilder(PhpRenderer::class)
             ->disableOriginalConstructor()
@@ -5580,7 +6178,7 @@ final class BreadcrumbsTest extends TestCase
         $translatePlugin->expects(self::never())
             ->method('__invoke');
 
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $translatePlugin);
+        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml, $translatePlugin);
 
         $container1 = $helper->getContainer();
 
@@ -5595,7 +6193,6 @@ final class BreadcrumbsTest extends TestCase
      * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExceptionInterface
-     *
      */
     public function testDoNotRenderIfNoPageIsActive(): void
     {
@@ -5629,9 +6226,31 @@ final class BreadcrumbsTest extends TestCase
         $page->expects(self::never())
             ->method('getPrivilege');
         $page->expects(self::never())
+            ->method('getParent');
+        $page->expects(self::never())
             ->method('isActive');
         $page->expects(self::never())
-            ->method('getParent');
+            ->method('getLabel');
+        $page->expects(self::never())
+            ->method('getTextDomain');
+        $page->expects(self::never())
+            ->method('getTitle');
+        $page->expects(self::never())
+            ->method('getId');
+        $page->expects(self::never())
+            ->method('getClass');
+        $page->expects(self::never())
+            ->method('getHref');
+        $page->expects(self::never())
+            ->method('getTarget');
+        $page->expects(self::never())
+            ->method('hasPage');
+        $page->expects(self::never())
+            ->method('hasPages');
+        $page->expects(self::never())
+            ->method('getCustomProperties');
+        $page->expects(self::never())
+            ->method('get');
 
         $container = new Navigation();
         $container->addPage($page);
@@ -5677,7 +6296,11 @@ final class BreadcrumbsTest extends TestCase
             ->withConsecutive([$container], [null], [$container])
             ->willReturnOnConsecutiveCalls($container, null, $container);
 
-
+        $escapeHtml = $this->getMockBuilder(EscapeHtml::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $escapeHtml->expects(self::never())
+            ->method('__invoke');
 
         $renderer = $this->getMockBuilder(PhpRenderer::class)
             ->disableOriginalConstructor()
@@ -5691,7 +6314,7 @@ final class BreadcrumbsTest extends TestCase
         $translatePlugin->expects(self::never())
             ->method('__invoke');
 
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $translatePlugin);
+        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml, $translatePlugin);
 
         $helper->setContainer($container);
 

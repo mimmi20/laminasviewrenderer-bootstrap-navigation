@@ -1,6 +1,6 @@
 <?php
 /**
- * This file is part of the mimmi20/mezzio-navigation-laminasviewrenderer-bootstrap package.
+ * This file is part of the mimmi20/laminasviewrenderer-bootstrap-navigation package.
  *
  * Copyright (c) 2021, Thomas Mueller <mimmi20@live.de>
  *
@@ -19,15 +19,11 @@ use Laminas\Navigation\AbstractContainer;
 use Laminas\Navigation\Page\AbstractPage;
 use Laminas\ServiceManager\ServiceLocatorInterface;
 use Laminas\View\Exception;
-use Laminas\View\Helper\AbstractHtmlElement;
 use Laminas\View\Helper\EscapeHtml;
 use Laminas\View\Helper\EscapeHtmlAttr;
 use Laminas\View\Renderer\PhpRenderer;
 use Mimmi20\LaminasView\Helper\HtmlElement\Helper\HtmlElementInterface;
 use Mimmi20\NavigationHelper\ContainerParser\ContainerParserInterface;
-use Mimmi20\NavigationHelper\FindActive\FindActiveInterface;
-use Mimmi20\NavigationHelper\Htmlify\HtmlifyInterface;
-use Psr\Container\ContainerExceptionInterface;
 use RecursiveIteratorIterator;
 
 use function array_diff_key;
@@ -36,10 +32,12 @@ use function array_key_exists;
 use function array_merge;
 use function array_unique;
 use function assert;
+use function count;
 use function get_class;
 use function gettype;
 use function implode;
-use function is_bool;
+use function in_array;
+use function is_array;
 use function is_int;
 use function is_object;
 use function is_string;
@@ -111,18 +109,6 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
     }
 
     /**
-     * @throws InvalidArgumentException
-     */
-    private function getSizeClass(string $size, string $prefix): string
-    {
-        if (!in_array($size, static::$sizes, true)) {
-            throw new InvalidArgumentException('Size "' . $size . '" does not exist');
-        }
-
-        return sprintf($prefix, $size);
-    }
-
-    /**
      * Renders helper.
      *
      * Renders a HTML 'ul' for the given $container. If $container is not given,
@@ -130,7 +116,7 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
      *
      * Available $options:
      *
-     * @param \Laminas\Navigation\AbstractContainer|string|null      $container [optional] container to create menu from.
+     * @param AbstractContainer|string|null       $container [optional] container to create menu from.
      *                                                       Default is to use the container retrieved from {@link getContainer()}.
      * @param array<string, bool|int|string|null> $options   [optional] options for controlling rendering
      * @phpstan-param array{in-navbar?: bool, ulClass?: string|null, tabs?: bool, pills?: bool, fill?: bool, justified?: bool, centered?: bool, right-aligned?: bool, vertical?: string, direction?: string, style?: string, substyle?: string, sublink?: string, onlyActiveBranch?: bool, renderParents?: bool, indent?: int|string|null} $options
@@ -147,7 +133,7 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
 
         $options = $this->normalizeOptions($options);
 
-        if ($options['onlyActiveBranch'] && ! $options['renderParents']) {
+        if ($options['onlyActiveBranch'] && !$options['renderParents']) {
             return $this->renderDeepestMenu(
                 $container,
                 $options['ulClass'],
@@ -159,12 +145,10 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
                 $options['liActiveClass'],
                 $options['liClass'],
                 $options['direction'],
-                $options['style'],
                 $options['sublink'],
                 $options['ulRole'],
                 $options['liRole'],
-                $options['role'],
-                $options['dark']
+                $options['role']
             );
         }
 
@@ -206,24 +190,26 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
      * ));
      * </code>
      *
-     * @param \Laminas\Navigation\AbstractContainer|string|null $container     [optional] container to create menu from.
-     *                                                      Default is to use the container retrieved from {@link getContainer()}.
-     * @param string|null                    $ulClass       [optional] CSS class to use for UL element.
-     *                                                      Default is to use the value from {@link getUlClass()}.
-     * @param string|null                    $liClass       [optional] CSS class to use for LI elements.
-     * @param int|string|null                $indent        [optional] indentation as a string or number
-     *                                                      of spaces. Default is to use the value retrieved from
-     *                                                      {@link getIndent()}.
-     * @param string|null                    $liActiveClass [optional] CSS class to use for UL
-     *                                                      element. Default is to use the value from {@link getUlClass()}.
+     * @param AbstractContainer|string|null $container     [optional] container to create menu from.
+     *                                                     Default is to use the container retrieved from {@link getContainer()}.
+     * @param string|null                   $ulClass       [optional] CSS class to use for UL element.
+     *                                                     Default is to use the value from {@link getUlClass()}.
+     * @param string|null                   $liClass       [optional] CSS class to use for LI elements
+     * @param int|string|null               $indent        [optional] indentation as a string or number
+     *                                                     of spaces. Default is to use the value retrieved from
+     *                                                     {@link getIndent()}.
+     * @param string|null                   $liActiveClass [optional] CSS class to use for UL
+     *                                                     element. Default is to use the value from {@link getUlClass()}.
      *
      * @throws InvalidArgumentException
+     *
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      */
     public function renderSubMenu(
-        AbstractContainer $container = null,
-                          $ulClass = null,
-                          $indent = null,
-                          $liActiveClass = null,
+        ?AbstractContainer $container = null,
+        $ulClass = null,
+        $indent = null,
+        $liActiveClass = null,
         ?string $liClass = null
     ): string {
         return $this->renderMenu(
@@ -250,10 +236,11 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
      * Overrides {@link AbstractHelper::htmlify()}.
      *
      * @param AbstractPage $page               page to generate HTML for
-     * @param bool          $escapeLabel        Whether or not to escape the label
-     * @param bool          $addClassToListItem Whether or not to add the page class to the list item
+     * @param bool         $escapeLabel        Whether or not to escape the label
+     * @param bool         $addClassToListItem Whether or not to add the page class to the list item
      *
      * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      */
     public function htmlify(AbstractPage $page, $escapeLabel = true, $addClassToListItem = false): string
     {
@@ -263,45 +250,39 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
     /**
      * Renders the deepest active menu within [minDepth, maxDepth], (called from {@link renderMenu()}).
      *
-     * @param  AbstractContainer $container          container to render
-     * @param  string            $ulClass            CSS class for first UL
-     * @param  string            $indent             initial indentation
-     * @param  int|null          $minDepth           minimum depth
-     * @param  int|null          $maxDepth           maximum depth
-     * @param  bool              $escapeLabels       Whether or not to escape the labels
-     * @param  bool              $addClassToListItem Whether or not page class applied to <li> element
-     * @param  string            $liActiveClass      CSS class for active LI
-     * @param  string            $liClass
-     * @param  string            $direction
+     * @param AbstractContainer $container          container to render
+     * @param string            $ulClass            CSS class for first UL
+     * @param string            $indent             initial indentation
+     * @param int|null          $minDepth           minimum depth
+     * @param int|null          $maxDepth           maximum depth
+     * @param bool              $escapeLabels       Whether or not to escape the labels
+     * @param bool              $addClassToListItem Whether or not page class applied to <li> element
+     * @param string            $liActiveClass      CSS class for active LI
+     * @param string            $style
+     * @param bool              $dark
      * @phpstan-param self::DROP_ORIENTATION_* $direction
-     * @param  string            $style
      * @phpstan-param self::STYLE_UL|self::STYLE_OL $style
-     * @param string $subLink
      * @phpstan-param self::STYLE_SUBLINK_* $sublink
-     * @param string|null $ulRole
-     * @param string|null $liRole
-     * @param string|null $role
-     * @param bool $dark
      *
      * @throws Exception\InvalidArgumentException
+     *
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      */
     protected function renderDeepestMenu(
         AbstractContainer $container,
-                          $ulClass,
-                          $indent,
-                          $minDepth,
-                          $maxDepth,
-                          $escapeLabels,
-                          $addClassToListItem,
-                          $liActiveClass,
+        $ulClass,
+        $indent,
+        $minDepth,
+        $maxDepth,
+        $escapeLabels,
+        $addClassToListItem,
+        $liActiveClass,
         string $liClass = '',
         string $direction = self::DROP_ORIENTATION_DOWN,
-        string $style = self::STYLE_UL,
         string $subLink = self::STYLE_SUBLINK_LINK,
         ?string $ulRole = '',
         ?string $liRole = '',
-        ?string $role = '',
-        bool $dark = false
+        ?string $role = ''
     ): string {
         $active = $this->findActive($container, $minDepth - 1, $maxDepth);
 
@@ -325,10 +306,10 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
         }
 
         assert(
-            $activePage instanceof \Laminas\Navigation\AbstractContainer,
+            $activePage instanceof AbstractContainer,
             sprintf(
                 '$activePage should be an Instance of %s, but was %s',
-                \Laminas\Navigation\AbstractContainer::class,
+                AbstractContainer::class,
                 is_object($activePage) ? get_class($activePage) : gettype($activePage)
             )
         );
@@ -409,27 +390,20 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
     /**
      * Renders a normal menu (called from {@link renderMenu()}).
      *
-     * @param  AbstractContainer $container          container to render
-     * @param  string            $ulClass            CSS class for first UL
-     * @param  string            $indent             initial indentation
-     * @param  int|null          $minDepth           minimum depth
-     * @param  int|null          $maxDepth           maximum depth
-     * @param  bool              $onlyActive         render only active branch?
-     * @param  bool              $escapeLabels       Whether or not to escape the labels
-     * @param  bool              $addClassToListItem Whether or not page class applied to <li> element
-     * @param  string            $liActiveClass      CSS class for active LI
-     * @param  string            $liClass
-     * @param  string            $direction
+     * @param AbstractContainer $container          container to render
+     * @param string            $ulClass            CSS class for first UL
+     * @param string            $indent             initial indentation
+     * @param int|null          $minDepth           minimum depth
+     * @param int|null          $maxDepth           maximum depth
+     * @param bool              $onlyActive         render only active branch?
+     * @param bool              $escapeLabels       Whether or not to escape the labels
+     * @param bool              $addClassToListItem Whether or not page class applied to <li> element
+     * @param string            $liActiveClass      CSS class for active LI
      * @phpstan-param self::DROP_ORIENTATION_* $direction
-     * @param  string            $style
      * @phpstan-param self::STYLE_UL|self::STYLE_OL $style
-     * @param string $subLink
      * @phpstan-param self::STYLE_SUBLINK_* $sublink
-     * @param string|null $ulRole
-     * @param string|null $liRole
-     * @param string|null $role
-     * @param bool $dark
-     * @return string
+     *
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      */
     protected function renderNormalMenu(
         AbstractContainer $container,
@@ -449,7 +423,7 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
         ?string $liRole = '',
         ?string $role = '',
         bool $dark = false
-    ) {
+    ): string {
         $html = '';
 
         // find deepest active
@@ -558,9 +532,7 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
 
             $anySubpageAccepted = $this->hasAcceptedSubpages(
                 $page,
-                [
-                    'maxDepth' => $maxDepth,
-                ],
+                ['maxDepth' => $maxDepth],
                 $iteratorDepth
             );
 
@@ -586,16 +558,16 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
             );
 
             if ([] === $liClasses) {
-                $liClass = '';
+                $allLiClasses = '';
             } else {
-                $liClass = ' class="' . ($this->escaper)(implode(' ', array_unique($liClasses))) . '"';
+                $allLiClasses = ' class="' . ($this->escaper)(implode(' ', array_unique($liClasses))) . '"';
             }
 
             if (0 === $depth && !empty($liRole)) {
-                $liClass .= ' role="' . ($this->escaper)($liRole) . '"';
+                $allLiClasses .= ' role="' . ($this->escaper)($liRole) . '"';
             }
 
-            $html .= $myIndent . '    <li' . $liClass . '>' . PHP_EOL;
+            $html .= $myIndent . '    <li' . $allLiClasses . '>' . PHP_EOL;
 
             if ($anySubpageAccepted && self::STYLE_SUBLINK_DETAILS === $subLink) {
                 $html .= $myIndent . '        <details>' . PHP_EOL;
@@ -639,6 +611,53 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
     }
 
     /**
+     * Render a partial with the given "model".
+     *
+     * @param array<mixed>              $params
+     * @param AbstractContainer|null    $container
+     * @param array<string>|string|null $partial
+     *
+     * @throws Exception\RuntimeException         if no partial provided
+     * @throws Exception\InvalidArgumentException if partial is invalid array
+     *
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
+     */
+    protected function renderPartialModel(array $params, $container, $partial): string
+    {
+        if (null === $partial) {
+            $partial = $this->getPartial();
+        }
+
+        if (null === $partial || '' === $partial || [] === $partial) {
+            throw new Exception\RuntimeException(
+                'Unable to render menu: No partial view script provided'
+            );
+        }
+
+        if (is_array($partial)) {
+            if (2 !== count($partial)) {
+                throw new Exception\InvalidArgumentException(
+                    'Unable to render menu: A view partial supplied as '
+                    . 'an array must contain one value: the partial view script'
+                );
+            }
+
+            $partial = $partial[0];
+        }
+
+        $container = $this->containerParser->parseContainer($container);
+
+        if (null === $container) {
+            $container = $this->getContainer();
+        }
+
+        return $this->view->render(
+            $partial,
+            array_merge($params, ['container' => $container])
+        );
+    }
+
+    /**
      * Normalizes given render options.
      *
      * @param array<string, bool|int|string|null> $options [optional] options to normalize
@@ -651,9 +670,9 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
      */
     protected function normalizeOptions(array $options = []): array
     {
-        if (isset($indent)) {
-            assert(is_int($indent) || is_string($indent));
-            $options['indent'] = $this->getWhitespace($indent);
+        if (isset($options['indent'])) {
+            assert(is_int($options['indent']) || is_string($options['indent']));
+            $options['indent'] = $this->getWhitespace($options['indent']);
         } else {
             $options['indent'] = $this->getIndent();
         }
@@ -736,11 +755,27 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
             $options['dark'] = false;
         }
 
+        if (!array_key_exists('escapeLabels', $options)) {
+            $options['escapeLabels'] = true;
+        }
+
         return $options;
     }
 
     /**
-     * @param AbstractPage                       $page    current page to check
+     * @throws InvalidArgumentException
+     */
+    private function getSizeClass(string $size, string $prefix): string
+    {
+        if (!in_array($size, self::$sizes, true)) {
+            throw new InvalidArgumentException('Size "' . $size . '" does not exist');
+        }
+
+        return sprintf($prefix, $size);
+    }
+
+    /**
+     * @param AbstractPage                        $page    current page to check
      * @param array<string, bool|int|string|null> $options options for controlling rendering
      * @param int                                 $level   current level of rendering
      */
@@ -766,9 +801,9 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
 
     /**
      * @param AbstractPage                         $page    current page to check
-     * @param array<string, bool|int|string|null>   $options options for controlling rendering
-     * @param int                                   $level   current level of rendering
-     * @param array<string, int|AbstractPage|null> $found
+     * @param array<string, bool|int|string|null>  $options options for controlling rendering
+     * @param int                                  $level   current level of rendering
+     * @param array<string, AbstractPage|int|null> $found
      * @phpstan-param array{page?: AbstractPage|null, depth?: int|null} $found
      *
      * @return array<bool>
@@ -794,12 +829,12 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
     }
 
     /**
-     * @param AbstractPage                       $page           current page to check
+     * @param AbstractPage                        $page           current page to check
      * @param array<string, bool|int|string|null> $options        options for controlling rendering
-     * @phpstan-param array{role?: string, direction?: self::DROP_ORIENTATION_*, sublink?: self::STYLE_SUBLINK_BUTTON|self::STYLE_SUBLINK_DETAILS, liActiveClass?: string, liClass?: string, addClassToListItem?: string} $options
      * @param int                                 $level          current level of rendering
      * @param array<int, string>                  $liClasses
      * @param array<string, string>               $pageAttributes
+     * @phpstan-param array{role?: string, direction?: self::DROP_ORIENTATION_*, sublink?: self::STYLE_SUBLINK_BUTTON|self::STYLE_SUBLINK_DETAILS, liActiveClass?: string, liClass?: string, addClassToListItem?: string} $options
      */
     private function setAttributes(
         AbstractPage $page,
@@ -859,10 +894,22 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
             if (0 === $level) {
                 $pageAttributes['aria-current'] = 'page';
             }
+
+            $liActiveClass = $page->get('li-active-class');
+
+            if ($liActiveClass) {
+                $liClasses[] = $liActiveClass;
+            }
         }
 
         if ($options['liClass']) {
             $liClasses[] = $options['liClass'];
+        }
+
+        $liClass = $page->get('li-class');
+
+        if ($liClass) {
+            $liClasses[] = $liClass;
         }
 
         // Add CSS class from page to <li>
@@ -878,7 +925,7 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
     /**
      * Returns an HTML string for the given page
      *
-     * @param AbstractPage                       $page       page to generate HTML for
+     * @param AbstractPage                        $page       page to generate HTML for
      * @param array<string, bool|int|string|null> $options    options for controlling rendering
      * @param array<string, string>               $attributes
      *
@@ -894,7 +941,9 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
         $title = $page->getTitle();
 
         if (null !== $this->translator) {
-            $label = ($this->translator)($label, $page->getTextDomain());
+            if ('' !== $label) {
+                $label = ($this->translator)($label, $page->getTextDomain());
+            }
 
             if (null !== $title) {
                 $title = ($this->translator)($title, $page->getTextDomain());
@@ -925,7 +974,7 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
             array_flip(['lastmod', 'changefreq', 'priority'])
         );
 
-        if ($options['escapeLabels']) {
+        if ('' !== $label && $options['escapeLabels']) {
             $label = ($this->escapeHtml)($label);
         }
 
@@ -991,5 +1040,38 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
         }
 
         return implode(' ', $itemClasses);
+    }
+
+    /**
+     * @param array<string, AbstractPage|int|null> $found
+     * @phpstan-param array{page?: AbstractPage|null, depth?: int|null} $found
+     */
+    private function isActiveBranch(array $found, AbstractPage $page, ?int $maxDepth): bool
+    {
+        if (!array_key_exists('page', $found) || !($found['page'] instanceof AbstractPage)) {
+            return false;
+        }
+
+        $foundPage  = $found['page'];
+        $foundDepth = $found['depth'] ?? 0;
+
+        $accept = false;
+
+        if ($foundPage->hasPage($page)) {
+            // accept if page is a direct child of the active page
+            $accept = true;
+        } elseif ($foundPage->getParent() instanceof AbstractContainer && $foundPage->getParent()->hasPage($page)) {
+            // page is a sibling of the active page...
+            if (
+                !$foundPage->hasPages(!$this->renderInvisible)
+                || is_int($maxDepth) && $foundDepth + 1 > $maxDepth
+            ) {
+                // accept if active page has no children, or the
+                // children are too deep to be rendered
+                $accept = true;
+            }
+        }
+
+        return $accept;
     }
 }

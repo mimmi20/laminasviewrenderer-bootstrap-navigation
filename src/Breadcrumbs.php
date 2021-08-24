@@ -1,6 +1,6 @@
 <?php
 /**
- * This file is part of the mimmi20/mezzio-navigation-laminasviewrenderer-bootstrap package.
+ * This file is part of the mimmi20/laminasviewrenderer-bootstrap-navigation package.
  *
  * Copyright (c) 2021, Thomas Mueller <mimmi20@live.de>
  *
@@ -20,16 +20,26 @@ use Laminas\Navigation\Page\AbstractPage;
 use Laminas\ServiceManager\ServiceLocatorInterface;
 use Laminas\Stdlib\Exception\InvalidArgumentException;
 use Laminas\View\Exception;
-
 use Laminas\View\Helper\EscapeHtml;
 use Laminas\View\Model\ModelInterface;
 use Laminas\View\Renderer\PhpRenderer;
 use Laminas\View\Renderer\RendererInterface;
 use Mimmi20\NavigationHelper\ContainerParser\ContainerParserInterface;
 use Mimmi20\NavigationHelper\Htmlify\HtmlifyInterface;
+
+use function array_merge;
+use function array_reverse;
+use function array_unshift;
+use function assert;
+use function count;
+use function get_class;
+use function gettype;
 use function implode;
+use function is_array;
+use function is_int;
+use function is_object;
+use function is_string;
 use function sprintf;
-use function str_repeat;
 
 use const PHP_EOL;
 
@@ -42,20 +52,24 @@ final class Breadcrumbs extends \Laminas\View\Helper\Navigation\Breadcrumbs
 
     private RendererInterface $renderer;
 
+    private EscapeHtml $escapeHtml;
+
     public function __construct(
         ServiceLocatorInterface $serviceLocator,
         Logger $logger,
         HtmlifyInterface $htmlify,
         ContainerParserInterface $containerParser,
         PhpRenderer $renderer,
+        EscapeHtml $escapeHtml,
         ?Translate $translator = null
     ) {
         $this->serviceLocator  = $serviceLocator;
         $this->logger          = $logger;
         $this->htmlify         = $htmlify;
         $this->containerParser = $containerParser;
+        $this->view            = $renderer;
+        $this->escapeHtml      = $escapeHtml;
         $this->translator      = $translator;
-        $this->view        = $renderer;
     }
 
     /**
@@ -131,10 +145,36 @@ final class Breadcrumbs extends \Laminas\View\Helper\Navigation\Breadcrumbs
     }
 
     /**
+     * Renders breadcrumbs by chaining 'a' elements with the separator
+     * registered in the helper.
+     *
+     * @param AbstractContainer|string|null $container [optional] container to render. Default is
+     *                                                 to render the container registered in the helper.
+     */
+    public function renderStraight($container = null): string
+    {
+        $content = $this->parentRenderStraight($container);
+
+        if ('' === $content) {
+            return '';
+        }
+
+        $indent = $this->getIndent();
+
+        $html  = $indent . '<nav aria-label="breadcrumb">' . PHP_EOL;
+        $html .= $indent . '    <ul class="breadcrumb">' . PHP_EOL;
+        $html .= $content;
+        $html .= $indent . '    </ul>' . PHP_EOL;
+        $html .= $indent . '</nav>' . PHP_EOL;
+
+        return $html;
+    }
+
+    /**
      * Render a partial with the given "model".
      *
      * @param array<mixed>                                  $params
-     * @param AbstractContainer|string|null                $container
+     * @param AbstractContainer|string|null                 $container
      * @param array<int, string>|ModelInterface|string|null $partial
      *
      * @throws Exception\RuntimeException         if no partial provided
@@ -211,19 +251,21 @@ final class Breadcrumbs extends \Laminas\View\Helper\Navigation\Breadcrumbs
      * Renders breadcrumbs by chaining 'a' elements with the separator
      * registered in the helper.
      *
-     * @param  AbstractContainer $container [optional] container to render. Default is
-     *                                      to render the container registered in the helper.
-     * @return string
+     * @param AbstractContainer|string|null $container [optional] container to render. Default is
+     *                                                 to render the container registered in the helper.
      */
-    public function parentRenderStraight($container = null)
+    private function parentRenderStraight($container = null): string
     {
-        $this->parseContainer($container);
+        $container = $this->containerParser->parseContainer($container);
+
         if (null === $container) {
             $container = $this->getContainer();
         }
 
+        $active = $this->findActive($container);
+
         // find deepest active
-        if (! $active = $this->findActive($container)) {
+        if (!$active) {
             return '';
         }
 
@@ -231,12 +273,22 @@ final class Breadcrumbs extends \Laminas\View\Helper\Navigation\Breadcrumbs
 
         // put the deepest active page last in breadcrumbs
         if ($this->getLinkLast()) {
-            $html = $this->htmlify($active);
+            $html[] = $this->renderBreadcrumbItem(
+                $this->htmlify->toHtml(self::class, $active),
+                $active->getCustomProperties()['liClass'] ?? '',
+                $active->isActive()
+            );
         } else {
-            /** @var \Laminas\View\Helper\EscapeHtml $escaper */
-            $escaper = $this->view->plugin('escapeHtml');
-            $html    = $escaper(
-                $this->translate($active->getLabel(), $active->getTextDomain())
+            $label = $active->getLabel();
+
+            if (null !== $this->translator) {
+                $label = ($this->translator)($label, $active->getTextDomain());
+            }
+
+            $html[] = $this->renderBreadcrumbItem(
+                ($this->escapeHtml)($label),
+                $active->getCustomProperties()['liClass'] ?? '',
+                $active->isActive()
             );
         }
 
@@ -263,33 +315,6 @@ final class Breadcrumbs extends \Laminas\View\Helper\Navigation\Breadcrumbs
         return $this->combineRendered($html);
     }
 
-    /**
-     * Renders breadcrumbs by chaining 'a' elements with the separator
-     * registered in the helper.
-     *
-     * @param  AbstractContainer $container [optional] container to render. Default is
-     *                                      to render the container registered in the helper.
-     * @return string
-     */
-    public function renderStraight($container = null)
-    {
-        $content = $this->parentRenderStraight($container);
-
-        if ('' === $content) {
-            return '';
-        }
-
-        $indent = $this->getIndent();
-
-        $html  = $indent . '<nav aria-label="breadcrumb">' . PHP_EOL;
-        $html .= $indent . '    <ul class="breadcrumb">' . PHP_EOL;
-        $html .= $content;
-        $html .= $indent . '    </ul>' . PHP_EOL;
-        $html .= $indent . '</nav>' . PHP_EOL;
-
-        return $html;
-    }
-
     private function renderBreadcrumbItem(string $content, string $liClass, bool $active): string
     {
         $classes = ['breadcrumb-item'];
@@ -308,7 +333,7 @@ final class Breadcrumbs extends \Laminas\View\Helper\Navigation\Breadcrumbs
 
         $html  = $indent . '        ' . sprintf('<li class="%s"%s>', implode(' ', $classes), $aria) . PHP_EOL;
         $html .= $indent . '            ' . $content . PHP_EOL;
-        $html .= $indent . '        ' . '</li>' . PHP_EOL;
+        $html .= $indent . '        </li>' . PHP_EOL;
 
         return $html;
     }

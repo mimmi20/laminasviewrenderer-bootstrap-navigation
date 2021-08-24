@@ -1,6 +1,6 @@
 <?php
 /**
- * This file is part of the mimmi20/mezzio-navigation-laminasviewrenderer-bootstrap package.
+ * This file is part of the mimmi20/laminasviewrenderer-bootstrap-navigation package.
  *
  * Copyright (c) 2021, Thomas Mueller <mimmi20@live.de>
  *
@@ -29,11 +29,9 @@ use Psr\Container\ContainerExceptionInterface;
 use SebastianBergmann\RecursionContext\InvalidArgumentException;
 
 use function assert;
-use function get_class;
 use function is_string;
 use function mb_strlen;
 use function mb_substr;
-use function sprintf;
 use function str_replace;
 use function trim;
 
@@ -65,6 +63,7 @@ final class BreadcrumbsTest extends AbstractTest
     {
         parent::setUp();
 
+        $plugin   = $this->serviceManager->get(ViewHelperPluginManager::class);
         $renderer = $this->serviceManager->get(PhpRenderer::class);
 
         $translator = null;
@@ -76,6 +75,7 @@ final class BreadcrumbsTest extends AbstractTest
             $this->serviceManager->get(HtmlifyInterface::class),
             $this->serviceManager->get(ContainerParserInterface::class),
             $renderer,
+            $plugin->get(EscapeHtml::class),
             $translator
         );
 

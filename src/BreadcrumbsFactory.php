@@ -1,6 +1,6 @@
 <?php
 /**
- * This file is part of the mimmi20/mezzio-navigation-laminasviewrenderer-bootstrap package.
+ * This file is part of the mimmi20/laminasviewrenderer-bootstrap-navigation package.
  *
  * Copyright (c) 2021, Thomas Mueller <mimmi20@live.de>
  *
@@ -19,11 +19,11 @@ use Laminas\ServiceManager\ServiceLocatorInterface;
 use Laminas\View\Helper\EscapeHtml;
 use Laminas\View\HelperPluginManager as ViewHelperPluginManager;
 use Laminas\View\Renderer\PhpRenderer;
+use Mimmi20\NavigationHelper\ContainerParser\ContainerParserInterface;
+use Mimmi20\NavigationHelper\Htmlify\HtmlifyInterface;
 use Psr\Container\ContainerExceptionInterface;
 
 use function assert;
-use function get_class;
-use function sprintf;
 
 final class BreadcrumbsFactory
 {
@@ -46,9 +46,10 @@ final class BreadcrumbsFactory
         return new Breadcrumbs(
             $container,
             $container->get(Logger::class),
-            $container->get(\Mimmi20\NavigationHelper\Htmlify\HtmlifyInterface::class),
-            $container->get(\Mimmi20\NavigationHelper\ContainerParser\ContainerParserInterface::class),
+            $container->get(HtmlifyInterface::class),
+            $container->get(ContainerParserInterface::class),
             $container->get(PhpRenderer::class),
+            $plugin->get(EscapeHtml::class),
             $translator
         );
     }

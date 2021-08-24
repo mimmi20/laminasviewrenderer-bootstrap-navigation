@@ -1,6 +1,6 @@
 <?php
 /**
- * This file is part of the mimmi20/mezzio-navigation-laminasviewrenderer-bootstrap package.
+ * This file is part of the mimmi20/laminasviewrenderer-bootstrap-navigation package.
  *
  * Copyright (c) 2021, Thomas Mueller <mimmi20@live.de>
  *
@@ -12,10 +12,10 @@ declare(strict_types = 1);
 
 namespace Mimmi20Test\LaminasView\BootstrapNavigation;
 
+use AssertionError;
 use Interop\Container\ContainerInterface;
 use Laminas\I18n\View\Helper\Translate;
 use Laminas\Log\Logger;
-use Laminas\ServiceManager\PluginManagerInterface;
 use Laminas\ServiceManager\ServiceLocatorInterface;
 use Laminas\View\Helper\EscapeHtml;
 use Laminas\View\HelperPluginManager as ViewHelperPluginManager;
@@ -27,8 +27,6 @@ use Mimmi20\NavigationHelper\Htmlify\HtmlifyInterface;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestCase;
 use SebastianBergmann\RecursionContext\InvalidArgumentException;
-
-use function assert;
 
 final class BreadcrumbsFactoryTest extends TestCase
 {
@@ -67,20 +65,21 @@ final class BreadcrumbsFactoryTest extends TestCase
 
         $htmlify         = $this->createMock(HtmlifyInterface::class);
         $containerParser = $this->createMock(ContainerParserInterface::class);
-        $translatePlugin = $this->createMock(Translate::class);
+        $translator      = $this->createMock(Translate::class);
         $renderer        = $this->createMock(PhpRenderer::class);
+        $escapeHtml      = $this->createMock(EscapeHtml::class);
 
         $viewHelperPluginManager = $this->getMockBuilder(ViewHelperPluginManager::class)
             ->disableOriginalConstructor()
             ->getMock();
+        $viewHelperPluginManager->expects(self::exactly(2))
+            ->method('get')
+            ->withConsecutive([Translate::class], [EscapeHtml::class])
+            ->willReturnOnConsecutiveCalls($translator, $escapeHtml);
         $viewHelperPluginManager->expects(self::once())
             ->method('has')
             ->with(Translate::class)
             ->willReturn(true);
-        $viewHelperPluginManager->expects(self::once())
-            ->method('get')
-            ->with(Translate::class)
-            ->willReturn($translatePlugin);
 
         $container = $this->getMockBuilder(ServiceLocatorInterface::class)
             ->disableOriginalConstructor()
@@ -124,6 +123,7 @@ final class BreadcrumbsFactoryTest extends TestCase
         $htmlify         = $this->createMock(HtmlifyInterface::class);
         $containerParser = $this->createMock(ContainerParserInterface::class);
         $renderer        = $this->createMock(PhpRenderer::class);
+        $escapeHtml      = $this->createMock(EscapeHtml::class);
 
         $viewHelperPluginManager = $this->getMockBuilder(ViewHelperPluginManager::class)
             ->disableOriginalConstructor()
@@ -132,8 +132,10 @@ final class BreadcrumbsFactoryTest extends TestCase
             ->method('has')
             ->with(Translate::class)
             ->willReturn(false);
-        $viewHelperPluginManager->expects(self::never())
-            ->method('get');
+        $viewHelperPluginManager->expects(self::once())
+            ->method('get')
+            ->with(EscapeHtml::class)
+            ->willReturn($escapeHtml);
 
         $container = $this->getMockBuilder(ServiceLocatorInterface::class)
             ->disableOriginalConstructor()
@@ -159,7 +161,7 @@ final class BreadcrumbsFactoryTest extends TestCase
         $container->expects(self::never())
             ->method('get');
 
-        $this->expectException(\AssertionError::class);
+        $this->expectException(AssertionError::class);
         $this->expectExceptionCode(1);
         $this->expectExceptionMessage('assert($container instanceof ServiceLocatorInterface)');
 

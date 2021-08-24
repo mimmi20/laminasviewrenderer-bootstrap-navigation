@@ -1,8 +1,8 @@
 <?php
 /**
- * This file is part of the mimmi20/mezzio-navigation-laminasviewrenderer package.
+ * This file is part of the mimmi20/laminasviewrenderer-bootstrap-navigation package.
  *
- * Copyright (c) 2020-2021, Thomas Mueller <mimmi20@live.de>
+ * Copyright (c) 2021, Thomas Mueller <mimmi20@live.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -12,12 +12,10 @@ declare(strict_types = 1);
 
 namespace Mimmi20\LaminasView\BootstrapNavigation;
 
-use Interop\Container\ContainerInterface;
 use Laminas\Log\Logger;
 use Laminas\Navigation\AbstractContainer;
 use Laminas\Navigation\Navigation;
 use Laminas\Navigation\Page\AbstractPage;
-use Laminas\Permissions\Acl\Acl;
 use Laminas\ServiceManager\ServiceLocatorInterface;
 use Laminas\Stdlib\Exception\DomainException;
 use Laminas\Stdlib\Exception\InvalidArgumentException;
@@ -28,14 +26,8 @@ use Mimmi20\NavigationHelper\FindActive\FindActiveInterface;
 use Mimmi20\NavigationHelper\Htmlify\HtmlifyInterface;
 use Psr\Container\ContainerExceptionInterface;
 
-use function assert;
 use function call_user_func_array;
-use function get_class;
-use function gettype;
 use function is_int;
-use function is_object;
-use function sprintf;
-use function str_repeat;
 
 /**
  * Base class for navigational helpers.
@@ -44,6 +36,11 @@ use function str_repeat;
  */
 trait HelperTrait
 {
+    /**
+     * @var ServiceLocatorInterface
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
+     */
+    protected $serviceLocator;
     private ?string $navigation = null;
 
     private Logger $logger;
@@ -51,11 +48,6 @@ trait HelperTrait
     private HtmlifyInterface $htmlify;
 
     private ContainerParserInterface $containerParser;
-
-    /**
-     * @var ServiceLocatorInterface
-     */
-    protected $serviceLocator;
 
     /**
      * Whether container should be injected when proxying
@@ -85,6 +77,8 @@ trait HelperTrait
      * @param array<mixed> $arguments rguments to pass
      *
      * @return mixed
+     *
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      */
     public function __call($method, array $arguments = [])
     {
@@ -152,25 +146,27 @@ trait HelperTrait
      * Finds the deepest active page in the given container
      *
      * @param AbstractContainer|string|null $container to search
-     * @param int|null                                  $minDepth  [optional] minimum depth
-     *                                                             required for page to be
-     *                                                             valid. Default is to use
-     *                                                             {@link getMinDepth()}. A
-     *                                                             null value means no minimum
-     *                                                             depth required.
-     * @param int|null                                  $maxDepth  [optional] maximum depth
-     *                                                             a page can have to be
-     *                                                             valid. Default is to use
-     *                                                             {@link getMaxDepth()}. A
-     *                                                             null value means no maximum
-     *                                                             depth required.
+     * @param int|null                      $minDepth  [optional] minimum depth
+     *                                                 required for page to be
+     *                                                 valid. Default is to use
+     *                                                 {@link getMinDepth()}. A
+     *                                                 null value means no minimum
+     *                                                 depth required.
+     * @param int|null                      $maxDepth  [optional] maximum depth
+     *                                                 a page can have to be
+     *                                                 valid. Default is to use
+     *                                                 {@link getMaxDepth()}. A
+     *                                                 null value means no maximum
+     *                                                 depth required.
      *
-     * @return array<string, int|\Laminas\Navigation\Page\AbstractPage|null> an associative array with the values 'depth' and 'page', or an empty array if not found
-     * @phpstan-return array{page?: \Laminas\Navigation\Page\AbstractPage|null, depth?: int|null}
+     * @return array<string, (int|AbstractPage|null)> an associative array with the values 'depth' and 'page', or an empty array if not found
+     * @phpstan-return array{page?: (AbstractPage|null), depth?: (int|null)}
      *
      * @throws InvalidArgumentException
+     *
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      */
-    public function findActive($container, $minDepth = null, $maxDepth = -1)
+    public function findActive($container, $minDepth = null, $maxDepth = -1): array
     {
         $container = $this->containerParser->parseContainer($container);
 
@@ -217,13 +213,15 @@ trait HelperTrait
      * - If page is accepted and $recursive is true, the page
      *   will not be accepted if it is the descendant of a non-accepted page
      *
-     * @param \Laminas\Navigation\Page\AbstractPage $page      page to check
-     * @param bool          $recursive [optional] if true, page will not be
-     *                                 accepted if it is the descendant of
-     *                                 a page that is not accepted. Default
-     *                                 is true
+     * @param AbstractPage $page      page to check
+     * @param bool         $recursive [optional] if true, page will not be
+     *                                accepted if it is the descendant of
+     *                                a page that is not accepted. Default
+     *                                is true
      *
      * @return bool Whether page should be accepted
+     *
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      */
     public function accept(AbstractPage $page, $recursive = true): bool
     {
@@ -242,33 +240,21 @@ trait HelperTrait
             return false;
         }
 
-        assert(
-            $acceptHelper instanceof AcceptHelperInterface,
-            sprintf(
-                '$acceptHelper should be an Instance of %s, but was %s',
-                AcceptHelperInterface::class,
-                is_object($acceptHelper) ? get_class($acceptHelper) : gettype($acceptHelper)
-            )
-        );
-
         return $acceptHelper->accept($page, $recursive);
     }
 
     /**
      * Returns an HTML string containing an 'a' element for the given page
      *
-     * @param \Laminas\Navigation\Page\AbstractPage $page page to generate HTML for
+     * @param AbstractPage $page page to generate HTML for
      *
      * @return string HTML string (<a href="…">Label</a>)
      */
-    public function htmlify(\Laminas\Navigation\Page\AbstractPage $page): string
+    public function htmlify(AbstractPage $page): string
     {
         return $this->htmlify->toHtml(static::class, $page);
     }
 
-    /**
-     * @return \Laminas\ServiceManager\ServiceLocatorInterface
-     */
     public function getServiceLocator(): ServiceLocatorInterface
     {
         return $this->serviceLocator;

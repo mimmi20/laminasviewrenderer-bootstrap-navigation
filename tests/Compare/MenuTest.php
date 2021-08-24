@@ -1,6 +1,6 @@
 <?php
 /**
- * This file is part of the mimmi20/mezzio-navigation-laminasviewrenderer-bootstrap package.
+ * This file is part of the mimmi20/laminasviewrenderer-bootstrap-navigation package.
  *
  * Copyright (c) 2021, Thomas Mueller <mimmi20@live.de>
  *
@@ -66,7 +66,7 @@ final class MenuTest extends AbstractTest
     {
         parent::setUp();
 
-        $plugin              = $this->serviceManager->get(ViewHelperPluginManager::class);
+        $plugin   = $this->serviceManager->get(ViewHelperPluginManager::class);
         $renderer = $this->serviceManager->get(PhpRenderer::class);
 
         // create helper
@@ -838,15 +838,15 @@ final class MenuTest extends AbstractTest
 
         $page = $nav2->findOneByLabel('Site 2');
         assert(
-            $page instanceof PageInterface,
+            $page instanceof AbstractPage,
             sprintf(
                 '$page should be an Instance of %s, but was %s',
-                PageInterface::class,
+                AbstractPage::class,
                 get_class($page)
             )
         );
 
-        self::assertInstanceOf(PageInterface::class, $page);
+        self::assertInstanceOf(AbstractPage::class, $page);
         $page->setClass('foobar');
 
         $expected = $this->getExpected('menu/onlyactivebranch_addclasstolistitem.html');
