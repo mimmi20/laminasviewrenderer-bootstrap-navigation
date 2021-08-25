@@ -36,8 +36,7 @@ final class MenuFactory
     {
         assert($container instanceof ServiceLocatorInterface);
 
-        $plugin     = $container->get(ViewPluginManager::class);
-        $translator = null;
+        $plugin = $container->get(ViewPluginManager::class);
 
         return new Menu(
             $container,
@@ -46,8 +45,7 @@ final class MenuFactory
             $plugin->get(EscapeHtmlAttr::class),
             $container->get(PhpRenderer::class),
             $plugin->get(EscapeHtml::class),
-            $container->get(HtmlElementInterface::class),
-            $translator
+            $container->get(HtmlElementInterface::class)
         );
     }
 }

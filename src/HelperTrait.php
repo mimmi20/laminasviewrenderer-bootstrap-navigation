@@ -20,6 +20,7 @@ use Laminas\ServiceManager\ServiceLocatorInterface;
 use Laminas\Stdlib\Exception\DomainException;
 use Laminas\Stdlib\Exception\InvalidArgumentException;
 use Laminas\View\Exception;
+use Laminas\View\Model\ModelInterface;
 use Mimmi20\NavigationHelper\Accept\AcceptHelperInterface;
 use Mimmi20\NavigationHelper\ContainerParser\ContainerParserInterface;
 use Mimmi20\NavigationHelper\FindActive\FindActiveInterface;
@@ -42,6 +43,22 @@ trait HelperTrait
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
      */
     protected $serviceLocator;
+
+    /**
+     * AbstractContainer to operate on by default
+     *
+     * @var AbstractContainer|null
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
+     */
+    protected $container;
+
+    /**
+     * Partial view script to use for rendering menu.
+     *
+     * @var array<int, string>|ModelInterface|string|null
+     */
+    protected $partial;
+
     private ?string $navigation = null;
 
     private Logger $logger;
@@ -72,24 +89,6 @@ trait HelperTrait
     }
 
     /**
-     * Magic overload: Proxy calls to the navigation container
-     *
-     * @param string       $method    method name in container
-     * @param array<mixed> $arguments rguments to pass
-     *
-     * @return mixed
-     *
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
-     */
-    public function __call($method, array $arguments = [])
-    {
-        return call_user_func_array(
-            [$this->getContainer(), $method],
-            $arguments
-        );
-    }
-
-    /**
      * Magic overload: Proxy to {@link render()}.
      *
      * This method will trigger an E_USER_ERROR if rendering the helper causes
@@ -101,7 +100,7 @@ trait HelperTrait
     {
         try {
             return $this->render();
-        } catch (Exception\ExceptionInterface | InvalidArgumentException | DomainException $e) {
+        } catch (\Throwable $e) {
             $this->logger->err($e);
 
             return '';
@@ -115,11 +114,16 @@ trait HelperTrait
      *
      * @param AbstractContainer|string|null $container default is null, meaning container will be reset
      *
-     * @throws InvalidArgumentException
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      */
     public function setContainer($container = null): self
     {
-        $this->container = $this->containerParser->parseContainer($container);
+
+        $container = $this->containerParser->parseContainer($container);
+
+        assert($container instanceof AbstractContainer || null === $container);
+
+        $this->container = $container;
 
         return $this;
     }
@@ -133,6 +137,8 @@ trait HelperTrait
      * stored in the helper.
      *
      * @return AbstractContainer navigation container
+     *
+     * @throws \Laminas\Navigation\Exception\InvalidArgumentException
      */
     public function getContainer(): AbstractContainer
     {
@@ -141,6 +147,31 @@ trait HelperTrait
         }
 
         return $this->container;
+    }
+
+    /**
+     * Sets which partial view script to use for rendering menu.
+     *
+     * @param array<int, string>|ModelInterface|string|null $partial partial view script or null. If an array is
+     *                                                               given, the first value is used for the partial view script.
+     */
+    public function setPartial($partial): self
+    {
+        if (null === $partial || is_string($partial) || is_array($partial) || $partial instanceof ModelInterface) {
+            $this->partial = $partial;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Returns partial view script to use for rendering menu.
+     *
+     * @return array<int, string>|ModelInterface|string|null
+     */
+    public function getPartial()
+    {
+        return $this->partial;
     }
 
     /**
@@ -164,6 +195,7 @@ trait HelperTrait
      * @phpstan-return array{page?: (AbstractPage|null), depth?: (int|null)}
      *
      * @throws InvalidArgumentException
+     * @throws \Laminas\Navigation\Exception\InvalidArgumentException
      *
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      */
@@ -199,7 +231,13 @@ trait HelperTrait
             return [];
         }
 
-        return $findActiveHelper->find($container, $minDepth, $maxDepth);
+        $active = $findActiveHelper->find($container, $minDepth, $maxDepth);
+
+        if (array_key_exists('page', $active)) {
+            assert($active['page'] instanceof AbstractPage || null === $active['page']);
+        }
+
+        return $active;
     }
 
     // Iterator filter methods:

@@ -71,66 +71,6 @@ final class Breadcrumbs extends \Laminas\View\Helper\Navigation\Breadcrumbs
     }
 
     /**
-     * Sets navigation container the helper operates on by default
-     *
-     * Implements {@link ViewHelperInterface::setContainer()}.
-     *
-     * @param AbstractContainer|string|null $container default is null, meaning container will be reset
-     *
-     * @throws InvalidArgumentException
-     */
-    public function setContainer($container = null): self
-    {
-        $this->container = $this->containerParser->parseContainer($container);
-
-        return $this;
-    }
-
-    /**
-     * Returns the navigation container helper operates on by default
-     *
-     * Implements {@link ViewHelperInterface::getContainer()}.
-     *
-     * If no container is set, a new container will be instantiated and
-     * stored in the helper.
-     *
-     * @return AbstractContainer navigation container
-     */
-    public function getContainer(): AbstractContainer
-    {
-        if (null === $this->container) {
-            $this->container = new Navigation();
-        }
-
-        return $this->container;
-    }
-
-    /**
-     * Sets which partial view script to use for rendering menu.
-     *
-     * @param array<int, string>|ModelInterface|string|null $partial partial view script or null. If an array is
-     *                                                               given, the first value is used for the partial view script.
-     */
-    public function setPartial($partial): self
-    {
-        if (null === $partial || is_string($partial) || is_array($partial) || $partial instanceof ModelInterface) {
-            $this->partial = $partial;
-        }
-
-        return $this;
-    }
-
-    /**
-     * Returns partial view script to use for rendering menu.
-     *
-     * @return array<int, string>|ModelInterface|string|null
-     */
-    public function getPartial()
-    {
-        return $this->partial;
-    }
-
-    /**
      * Returns minimum depth a page must have to be included when rendering
      */
     public function getMinDepth(): ?int
@@ -148,6 +88,8 @@ final class Breadcrumbs extends \Laminas\View\Helper\Navigation\Breadcrumbs
      *
      * @param AbstractContainer|string|null $container [optional] container to render. Default is
      *                                                 to render the container registered in the helper.
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws \Laminas\Navigation\Exception\InvalidArgumentException
      */
     public function renderStraight($container = null): string
     {
@@ -177,6 +119,8 @@ final class Breadcrumbs extends \Laminas\View\Helper\Navigation\Breadcrumbs
      *
      * @throws Exception\RuntimeException         if no partial provided
      * @throws Exception\InvalidArgumentException if partial is invalid array
+     * @throws InvalidArgumentException
+     * @throws \Laminas\Navigation\Exception\InvalidArgumentException
      */
     protected function renderPartialModel(array $params, $container, $partial): string
     {
@@ -206,6 +150,8 @@ final class Breadcrumbs extends \Laminas\View\Helper\Navigation\Breadcrumbs
         if (null === $container) {
             $container = $this->getContainer();
         }
+
+        assert($container instanceof AbstractContainer || null === $container);
 
         $model  = array_merge($params, ['pages' => []], ['separator' => $this->getSeparator()]);
         $active = $this->findActive($container);
@@ -251,6 +197,9 @@ final class Breadcrumbs extends \Laminas\View\Helper\Navigation\Breadcrumbs
      *
      * @param AbstractContainer|string|null $container [optional] container to render. Default is
      *                                                 to render the container registered in the helper.
+     *
+     * @throws InvalidArgumentException
+     * @throws \Laminas\Navigation\Exception\InvalidArgumentException
      */
     private function parentRenderStraight($container = null): string
     {
@@ -259,6 +208,8 @@ final class Breadcrumbs extends \Laminas\View\Helper\Navigation\Breadcrumbs
         if (null === $container) {
             $container = $this->getContainer();
         }
+
+        assert($container instanceof AbstractContainer || null === $container);
 
         $active = $this->findActive($container);
 
@@ -277,11 +228,11 @@ final class Breadcrumbs extends \Laminas\View\Helper\Navigation\Breadcrumbs
                 $active->isActive()
             );
         } else {
-            $label = (string) $active->getLabel();
+            $label      = (string) $active->getLabel();
+            $translator = $this->getTranslator();
 
-            if ('' !== $label && $this->hasTranslator()) {
-                $translator = $this->getTranslator();
-                $label      = $translator->translate($label, $active->getTextDomain());
+            if ('' !== $label && null !== $translator) {
+                $label = $translator->translate($label, $active->getTextDomain());
             }
 
             $html[] = $this->renderBreadcrumbItem(

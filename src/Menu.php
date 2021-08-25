@@ -15,11 +15,13 @@ namespace Mimmi20\LaminasView\BootstrapNavigation;
 use InvalidArgumentException;
 use Laminas\Log\Logger;
 use Laminas\Navigation\AbstractContainer;
+use Laminas\Navigation\Navigation;
 use Laminas\Navigation\Page\AbstractPage;
 use Laminas\ServiceManager\ServiceLocatorInterface;
 use Laminas\View\Exception;
 use Laminas\View\Helper\EscapeHtml;
 use Laminas\View\Helper\EscapeHtmlAttr;
+use Laminas\View\Model\ModelInterface;
 use Laminas\View\Renderer\PhpRenderer;
 use Mimmi20\LaminasView\Helper\HtmlElement\Helper\HtmlElementInterface;
 use Mimmi20\NavigationHelper\ContainerParser\ContainerParserInterface;
@@ -116,7 +118,7 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
      * @param AbstractContainer|string|null       $container [optional] container to create menu from.
      *                                                       Default is to use the container retrieved from {@link getContainer()}.
      * @param array<string, bool|int|string|null> $options   [optional] options for controlling rendering
-     * @phpstan-param array{in-navbar?: bool, ulClass?: string|null, tabs?: bool, pills?: bool, fill?: bool, justified?: bool, centered?: bool, right-aligned?: bool, vertical?: string, direction?: string, style?: string, substyle?: string, sublink?: string, onlyActiveBranch?: bool, renderParents?: bool, indent?: int|string|null} $options
+     * @phpstan-param array{in-navbar?: bool, ulClass?: string|null, tabs?: bool, pills?: bool, fill?: bool, justified?: bool, centered?: bool, right-aligned?: bool, vertical?: string, direction?: self::DROP_ORIENTATION_*, style?: self::STYLE_UL|self::STYLE_OL, substyle?: string, sublink?: self::STYLE_SUBLINK_*, onlyActiveBranch?: bool, renderParents?: bool, indent?: int|string|null} $options
      *
      * @throws InvalidArgumentException
      */
@@ -127,6 +129,8 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
         if (null === $container) {
             $container = $this->getContainer();
         }
+
+        assert($container instanceof AbstractContainer);
 
         $options = $this->normalizeOptions($options);
 
@@ -255,10 +259,7 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
      * @param bool              $escapeLabels       Whether or not to escape the labels
      * @param bool              $addClassToListItem Whether or not page class applied to <li> element
      * @param string            $liActiveClass      CSS class for active LI
-     * @param string            $style
-     * @param bool              $dark
      * @phpstan-param self::DROP_ORIENTATION_* $direction
-     * @phpstan-param self::STYLE_UL|self::STYLE_OL $style
      * @phpstan-param self::STYLE_SUBLINK_* $sublink
      *
      * @throws Exception\InvalidArgumentException
@@ -610,14 +611,14 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
     /**
      * Render a partial with the given "model".
      *
-     * @param array<mixed>              $params
-     * @param AbstractContainer|null    $container
-     * @param array<string>|string|null $partial
+     * @param array<mixed>                                  $params
+     * @param AbstractContainer|string|null                 $container
+     * @param array<int, string>|ModelInterface|string|null $partial
      *
      * @throws Exception\RuntimeException         if no partial provided
      * @throws Exception\InvalidArgumentException if partial is invalid array
-     *
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws \Laminas\Navigation\Exception\InvalidArgumentException
      */
     protected function renderPartialModel(array $params, $container, $partial): string
     {
@@ -648,6 +649,8 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
             $container = $this->getContainer();
         }
 
+        assert($container instanceof AbstractContainer || null === $container);
+
         return $this->view->render(
             $partial,
             array_merge($params, ['container' => $container])
@@ -658,7 +661,7 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
      * Normalizes given render options.
      *
      * @param array<string, bool|int|string|null> $options [optional] options to normalize
-     * @phpstan-param array{ulClass?: string|null, liClass?: string|null, indent?: int|string|null, minDepth?: int|null, maxDepth?: int|null, onlyActiveBranch?: bool, escapeLabels?: bool, renderParents?: bool, addClassToListItem?: bool, liActiveClass?: string|null, tabs?: bool, pills?: bool, fill?: bool, justified?: bool, centered?: bool, right-aligned?: bool, vertical?: string, direction?: string, style?: string, substyle?: string, sublink?: string, in-navbar?: bool} $options
+     * @phpstan-param array{ulClass?: string|null, liClass?: string|null, indent?: int|string|null, minDepth?: int|null, maxDepth?: int|null, onlyActiveBranch?: bool, escapeLabels?: bool, renderParents?: bool, addClassToListItem?: bool, liActiveClass?: string|null, tabs?: bool, pills?: bool, fill?: bool, justified?: bool, centered?: bool, right-aligned?: bool, vertical?: string, direction?: string, style?: string, substyle?: string, sublink?: string, in-navbar?: bool, dark?: bool} $options
      *
      * @return array<string, bool|int|string|null>
      * @phpstan-return array{ulClass: string, liClass: string, indent: string, minDepth: int, maxDepth: int|null, onlyActiveBranch: bool, escapeLabels: bool, renderParents: bool, addClassToListItem: bool, liActiveClass: string, role: string|null, style: string, substyle: string, sublink: string, class: string, ulRole: string|null, liRole: string|null, direction: string, dark: bool}
@@ -855,7 +858,7 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
             $pageClasses[] = 'dropdown-item';
         }
 
-        if ($anySubpageAccepted) {
+        if ($anySubpageAccepted && array_key_exists('direction', $options)) {
             switch ($options['direction']) {
                 case self::DROP_ORIENTATION_UP:
                     $liClasses[] = 'dropup';
@@ -871,13 +874,15 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
                     $liClasses[] = 'dropdown';
             }
 
-            if (self::STYLE_SUBLINK_BUTTON === $options['sublink'] || self::STYLE_SUBLINK_DETAILS === $options['sublink']) {
-                $pageClasses[] = 'btn';
-            }
+            if (array_key_exists('sublink', $options)) {
+                if (self::STYLE_SUBLINK_BUTTON === $options['sublink'] || self::STYLE_SUBLINK_DETAILS === $options['sublink']) {
+                    $pageClasses[] = 'btn';
+                }
 
-            if (self::STYLE_SUBLINK_DETAILS !== $options['sublink']) {
-                $pageClasses[]                    = 'dropdown-toggle';
-                $pageAttributes['data-bs-toggle'] = 'dropdown';
+                if (self::STYLE_SUBLINK_DETAILS !== $options['sublink']) {
+                    $pageClasses[] = 'dropdown-toggle';
+                    $pageAttributes['data-bs-toggle'] = 'dropdown';
+                }
             }
 
             $pageAttributes['aria-expanded'] = 'false';
@@ -899,7 +904,7 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
             }
         }
 
-        if ($options['liClass']) {
+        if (array_key_exists('liClass', $options)) {
             $liClasses[] = $options['liClass'];
         }
 
@@ -910,7 +915,7 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
         }
 
         // Add CSS class from page to <li>
-        if ($options['addClassToListItem'] && $page->getClass()) {
+        if (array_key_exists('addClassToListItem', $options) && $options['addClassToListItem'] && $page->getClass()) {
             $liClasses[] = $page->getClass();
         } elseif ($page->getClass()) {
             $pageClasses[] = $page->getClass();
@@ -934,12 +939,11 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
         array $attributes,
         bool $anySubpageAccepted
     ): string {
-        $label = (string) $page->getLabel();
-        $title = $page->getTitle();
+        $label      = (string) $page->getLabel();
+        $title      = $page->getTitle();
+        $translator = $this->getTranslator();
 
-        if ($this->hasTranslator()) {
-            $translator = $this->getTranslator();
-
+        if (null !== $translator) {
             if ('' !== $label) {
                 $label = $translator->translate($label, $page->getTextDomain());
             }
