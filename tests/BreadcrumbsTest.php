@@ -12,7 +12,7 @@ declare(strict_types = 1);
 
 namespace Mimmi20Test\LaminasView\BootstrapNavigation;
 
-use Laminas\I18n\View\Helper\Translate;
+use Laminas\I18n\Translator\TranslatorInterface as Translator;
 use Laminas\Log\Logger;
 use Laminas\Navigation\AbstractContainer;
 use Laminas\Navigation\Navigation;
@@ -118,13 +118,7 @@ final class BreadcrumbsTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translatePlugin = $this->getMockBuilder(Translate::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $translatePlugin->expects(self::never())
-            ->method('__invoke');
-
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml, $translatePlugin);
+        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml);
 
         self::assertNull($helper->getMaxDepth());
 
@@ -197,13 +191,7 @@ final class BreadcrumbsTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translatePlugin = $this->getMockBuilder(Translate::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $translatePlugin->expects(self::never())
-            ->method('__invoke');
-
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml, $translatePlugin);
+        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml);
 
         self::assertSame(1, $helper->getMinDepth());
 
@@ -292,13 +280,7 @@ final class BreadcrumbsTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translatePlugin = $this->getMockBuilder(Translate::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $translatePlugin->expects(self::never())
-            ->method('__invoke');
-
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml, $translatePlugin);
+        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml);
 
         self::assertFalse($helper->getRenderInvisible());
 
@@ -374,13 +356,7 @@ final class BreadcrumbsTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translatePlugin = $this->getMockBuilder(Translate::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $translatePlugin->expects(self::never())
-            ->method('__invoke');
-
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml, $translatePlugin);
+        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml);
 
         self::assertNull($helper->getRole());
         self::assertFalse($helper->hasRole());
@@ -460,13 +436,7 @@ final class BreadcrumbsTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translatePlugin = $this->getMockBuilder(Translate::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $translatePlugin->expects(self::never())
-            ->method('__invoke');
-
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml, $translatePlugin);
+        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml);
 
         self::assertTrue($helper->getUseAcl());
 
@@ -546,13 +516,7 @@ final class BreadcrumbsTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translatePlugin = $this->getMockBuilder(Translate::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $translatePlugin->expects(self::never())
-            ->method('__invoke');
-
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml, $translatePlugin);
+        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml);
 
         self::assertNull($helper->getAcl());
         self::assertFalse($helper->hasAcl());
@@ -637,13 +601,7 @@ final class BreadcrumbsTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translatePlugin = $this->getMockBuilder(Translate::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $translatePlugin->expects(self::never())
-            ->method('__invoke');
-
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml, $translatePlugin);
+        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml);
 
         self::assertSame($renderer, $helper->getView());
 
@@ -723,13 +681,7 @@ final class BreadcrumbsTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translatePlugin = $this->getMockBuilder(Translate::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $translatePlugin->expects(self::never())
-            ->method('__invoke');
-
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml, $translatePlugin);
+        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml);
 
         $container1 = $helper->getContainer();
 
@@ -815,13 +767,7 @@ final class BreadcrumbsTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translatePlugin = $this->getMockBuilder(Translate::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $translatePlugin->expects(self::never())
-            ->method('__invoke');
-
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml, $translatePlugin);
+        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml);
 
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('test');
@@ -900,13 +846,7 @@ final class BreadcrumbsTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translatePlugin = $this->getMockBuilder(Translate::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $translatePlugin->expects(self::never())
-            ->method('__invoke');
-
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml, $translatePlugin);
+        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml);
 
         $helper->setContainer($name);
 
@@ -1042,13 +982,7 @@ final class BreadcrumbsTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translatePlugin = $this->getMockBuilder(Translate::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $translatePlugin->expects(self::never())
-            ->method('__invoke');
-
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml, $translatePlugin);
+        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml);
 
         $helper->setContainer($name);
         $helper->setRole($role);
@@ -1183,13 +1117,7 @@ final class BreadcrumbsTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translatePlugin = $this->getMockBuilder(Translate::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $translatePlugin->expects(self::never())
-            ->method('__invoke');
-
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml, $translatePlugin);
+        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml);
 
         $helper->setContainer($name);
         $helper->setRole($role);
@@ -1310,13 +1238,7 @@ final class BreadcrumbsTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translatePlugin = $this->getMockBuilder(Translate::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $translatePlugin->expects(self::never())
-            ->method('__invoke');
-
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml, $translatePlugin);
+        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml);
 
         $helper->setContainer($name);
 
@@ -1387,13 +1309,7 @@ final class BreadcrumbsTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translatePlugin = $this->getMockBuilder(Translate::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $translatePlugin->expects(self::never())
-            ->method('__invoke');
-
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml, $translatePlugin);
+        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml);
 
         self::assertSame('', $helper->getIndent());
 
@@ -1541,13 +1457,7 @@ final class BreadcrumbsTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translatePlugin = $this->getMockBuilder(Translate::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $translatePlugin->expects(self::never())
-            ->method('__invoke');
-
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml, $translatePlugin);
+        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml);
 
         $helper->setRole($role);
 
@@ -1697,13 +1607,7 @@ final class BreadcrumbsTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translatePlugin = $this->getMockBuilder(Translate::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $translatePlugin->expects(self::never())
-            ->method('__invoke');
-
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml, $translatePlugin);
+        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml);
 
         $helper->setRole($role);
 
@@ -1812,13 +1716,7 @@ final class BreadcrumbsTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translatePlugin = $this->getMockBuilder(Translate::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $translatePlugin->expects(self::never())
-            ->method('__invoke');
-
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml, $translatePlugin);
+        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml);
 
         $helper->setRole($role);
 
@@ -1965,13 +1863,7 @@ final class BreadcrumbsTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translatePlugin = $this->getMockBuilder(Translate::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $translatePlugin->expects(self::never())
-            ->method('__invoke');
-
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml, $translatePlugin);
+        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml);
 
         $helper->setRole($role);
 
@@ -2121,13 +2013,7 @@ final class BreadcrumbsTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translatePlugin = $this->getMockBuilder(Translate::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $translatePlugin->expects(self::never())
-            ->method('__invoke');
-
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml, $translatePlugin);
+        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml);
 
         $helper->setRole($role);
 
@@ -2289,13 +2175,7 @@ final class BreadcrumbsTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translatePlugin = $this->getMockBuilder(Translate::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $translatePlugin->expects(self::never())
-            ->method('__invoke');
-
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml, $translatePlugin);
+        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml);
 
         $helper->setRole($role);
 
@@ -2443,13 +2323,7 @@ final class BreadcrumbsTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translatePlugin = $this->getMockBuilder(Translate::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $translatePlugin->expects(self::never())
-            ->method('__invoke');
-
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml, $translatePlugin);
+        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml);
 
         $helper->setRole($role);
 
@@ -2593,13 +2467,7 @@ final class BreadcrumbsTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translatePlugin = $this->getMockBuilder(Translate::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $translatePlugin->expects(self::never())
-            ->method('__invoke');
-
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml, $translatePlugin);
+        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml);
 
         $helper->setRole($role);
 
@@ -2678,13 +2546,7 @@ final class BreadcrumbsTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translatePlugin = $this->getMockBuilder(Translate::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $translatePlugin->expects(self::never())
-            ->method('__invoke');
-
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml, $translatePlugin);
+        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml);
 
         self::assertNull($helper->getPartial());
 
@@ -2761,13 +2623,7 @@ final class BreadcrumbsTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translatePlugin = $this->getMockBuilder(Translate::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $translatePlugin->expects(self::never())
-            ->method('__invoke');
-
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml, $translatePlugin);
+        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml);
 
         self::assertFalse($helper->getLinkLast());
 
@@ -2844,13 +2700,7 @@ final class BreadcrumbsTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translatePlugin = $this->getMockBuilder(Translate::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $translatePlugin->expects(self::never())
-            ->method('__invoke');
-
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml, $translatePlugin);
+        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml);
 
         self::assertSame(' &gt; ', $helper->getSeparator());
 
@@ -2925,13 +2775,7 @@ final class BreadcrumbsTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translatePlugin = $this->getMockBuilder(Translate::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $translatePlugin->expects(self::never())
-            ->method('__invoke');
-
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml, $translatePlugin);
+        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml);
 
         $role = 'testRole';
 
@@ -3022,13 +2866,7 @@ final class BreadcrumbsTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translatePlugin = $this->getMockBuilder(Translate::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $translatePlugin->expects(self::never())
-            ->method('__invoke');
-
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml, $translatePlugin);
+        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml);
 
         $role = 'testRole';
 
@@ -3210,13 +3048,7 @@ final class BreadcrumbsTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translatePlugin = $this->getMockBuilder(Translate::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $translatePlugin->expects(self::never())
-            ->method('__invoke');
-
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml, $translatePlugin);
+        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml);
 
         $helper->setRole($role);
 
@@ -3383,13 +3215,7 @@ final class BreadcrumbsTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translatePlugin = $this->getMockBuilder(Translate::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $translatePlugin->expects(self::never())
-            ->method('__invoke');
-
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml, $translatePlugin);
+        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml);
 
         $helper->setRole($role);
 
@@ -3561,13 +3387,7 @@ final class BreadcrumbsTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translatePlugin = $this->getMockBuilder(Translate::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $translatePlugin->expects(self::never())
-            ->method('__invoke');
-
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml, $translatePlugin);
+        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml);
 
         $helper->setRole($role);
 
@@ -3720,13 +3540,7 @@ final class BreadcrumbsTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translatePlugin = $this->getMockBuilder(Translate::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $translatePlugin->expects(self::never())
-            ->method('__invoke');
-
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml, $translatePlugin);
+        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml);
 
         $helper->setRole($role);
 
@@ -3806,13 +3620,7 @@ final class BreadcrumbsTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translatePlugin = $this->getMockBuilder(Translate::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $translatePlugin->expects(self::never())
-            ->method('__invoke');
-
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml, $translatePlugin);
+        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml);
 
         $role = 'testRole';
 
@@ -3903,13 +3711,7 @@ final class BreadcrumbsTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translatePlugin = $this->getMockBuilder(Translate::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $translatePlugin->expects(self::never())
-            ->method('__invoke');
-
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml, $translatePlugin);
+        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml);
 
         $role = 'testRole';
 
@@ -4091,13 +3893,7 @@ final class BreadcrumbsTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translatePlugin = $this->getMockBuilder(Translate::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $translatePlugin->expects(self::never())
-            ->method('__invoke');
-
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml, $translatePlugin);
+        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml);
 
         $helper->setRole($role);
 
@@ -4250,13 +4046,7 @@ final class BreadcrumbsTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translatePlugin = $this->getMockBuilder(Translate::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $translatePlugin->expects(self::never())
-            ->method('__invoke');
-
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml, $translatePlugin);
+        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml);
 
         $helper->setRole($role);
 
@@ -4423,13 +4213,7 @@ final class BreadcrumbsTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translatePlugin = $this->getMockBuilder(Translate::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $translatePlugin->expects(self::never())
-            ->method('__invoke');
-
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml, $translatePlugin);
+        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml);
 
         $helper->setRole($role);
 
@@ -4601,13 +4385,7 @@ final class BreadcrumbsTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translatePlugin = $this->getMockBuilder(Translate::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $translatePlugin->expects(self::never())
-            ->method('__invoke');
-
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml, $translatePlugin);
+        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml);
 
         $helper->setRole($role);
 
@@ -4754,13 +4532,7 @@ final class BreadcrumbsTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translatePlugin = $this->getMockBuilder(Translate::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $translatePlugin->expects(self::never())
-            ->method('__invoke');
-
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml, $translatePlugin);
+        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml);
 
         $helper->setRole($role);
 
@@ -4942,13 +4714,7 @@ final class BreadcrumbsTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translatePlugin = $this->getMockBuilder(Translate::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $translatePlugin->expects(self::never())
-            ->method('__invoke');
-
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml, $translatePlugin);
+        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml);
 
         $helper->setRole($role);
 
@@ -5144,18 +4910,19 @@ final class BreadcrumbsTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translatePlugin = $this->getMockBuilder(Translate::class)
+        $translator = $this->getMockBuilder(Translator::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $translatePlugin->expects(self::once())
-            ->method('__invoke')
+        $translator->expects(self::once())
+            ->method('translate')
             ->with($label, $textDomain)
             ->willReturn($tranalatedLabel);
 
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml, $translatePlugin);
+        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml);
 
         $helper->setRole($role);
         $helper->setContainer($container);
+        $helper->setTranslator($translator);
 
         assert($auth instanceof Acl);
         $helper->setAcl($auth);
@@ -5351,18 +5118,19 @@ final class BreadcrumbsTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translatePlugin = $this->getMockBuilder(Translate::class)
+        $translator = $this->getMockBuilder(Translator::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $translatePlugin->expects(self::once())
-            ->method('__invoke')
+        $translator->expects(self::once())
+            ->method('translate')
             ->with($label, $textDomain)
             ->willReturn($tranalatedLabel);
 
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml, $translatePlugin);
+        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml);
 
         $helper->setRole($role);
         $helper->setContainer($container);
+        $helper->setTranslator($translator);
 
         assert($auth instanceof Acl);
         $helper->setAcl($auth);
@@ -5560,18 +5328,19 @@ final class BreadcrumbsTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translatePlugin = $this->getMockBuilder(Translate::class)
+        $translator = $this->getMockBuilder(Translator::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $translatePlugin->expects(self::once())
-            ->method('__invoke')
+        $translator->expects(self::once())
+            ->method('translate')
             ->with($label, $textDomain)
             ->willReturn($tranalatedLabel);
 
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml, $translatePlugin);
+        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml);
 
         $helper->setRole($role);
         $helper->setContainer($container);
+        $helper->setTranslator($translator);
 
         assert($auth instanceof Acl);
         $helper->setAcl($auth);
@@ -5760,13 +5529,7 @@ final class BreadcrumbsTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translatePlugin = $this->getMockBuilder(Translate::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $translatePlugin->expects(self::never())
-            ->method('__invoke');
-
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml, $translatePlugin);
+        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml);
 
         $helper->setRole($role);
 
@@ -5932,13 +5695,7 @@ final class BreadcrumbsTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translatePlugin = $this->getMockBuilder(Translate::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $translatePlugin->expects(self::never())
-            ->method('__invoke');
-
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml, $translatePlugin);
+        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml);
 
         $helper->setRole($role);
 
@@ -6091,13 +5848,7 @@ final class BreadcrumbsTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translatePlugin = $this->getMockBuilder(Translate::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $translatePlugin->expects(self::never())
-            ->method('__invoke');
-
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml, $translatePlugin);
+        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml);
 
         $helper->setRole($role);
         $helper->setAcl($auth);
@@ -6172,13 +5923,7 @@ final class BreadcrumbsTest extends TestCase
         $renderer->expects(self::never())
             ->method('render');
 
-        $translatePlugin = $this->getMockBuilder(Translate::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $translatePlugin->expects(self::never())
-            ->method('__invoke');
-
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml, $translatePlugin);
+        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml);
 
         $container1 = $helper->getContainer();
 
@@ -6308,13 +6053,7 @@ final class BreadcrumbsTest extends TestCase
         $renderer->expects(self::never())
             ->method('render');
 
-        $translatePlugin = $this->getMockBuilder(Translate::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $translatePlugin->expects(self::never())
-            ->method('__invoke');
-
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml, $translatePlugin);
+        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml);
 
         $helper->setContainer($container);
 

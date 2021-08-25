@@ -14,7 +14,6 @@ namespace Mimmi20Test\LaminasView\BootstrapNavigation;
 
 use AssertionError;
 use Interop\Container\ContainerInterface;
-use Laminas\I18n\View\Helper\Translate;
 use Laminas\Log\Logger;
 use Laminas\ServiceManager\ServiceLocatorInterface;
 use Laminas\View\Helper\EscapeHtml;
@@ -41,64 +40,7 @@ final class BreadcrumbsFactoryTest extends TestCase
      * @throws Exception
      * @throws InvalidArgumentException
      */
-    public function testInvocationWithTranslator(): void
-    {
-        $logger = $this->getMockBuilder(Logger::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $logger->expects(self::never())
-            ->method('emerg');
-        $logger->expects(self::never())
-            ->method('alert');
-        $logger->expects(self::never())
-            ->method('crit');
-        $logger->expects(self::never())
-            ->method('err');
-        $logger->expects(self::never())
-            ->method('warn');
-        $logger->expects(self::never())
-            ->method('notice');
-        $logger->expects(self::never())
-            ->method('info');
-        $logger->expects(self::never())
-            ->method('debug');
-
-        $htmlify         = $this->createMock(HtmlifyInterface::class);
-        $containerParser = $this->createMock(ContainerParserInterface::class);
-        $translator      = $this->createMock(Translate::class);
-        $renderer        = $this->createMock(PhpRenderer::class);
-        $escapeHtml      = $this->createMock(EscapeHtml::class);
-
-        $viewHelperPluginManager = $this->getMockBuilder(ViewHelperPluginManager::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $viewHelperPluginManager->expects(self::exactly(2))
-            ->method('get')
-            ->withConsecutive([Translate::class], [EscapeHtml::class])
-            ->willReturnOnConsecutiveCalls($translator, $escapeHtml);
-        $viewHelperPluginManager->expects(self::once())
-            ->method('has')
-            ->with(Translate::class)
-            ->willReturn(true);
-
-        $container = $this->getMockBuilder(ServiceLocatorInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $container->expects(self::exactly(5))
-            ->method('get')
-            ->withConsecutive([ViewHelperPluginManager::class], [Logger::class], [HtmlifyInterface::class], [ContainerParserInterface::class], [PhpRenderer::class])
-            ->willReturnOnConsecutiveCalls($viewHelperPluginManager, $logger, $htmlify, $containerParser, $renderer);
-
-        $helper = ($this->factory)($container);
-
-        self::assertInstanceOf(Breadcrumbs::class, $helper);
-    }
-
-    /**
-     * @throws Exception
-     * @throws InvalidArgumentException
-     */
-    public function testInvocationWithoutTranslator(): void
+    public function testInvocation(): void
     {
         $logger = $this->getMockBuilder(Logger::class)
             ->disableOriginalConstructor()
@@ -128,10 +70,8 @@ final class BreadcrumbsFactoryTest extends TestCase
         $viewHelperPluginManager = $this->getMockBuilder(ViewHelperPluginManager::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $viewHelperPluginManager->expects(self::once())
-            ->method('has')
-            ->with(Translate::class)
-            ->willReturn(false);
+        $viewHelperPluginManager->expects(self::never())
+            ->method('has');
         $viewHelperPluginManager->expects(self::once())
             ->method('get')
             ->with(EscapeHtml::class)
@@ -144,6 +84,8 @@ final class BreadcrumbsFactoryTest extends TestCase
             ->method('get')
             ->withConsecutive([ViewHelperPluginManager::class], [Logger::class], [HtmlifyInterface::class], [ContainerParserInterface::class], [PhpRenderer::class])
             ->willReturnOnConsecutiveCalls($viewHelperPluginManager, $logger, $htmlify, $containerParser, $renderer);
+        $container->expects(self::never())
+            ->method('has');
 
         $helper = ($this->factory)($container);
 

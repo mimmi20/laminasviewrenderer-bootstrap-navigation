@@ -13,7 +13,6 @@ declare(strict_types = 1);
 namespace Mimmi20\LaminasView\BootstrapNavigation;
 
 use Interop\Container\ContainerInterface;
-use Laminas\I18n\View\Helper\Translate;
 use Laminas\Log\Logger;
 use Laminas\ServiceManager\ServiceLocatorInterface;
 use Laminas\View\Helper\EscapeHtml;
@@ -36,12 +35,7 @@ final class BreadcrumbsFactory
     {
         assert($container instanceof ServiceLocatorInterface);
 
-        $plugin     = $container->get(ViewHelperPluginManager::class);
-        $translator = null;
-
-        if ($plugin->has(Translate::class)) {
-            $translator = $plugin->get(Translate::class);
-        }
+        $plugin = $container->get(ViewHelperPluginManager::class);
 
         return new Breadcrumbs(
             $container,
@@ -49,8 +43,7 @@ final class BreadcrumbsFactory
             $container->get(HtmlifyInterface::class),
             $container->get(ContainerParserInterface::class),
             $container->get(PhpRenderer::class),
-            $plugin->get(EscapeHtml::class),
-            $translator
+            $plugin->get(EscapeHtml::class)
         );
     }
 }

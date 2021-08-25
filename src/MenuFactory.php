@@ -13,7 +13,6 @@ declare(strict_types = 1);
 namespace Mimmi20\LaminasView\BootstrapNavigation;
 
 use Interop\Container\ContainerInterface;
-use Laminas\I18n\View\Helper\Translate;
 use Laminas\Log\Logger;
 use Laminas\ServiceManager\ServiceLocatorInterface;
 use Laminas\View\Helper\EscapeHtml;
@@ -39,10 +38,6 @@ final class MenuFactory
 
         $plugin     = $container->get(ViewPluginManager::class);
         $translator = null;
-
-        if ($plugin->has(Translate::class)) {
-            $translator = $plugin->get(Translate::class);
-        }
 
         return new Menu(
             $container,

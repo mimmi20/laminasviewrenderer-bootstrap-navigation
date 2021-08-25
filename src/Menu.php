@@ -13,7 +13,6 @@ declare(strict_types = 1);
 namespace Mimmi20\LaminasView\BootstrapNavigation;
 
 use InvalidArgumentException;
-use Laminas\I18n\View\Helper\Translate;
 use Laminas\Log\Logger;
 use Laminas\Navigation\AbstractContainer;
 use Laminas\Navigation\Page\AbstractPage;
@@ -71,7 +70,7 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
 
     private HtmlElementInterface $htmlElement;
 
-    private EscapeHtmlAttr $escaper;
+    private EscapeHtmlAttr $escapeHtmlAttr;
 
     private PhpRenderer $renderer;
 
@@ -92,20 +91,18 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
         ServiceLocatorInterface $serviceLocator,
         Logger $logger,
         ContainerParserInterface $containerParser,
-        EscapeHtmlAttr $escaper,
+        EscapeHtmlAttr $escapeHtmlAttr,
         PhpRenderer $renderer,
         EscapeHtml $escapeHtml,
-        HtmlElementInterface $htmlElement,
-        ?Translate $translator = null
+        HtmlElementInterface $htmlElement
     ) {
         $this->serviceLocator  = $serviceLocator;
         $this->logger          = $logger;
         $this->containerParser = $containerParser;
-        $this->escaper         = $escaper;
+        $this->escapeHtmlAttr  = $escapeHtmlAttr;
         $this->view            = $renderer;
         $this->escapeHtml      = $escapeHtml;
         $this->htmlElement     = $htmlElement;
-        $this->translator      = $translator;
     }
 
     /**
@@ -346,11 +343,11 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
 
             $subHtml .= $indent . '    <li';
             if ([] !== $liClasses) {
-                $subHtml .= ' class="' . ($this->escaper)(implode(' ', $liClasses)) . '"';
+                $subHtml .= ' class="' . ($this->escapeHtmlAttr)(implode(' ', $liClasses)) . '"';
             }
 
             if (!empty($liRole)) {
-                $subHtml .= ' role="' . ($this->escaper)($liRole) . '"';
+                $subHtml .= ' role="' . ($this->escapeHtmlAttr)($liRole) . '"';
             }
 
             $subHtml .= '>' . PHP_EOL;
@@ -374,11 +371,11 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
 
         $html = $indent . '<ul';
         if ($ulClass) {
-            $html .= ' class="' . ($this->escaper)($ulClass) . '"';
+            $html .= ' class="' . ($this->escapeHtmlAttr)($ulClass) . '"';
         }
 
         if (!empty($ulRole)) {
-            $html .= ' role="' . ($this->escaper)($ulRole) . '"';
+            $html .= ' role="' . ($this->escapeHtmlAttr)($ulRole) . '"';
         }
 
         $html .= '>' . PHP_EOL;
@@ -483,10 +480,10 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
             if ($depth > $prevDepth) {
                 // start new ul tag
                 if (0 === $depth) {
-                    $ulClass = ' class="' . ($this->escaper)($ulClass) . '"';
+                    $ulClass = ' class="' . ($this->escapeHtmlAttr)($ulClass) . '"';
 
                     if (!empty($ulRole)) {
-                        $ulClass .= ' role="' . ($this->escaper)($ulRole) . '"';
+                        $ulClass .= ' role="' . ($this->escapeHtmlAttr)($ulRole) . '"';
                     }
                 } else {
                     $ulClasses = [];
@@ -501,10 +498,10 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
                         $ulClasses[] = 'dropdown-menu-dark';
                     }
 
-                    $ulClass = ' class="' . ($this->escaper)(implode(' ', $ulClasses)) . '"';
+                    $ulClass = ' class="' . ($this->escapeHtmlAttr)(implode(' ', $ulClasses)) . '"';
 
                     if (null !== $prevPage && null !== $prevPage->getId()) {
-                        $ulClass .= ' aria-labelledby="' . ($this->escaper)($prevPage->getId()) . '"';
+                        $ulClass .= ' aria-labelledby="' . ($this->escapeHtmlAttr)($prevPage->getId()) . '"';
                     }
                 }
 
@@ -560,11 +557,11 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
             if ([] === $liClasses) {
                 $allLiClasses = '';
             } else {
-                $allLiClasses = ' class="' . ($this->escaper)(implode(' ', array_unique($liClasses))) . '"';
+                $allLiClasses = ' class="' . ($this->escapeHtmlAttr)(implode(' ', array_unique($liClasses))) . '"';
             }
 
             if (0 === $depth && !empty($liRole)) {
-                $allLiClasses .= ' role="' . ($this->escaper)($liRole) . '"';
+                $allLiClasses .= ' role="' . ($this->escapeHtmlAttr)($liRole) . '"';
             }
 
             $html .= $myIndent . '    <li' . $allLiClasses . '>' . PHP_EOL;
@@ -940,13 +937,15 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
         $label = (string) $page->getLabel();
         $title = $page->getTitle();
 
-        if (null !== $this->translator) {
+        if ($this->hasTranslator()) {
+            $translator = $this->getTranslator();
+
             if ('' !== $label) {
-                $label = ($this->translator)($label, $page->getTextDomain());
+                $label = $translator->translate($label, $page->getTextDomain());
             }
 
             if (null !== $title) {
-                $title = ($this->translator)($title, $page->getTextDomain());
+                $title = $translator->translate($title, $page->getTextDomain());
             }
         }
 

@@ -12,7 +12,7 @@ declare(strict_types = 1);
 
 namespace Mimmi20Test\LaminasView\BootstrapNavigation;
 
-use Laminas\I18n\View\Helper\Translate;
+use Laminas\I18n\Translator\TranslatorInterface as Translator;
 use Laminas\Log\Logger;
 use Laminas\Navigation\AbstractContainer;
 use Laminas\Navigation\Navigation;
@@ -119,12 +119,6 @@ final class MenuTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translator = $this->getMockBuilder(Translate::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $translator->expects(self::never())
-            ->method('__invoke');
-
         $htmlElement = $this->getMockBuilder(HtmlElementInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -138,8 +132,7 @@ final class MenuTest extends TestCase
             $escapeHtmlAttr,
             $renderer,
             $escapeHtml,
-            $htmlElement,
-            $translator
+            $htmlElement
         );
 
         self::assertNull($helper->getMaxDepth());
@@ -213,12 +206,6 @@ final class MenuTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translator = $this->getMockBuilder(Translate::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $translator->expects(self::never())
-            ->method('__invoke');
-
         $htmlElement = $this->getMockBuilder(HtmlElementInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -232,8 +219,7 @@ final class MenuTest extends TestCase
             $escapeHtmlAttr,
             $renderer,
             $escapeHtml,
-            $htmlElement,
-            $translator
+            $htmlElement
         );
 
         self::assertSame(0, $helper->getMinDepth());
@@ -323,12 +309,6 @@ final class MenuTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translator = $this->getMockBuilder(Translate::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $translator->expects(self::never())
-            ->method('__invoke');
-
         $htmlElement = $this->getMockBuilder(HtmlElementInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -342,8 +322,7 @@ final class MenuTest extends TestCase
             $escapeHtmlAttr,
             $renderer,
             $escapeHtml,
-            $htmlElement,
-            $translator
+            $htmlElement
         );
 
         self::assertFalse($helper->getRenderInvisible());
@@ -420,12 +399,6 @@ final class MenuTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translator = $this->getMockBuilder(Translate::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $translator->expects(self::never())
-            ->method('__invoke');
-
         $htmlElement = $this->getMockBuilder(HtmlElementInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -439,8 +412,7 @@ final class MenuTest extends TestCase
             $escapeHtmlAttr,
             $renderer,
             $escapeHtml,
-            $htmlElement,
-            $translator
+            $htmlElement
         );
 
         self::assertNull($helper->getRole());
@@ -521,12 +493,6 @@ final class MenuTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translator = $this->getMockBuilder(Translate::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $translator->expects(self::never())
-            ->method('__invoke');
-
         $htmlElement = $this->getMockBuilder(HtmlElementInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -540,8 +506,7 @@ final class MenuTest extends TestCase
             $escapeHtmlAttr,
             $renderer,
             $escapeHtml,
-            $htmlElement,
-            $translator
+            $htmlElement
         );
 
         self::assertTrue($helper->getUseAcl());
@@ -622,12 +587,6 @@ final class MenuTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translator = $this->getMockBuilder(Translate::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $translator->expects(self::never())
-            ->method('__invoke');
-
         $htmlElement = $this->getMockBuilder(HtmlElementInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -641,8 +600,7 @@ final class MenuTest extends TestCase
             $escapeHtmlAttr,
             $renderer,
             $escapeHtml,
-            $htmlElement,
-            $translator
+            $htmlElement
         );
 
         self::assertNull($helper->getAcl());
@@ -727,12 +685,6 @@ final class MenuTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translator = $this->getMockBuilder(Translate::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $translator->expects(self::never())
-            ->method('__invoke');
-
         $htmlElement = $this->getMockBuilder(HtmlElementInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -746,8 +698,7 @@ final class MenuTest extends TestCase
             $escapeHtmlAttr,
             $renderer,
             $escapeHtml,
-            $htmlElement,
-            $translator
+            $htmlElement
         );
 
         self::assertSame($renderer, $helper->getView());
@@ -828,12 +779,6 @@ final class MenuTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translator = $this->getMockBuilder(Translate::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $translator->expects(self::never())
-            ->method('__invoke');
-
         $htmlElement = $this->getMockBuilder(HtmlElementInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -847,8 +792,7 @@ final class MenuTest extends TestCase
             $escapeHtmlAttr,
             $renderer,
             $escapeHtml,
-            $htmlElement,
-            $translator
+            $htmlElement
         );
 
         $container1 = $helper->getContainer();
@@ -935,12 +879,6 @@ final class MenuTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translator = $this->getMockBuilder(Translate::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $translator->expects(self::never())
-            ->method('__invoke');
-
         $htmlElement = $this->getMockBuilder(HtmlElementInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -954,8 +892,7 @@ final class MenuTest extends TestCase
             $escapeHtmlAttr,
             $renderer,
             $escapeHtml,
-            $htmlElement,
-            $translator
+            $htmlElement
         );
 
         $this->expectException(InvalidArgumentException::class);
@@ -1035,12 +972,6 @@ final class MenuTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translator = $this->getMockBuilder(Translate::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $translator->expects(self::never())
-            ->method('__invoke');
-
         $htmlElement = $this->getMockBuilder(HtmlElementInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -1054,8 +985,7 @@ final class MenuTest extends TestCase
             $escapeHtmlAttr,
             $renderer,
             $escapeHtml,
-            $htmlElement,
-            $translator
+            $htmlElement
         );
 
         $helper->setContainer($name);
@@ -1192,12 +1122,6 @@ final class MenuTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translator = $this->getMockBuilder(Translate::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $translator->expects(self::never())
-            ->method('__invoke');
-
         $htmlElement = $this->getMockBuilder(HtmlElementInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -1211,8 +1135,7 @@ final class MenuTest extends TestCase
             $escapeHtmlAttr,
             $renderer,
             $escapeHtml,
-            $htmlElement,
-            $translator
+            $htmlElement
         );
 
         $helper->setContainer($name);
@@ -1352,11 +1275,11 @@ final class MenuTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translator = $this->getMockBuilder(Translate::class)
+        $translator = $this->getMockBuilder(Translator::class)
             ->disableOriginalConstructor()
             ->getMock();
         $translator->expects(self::exactly(2))
-            ->method('__invoke')
+            ->method('translate')
             ->withConsecutive([$pageLabel, $pageTextDomain], [$pageTitle, $pageTextDomain])
             ->willReturnOnConsecutiveCalls($pageLabelTranslated, $pageTitleTranslated);
 
@@ -1375,11 +1298,11 @@ final class MenuTest extends TestCase
             $escapeHtmlAttr,
             $renderer,
             $escapeHtml,
-            $htmlElement,
-            $translator
+            $htmlElement
         );
 
         $helper->setContainer($name);
+        $helper->setTranslator($translator);
 
         assert($page instanceof AbstractPage);
         self::assertSame($expected, $helper->htmlify($page));
@@ -1449,12 +1372,6 @@ final class MenuTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translator = $this->getMockBuilder(Translate::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $translator->expects(self::never())
-            ->method('__invoke');
-
         $htmlElement = $this->getMockBuilder(HtmlElementInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -1468,8 +1385,7 @@ final class MenuTest extends TestCase
             $escapeHtmlAttr,
             $renderer,
             $escapeHtml,
-            $htmlElement,
-            $translator
+            $htmlElement
         );
 
         self::assertSame('', $helper->getIndent());
@@ -1619,12 +1535,6 @@ final class MenuTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translator = $this->getMockBuilder(Translate::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $translator->expects(self::never())
-            ->method('__invoke');
-
         $htmlElement = $this->getMockBuilder(HtmlElementInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -1638,8 +1548,7 @@ final class MenuTest extends TestCase
             $escapeHtmlAttr,
             $renderer,
             $escapeHtml,
-            $htmlElement,
-            $translator
+            $htmlElement
         );
 
         $helper->setRole($role);
@@ -1791,12 +1700,6 @@ final class MenuTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translator = $this->getMockBuilder(Translate::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $translator->expects(self::never())
-            ->method('__invoke');
-
         $htmlElement = $this->getMockBuilder(HtmlElementInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -1810,8 +1713,7 @@ final class MenuTest extends TestCase
             $escapeHtmlAttr,
             $renderer,
             $escapeHtml,
-            $htmlElement,
-            $translator
+            $htmlElement
         );
 
         $helper->setRole($role);
@@ -1921,12 +1823,6 @@ final class MenuTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translator = $this->getMockBuilder(Translate::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $translator->expects(self::never())
-            ->method('__invoke');
-
         $htmlElement = $this->getMockBuilder(HtmlElementInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -1940,8 +1836,7 @@ final class MenuTest extends TestCase
             $escapeHtmlAttr,
             $renderer,
             $escapeHtml,
-            $htmlElement,
-            $translator
+            $htmlElement
         );
 
         $helper->setRole($role);
@@ -2095,12 +1990,6 @@ final class MenuTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translator = $this->getMockBuilder(Translate::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $translator->expects(self::never())
-            ->method('__invoke');
-
         $htmlElement = $this->getMockBuilder(HtmlElementInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -2114,8 +2003,7 @@ final class MenuTest extends TestCase
             $escapeHtmlAttr,
             $renderer,
             $escapeHtml,
-            $htmlElement,
-            $translator
+            $htmlElement
         );
 
         $helper->setRole($role);
@@ -2270,12 +2158,6 @@ final class MenuTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translator = $this->getMockBuilder(Translate::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $translator->expects(self::never())
-            ->method('__invoke');
-
         $htmlElement = $this->getMockBuilder(HtmlElementInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -2289,8 +2171,7 @@ final class MenuTest extends TestCase
             $escapeHtmlAttr,
             $renderer,
             $escapeHtml,
-            $htmlElement,
-            $translator
+            $htmlElement
         );
 
         $helper->setRole($role);
@@ -2454,12 +2335,6 @@ final class MenuTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translator = $this->getMockBuilder(Translate::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $translator->expects(self::never())
-            ->method('__invoke');
-
         $htmlElement = $this->getMockBuilder(HtmlElementInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -2473,8 +2348,7 @@ final class MenuTest extends TestCase
             $escapeHtmlAttr,
             $renderer,
             $escapeHtml,
-            $htmlElement,
-            $translator
+            $htmlElement
         );
 
         $helper->setRole($role);
@@ -2624,12 +2498,6 @@ final class MenuTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translator = $this->getMockBuilder(Translate::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $translator->expects(self::never())
-            ->method('__invoke');
-
         $htmlElement = $this->getMockBuilder(HtmlElementInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -2643,8 +2511,7 @@ final class MenuTest extends TestCase
             $escapeHtmlAttr,
             $renderer,
             $escapeHtml,
-            $htmlElement,
-            $translator
+            $htmlElement
         );
 
         $helper->setRole($role);
@@ -2790,12 +2657,6 @@ final class MenuTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translator = $this->getMockBuilder(Translate::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $translator->expects(self::never())
-            ->method('__invoke');
-
         $htmlElement = $this->getMockBuilder(HtmlElementInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -2809,8 +2670,7 @@ final class MenuTest extends TestCase
             $escapeHtmlAttr,
             $renderer,
             $escapeHtml,
-            $htmlElement,
-            $translator
+            $htmlElement
         );
 
         $helper->setRole($role);
@@ -2890,12 +2750,6 @@ final class MenuTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translator = $this->getMockBuilder(Translate::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $translator->expects(self::never())
-            ->method('__invoke');
-
         $htmlElement = $this->getMockBuilder(HtmlElementInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -2909,8 +2763,7 @@ final class MenuTest extends TestCase
             $escapeHtmlAttr,
             $renderer,
             $escapeHtml,
-            $htmlElement,
-            $translator
+            $htmlElement
         );
 
         self::assertFalse($helper->getAddClassToListItem());
@@ -2984,12 +2837,6 @@ final class MenuTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translator = $this->getMockBuilder(Translate::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $translator->expects(self::never())
-            ->method('__invoke');
-
         $htmlElement = $this->getMockBuilder(HtmlElementInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -3003,8 +2850,7 @@ final class MenuTest extends TestCase
             $escapeHtmlAttr,
             $renderer,
             $escapeHtml,
-            $htmlElement,
-            $translator
+            $htmlElement
         );
 
         self::assertFalse($helper->getOnlyActiveBranch());
@@ -3078,12 +2924,6 @@ final class MenuTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translator = $this->getMockBuilder(Translate::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $translator->expects(self::never())
-            ->method('__invoke');
-
         $htmlElement = $this->getMockBuilder(HtmlElementInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -3097,8 +2937,7 @@ final class MenuTest extends TestCase
             $escapeHtmlAttr,
             $renderer,
             $escapeHtml,
-            $htmlElement,
-            $translator
+            $htmlElement
         );
 
         self::assertNull($helper->getPartial());
@@ -3176,12 +3015,6 @@ final class MenuTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translator = $this->getMockBuilder(Translate::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $translator->expects(self::never())
-            ->method('__invoke');
-
         $htmlElement = $this->getMockBuilder(HtmlElementInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -3195,8 +3028,7 @@ final class MenuTest extends TestCase
             $escapeHtmlAttr,
             $renderer,
             $escapeHtml,
-            $htmlElement,
-            $translator
+            $htmlElement
         );
 
         self::assertTrue($helper->getRenderParents());
@@ -3270,12 +3102,6 @@ final class MenuTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translator = $this->getMockBuilder(Translate::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $translator->expects(self::never())
-            ->method('__invoke');
-
         $htmlElement = $this->getMockBuilder(HtmlElementInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -3289,8 +3115,7 @@ final class MenuTest extends TestCase
             $escapeHtmlAttr,
             $renderer,
             $escapeHtml,
-            $htmlElement,
-            $translator
+            $htmlElement
         );
 
         self::assertSame('navigation', $helper->getUlClass());
@@ -3364,12 +3189,6 @@ final class MenuTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translator = $this->getMockBuilder(Translate::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $translator->expects(self::never())
-            ->method('__invoke');
-
         $htmlElement = $this->getMockBuilder(HtmlElementInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -3383,8 +3202,7 @@ final class MenuTest extends TestCase
             $escapeHtmlAttr,
             $renderer,
             $escapeHtml,
-            $htmlElement,
-            $translator
+            $htmlElement
         );
 
         self::assertSame('active', $helper->getLiActiveClass());
@@ -3480,12 +3298,6 @@ final class MenuTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translator = $this->getMockBuilder(Translate::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $translator->expects(self::never())
-            ->method('__invoke');
-
         $htmlElement = $this->getMockBuilder(HtmlElementInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -3499,8 +3311,7 @@ final class MenuTest extends TestCase
             $escapeHtmlAttr,
             $renderer,
             $escapeHtml,
-            $htmlElement,
-            $translator
+            $htmlElement
         );
 
         $helper->setContainer($container);
@@ -3576,12 +3387,6 @@ final class MenuTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translator = $this->getMockBuilder(Translate::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $translator->expects(self::never())
-            ->method('__invoke');
-
         $htmlElement = $this->getMockBuilder(HtmlElementInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -3595,8 +3400,7 @@ final class MenuTest extends TestCase
             $escapeHtmlAttr,
             $renderer,
             $escapeHtml,
-            $htmlElement,
-            $translator
+            $htmlElement
         );
 
         $role = 'testRole';
@@ -3687,12 +3491,6 @@ final class MenuTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translator = $this->getMockBuilder(Translate::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $translator->expects(self::never())
-            ->method('__invoke');
-
         $htmlElement = $this->getMockBuilder(HtmlElementInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -3706,8 +3504,7 @@ final class MenuTest extends TestCase
             $escapeHtmlAttr,
             $renderer,
             $escapeHtml,
-            $htmlElement,
-            $translator
+            $htmlElement
         );
 
         $role = 'testRole';
@@ -3864,12 +3661,6 @@ final class MenuTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translator = $this->getMockBuilder(Translate::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $translator->expects(self::never())
-            ->method('__invoke');
-
         $htmlElement = $this->getMockBuilder(HtmlElementInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -3883,8 +3674,7 @@ final class MenuTest extends TestCase
             $escapeHtmlAttr,
             $renderer,
             $escapeHtml,
-            $htmlElement,
-            $translator
+            $htmlElement
         );
 
         $helper->setRole($role);
@@ -4019,12 +3809,6 @@ final class MenuTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translator = $this->getMockBuilder(Translate::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $translator->expects(self::never())
-            ->method('__invoke');
-
         $htmlElement = $this->getMockBuilder(HtmlElementInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -4038,8 +3822,7 @@ final class MenuTest extends TestCase
             $escapeHtmlAttr,
             $renderer,
             $escapeHtml,
-            $htmlElement,
-            $translator
+            $htmlElement
         );
 
         $helper->setRole($role);
@@ -4182,12 +3965,6 @@ final class MenuTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translator = $this->getMockBuilder(Translate::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $translator->expects(self::never())
-            ->method('__invoke');
-
         $htmlElement = $this->getMockBuilder(HtmlElementInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -4201,8 +3978,7 @@ final class MenuTest extends TestCase
             $escapeHtmlAttr,
             $renderer,
             $escapeHtml,
-            $htmlElement,
-            $translator
+            $htmlElement
         );
 
         $helper->setRole($role);
@@ -4350,12 +4126,6 @@ final class MenuTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translator = $this->getMockBuilder(Translate::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $translator->expects(self::never())
-            ->method('__invoke');
-
         $htmlElement = $this->getMockBuilder(HtmlElementInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -4369,8 +4139,7 @@ final class MenuTest extends TestCase
             $escapeHtmlAttr,
             $renderer,
             $escapeHtml,
-            $htmlElement,
-            $translator
+            $htmlElement
         );
 
         $helper->setRole($role);
@@ -4468,12 +4237,6 @@ final class MenuTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translator = $this->getMockBuilder(Translate::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $translator->expects(self::never())
-            ->method('__invoke');
-
         $htmlElement = $this->getMockBuilder(HtmlElementInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -4487,8 +4250,7 @@ final class MenuTest extends TestCase
             $escapeHtmlAttr,
             $renderer,
             $escapeHtml,
-            $htmlElement,
-            $translator
+            $htmlElement
         );
 
         $helper->setContainer($container);
@@ -4648,12 +4410,6 @@ final class MenuTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translator = $this->getMockBuilder(Translate::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $translator->expects(self::never())
-            ->method('__invoke');
-
         $htmlElement = $this->getMockBuilder(HtmlElementInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -4667,8 +4423,7 @@ final class MenuTest extends TestCase
             $escapeHtmlAttr,
             $renderer,
             $escapeHtml,
-            $htmlElement,
-            $translator
+            $htmlElement
         );
 
         $helper->setRole($role);
@@ -4908,11 +4663,11 @@ final class MenuTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translator = $this->getMockBuilder(Translate::class)
+        $translator = $this->getMockBuilder(Translator::class)
             ->disableOriginalConstructor()
             ->getMock();
         $translator->expects(self::exactly(4))
-            ->method('__invoke')
+            ->method('translate')
             ->withConsecutive([$parentLabel, $parentTextDomain], [$parentTitle, $parentTextDomain], [$pageLabel, $pageTextDomain], [$pageTitle, $pageTextDomain])
             ->willReturnOnConsecutiveCalls($parentTranslatedLabel, $parentTranslatedTitle, $pageLabelTranslated, $pageTitleTranslated);
 
@@ -4936,11 +4691,11 @@ final class MenuTest extends TestCase
             $escapeHtmlAttr,
             $renderer,
             $escapeHtml,
-            $htmlElement,
-            $translator
+            $htmlElement
         );
 
         $helper->setRole($role);
+        $helper->setTranslator($translator);
 
         assert($auth instanceof Acl);
         $helper->setAcl($auth);
@@ -5174,11 +4929,11 @@ final class MenuTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translator = $this->getMockBuilder(Translate::class)
+        $translator = $this->getMockBuilder(Translator::class)
             ->disableOriginalConstructor()
             ->getMock();
         $translator->expects(self::exactly(4))
-            ->method('__invoke')
+            ->method('translate')
             ->withConsecutive([$parentLabel, $parentTextDomain], [$parentTitle, $parentTextDomain], [$pageLabel, $pageTextDomain], [$pageTitle, $pageTextDomain])
             ->willReturnOnConsecutiveCalls($parentTranslatedLabel, $parentTranslatedTitle, $pageLabelTranslated, $pageTitleTranslated);
 
@@ -5202,11 +4957,11 @@ final class MenuTest extends TestCase
             $escapeHtmlAttr,
             $renderer,
             $escapeHtml,
-            $htmlElement,
-            $translator
+            $htmlElement
         );
 
         $helper->setRole($role);
+        $helper->setTranslator($translator);
 
         assert($auth instanceof Acl);
         $helper->setAcl($auth);
@@ -5351,12 +5106,6 @@ final class MenuTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translator = $this->getMockBuilder(Translate::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $translator->expects(self::never())
-            ->method('__invoke');
-
         $htmlElement = $this->getMockBuilder(HtmlElementInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -5370,8 +5119,7 @@ final class MenuTest extends TestCase
             $escapeHtmlAttr,
             $renderer,
             $escapeHtml,
-            $htmlElement,
-            $translator
+            $htmlElement
         );
 
         $helper->setRole($role);
@@ -5610,11 +5358,11 @@ final class MenuTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translator = $this->getMockBuilder(Translate::class)
+        $translator = $this->getMockBuilder(Translator::class)
             ->disableOriginalConstructor()
             ->getMock();
         $translator->expects(self::exactly(4))
-            ->method('__invoke')
+            ->method('translate')
             ->withConsecutive([$parentLabel, $parentTextDomain], [$parentTitle, $parentTextDomain], [$pageLabel, $pageTextDomain], [$pageTitle, $pageTextDomain])
             ->willReturnOnConsecutiveCalls($parentTranslatedLabel, $parentTranslatedTitle, $pageLabelTranslated, $pageTitleTranslated);
 
@@ -5638,11 +5386,11 @@ final class MenuTest extends TestCase
             $escapeHtmlAttr,
             $renderer,
             $escapeHtml,
-            $htmlElement,
-            $translator
+            $htmlElement
         );
 
         $helper->setRole($role);
+        $helper->setTranslator($translator);
 
         assert($auth instanceof Acl);
         $helper->setAcl($auth);
@@ -5874,11 +5622,11 @@ final class MenuTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translator = $this->getMockBuilder(Translate::class)
+        $translator = $this->getMockBuilder(Translator::class)
             ->disableOriginalConstructor()
             ->getMock();
         $translator->expects(self::exactly(4))
-            ->method('__invoke')
+            ->method('translate')
             ->withConsecutive([$parentLabel, $parentTextDomain], [$parentTitle, $parentTextDomain], [$pageLabel, $pageTextDomain], [$pageTitle, $pageTextDomain])
             ->willReturnOnConsecutiveCalls($parentTranslatedLabel, $parentTranslatedTitle, $pageLabelTranslated, $pageTitleTranslated);
 
@@ -5902,11 +5650,11 @@ final class MenuTest extends TestCase
             $escapeHtmlAttr,
             $renderer,
             $escapeHtml,
-            $htmlElement,
-            $translator
+            $htmlElement
         );
 
         $helper->setRole($role);
+        $helper->setTranslator($translator);
 
         assert($auth instanceof Acl);
         $helper->setAcl($auth);
@@ -6140,11 +5888,11 @@ final class MenuTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translator = $this->getMockBuilder(Translate::class)
+        $translator = $this->getMockBuilder(Translator::class)
             ->disableOriginalConstructor()
             ->getMock();
         $translator->expects(self::exactly(4))
-            ->method('__invoke')
+            ->method('translate')
             ->withConsecutive([$parentLabel, $parentTextDomain], [$parentTitle, $parentTextDomain], [$pageLabel, $pageTextDomain], [$pageTitle, $pageTextDomain])
             ->willReturnOnConsecutiveCalls($parentTranslatedLabel, $parentTranslatedTitle, $pageLabelTranslated, $pageTitleTranslated);
 
@@ -6168,11 +5916,11 @@ final class MenuTest extends TestCase
             $escapeHtmlAttr,
             $renderer,
             $escapeHtml,
-            $htmlElement,
-            $translator
+            $htmlElement
         );
 
         $helper->setRole($role);
+        $helper->setTranslator($translator);
 
         assert($auth instanceof Acl);
         $helper->setAcl($auth);
@@ -6404,11 +6152,11 @@ final class MenuTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translator = $this->getMockBuilder(Translate::class)
+        $translator = $this->getMockBuilder(Translator::class)
             ->disableOriginalConstructor()
             ->getMock();
         $translator->expects(self::exactly(4))
-            ->method('__invoke')
+            ->method('translate')
             ->withConsecutive([$parentLabel, $parentTextDomain], [$parentTitle, $parentTextDomain], [$pageLabel, $pageTextDomain], [$pageTitle, $pageTextDomain])
             ->willReturnOnConsecutiveCalls($parentTranslatedLabel, $parentTranslatedTitle, $pageLabelTranslated, $pageTitleTranslated);
 
@@ -6432,11 +6180,11 @@ final class MenuTest extends TestCase
             $escapeHtmlAttr,
             $renderer,
             $escapeHtml,
-            $htmlElement,
-            $translator
+            $htmlElement
         );
 
         $helper->setRole($role);
+        $helper->setTranslator($translator);
 
         assert($auth instanceof Acl);
         $helper->setAcl($auth);
@@ -6587,12 +6335,6 @@ final class MenuTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translator = $this->getMockBuilder(Translate::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $translator->expects(self::never())
-            ->method('__invoke');
-
         $htmlElement = $this->getMockBuilder(HtmlElementInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -6606,8 +6348,7 @@ final class MenuTest extends TestCase
             $escapeHtmlAttr,
             $renderer,
             $escapeHtml,
-            $htmlElement,
-            $translator
+            $htmlElement
         );
 
         $helper->setRole($role);
@@ -6830,11 +6571,11 @@ final class MenuTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translator = $this->getMockBuilder(Translate::class)
+        $translator = $this->getMockBuilder(Translator::class)
             ->disableOriginalConstructor()
             ->getMock();
         $translator->expects(self::exactly(2))
-            ->method('__invoke')
+            ->method('translate')
             ->withConsecutive([$pageLabel, $pageTextDomain], [$pageTitle, $pageTextDomain])
             ->willReturnOnConsecutiveCalls($pageLabelTranslated, $pageTitleTranslated);
 
@@ -6855,11 +6596,11 @@ final class MenuTest extends TestCase
             $escapeHtmlAttr,
             $renderer,
             $escapeHtml,
-            $htmlElement,
-            $translator
+            $htmlElement
         );
 
         $helper->setRole($role);
+        $helper->setTranslator($translator);
 
         assert($auth instanceof Acl);
         $helper->setAcl($auth);
@@ -7078,11 +6819,11 @@ final class MenuTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translator = $this->getMockBuilder(Translate::class)
+        $translator = $this->getMockBuilder(Translator::class)
             ->disableOriginalConstructor()
             ->getMock();
         $translator->expects(self::exactly(2))
-            ->method('__invoke')
+            ->method('translate')
             ->withConsecutive([$pageLabel, $pageTextDomain], [$pageTitle, $pageTextDomain])
             ->willReturnOnConsecutiveCalls($pageLabelTranslated, $pageTitleTranslated);
 
@@ -7103,11 +6844,11 @@ final class MenuTest extends TestCase
             $escapeHtmlAttr,
             $renderer,
             $escapeHtml,
-            $htmlElement,
-            $translator
+            $htmlElement
         );
 
         $helper->setRole($role);
+        $helper->setTranslator($translator);
 
         assert($auth instanceof Acl);
         $helper->setAcl($auth);
@@ -7324,11 +7065,11 @@ final class MenuTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translator = $this->getMockBuilder(Translate::class)
+        $translator = $this->getMockBuilder(Translator::class)
             ->disableOriginalConstructor()
             ->getMock();
         $translator->expects(self::exactly(2))
-            ->method('__invoke')
+            ->method('translate')
             ->withConsecutive([$pageLabel, $pageTextDomain], [$pageTitle, $pageTextDomain])
             ->willReturnOnConsecutiveCalls($pageLabelTranslated, $pageTitleTranslated);
 
@@ -7349,11 +7090,11 @@ final class MenuTest extends TestCase
             $escapeHtmlAttr,
             $renderer,
             $escapeHtml,
-            $htmlElement,
-            $translator
+            $htmlElement
         );
 
         $helper->setRole($role);
+        $helper->setTranslator($translator);
 
         assert($auth instanceof Acl);
         $helper->setAcl($auth);
@@ -7512,12 +7253,6 @@ final class MenuTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translator = $this->getMockBuilder(Translate::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $translator->expects(self::never())
-            ->method('__invoke');
-
         $expected = '';
 
         $htmlElement = $this->getMockBuilder(HtmlElementInterface::class)
@@ -7533,8 +7268,7 @@ final class MenuTest extends TestCase
             $escapeHtmlAttr,
             $renderer,
             $escapeHtml,
-            $htmlElement,
-            $translator
+            $htmlElement
         );
 
         $helper->setRole($role);
@@ -7697,12 +7431,6 @@ final class MenuTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translator = $this->getMockBuilder(Translate::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $translator->expects(self::never())
-            ->method('__invoke');
-
         $expected = '';
 
         $htmlElement = $this->getMockBuilder(HtmlElementInterface::class)
@@ -7718,8 +7446,7 @@ final class MenuTest extends TestCase
             $escapeHtmlAttr,
             $renderer,
             $escapeHtml,
-            $htmlElement,
-            $translator
+            $htmlElement
         );
 
         $helper->setRole($role);
@@ -7939,11 +7666,11 @@ final class MenuTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translator = $this->getMockBuilder(Translate::class)
+        $translator = $this->getMockBuilder(Translator::class)
             ->disableOriginalConstructor()
             ->getMock();
         $translator->expects(self::exactly(2))
-            ->method('__invoke')
+            ->method('translate')
             ->withConsecutive([$pageLabel, $pageTextDomain], [$pageTitle, $pageTextDomain])
             ->willReturnOnConsecutiveCalls($pageLabelTranslated, $pageTitleTranslated);
 
@@ -7964,11 +7691,11 @@ final class MenuTest extends TestCase
             $escapeHtmlAttr,
             $renderer,
             $escapeHtml,
-            $htmlElement,
-            $translator
+            $htmlElement
         );
 
         $helper->setRole($role);
+        $helper->setTranslator($translator);
 
         assert($auth instanceof Acl);
         $helper->setAcl($auth);
@@ -8137,12 +7864,6 @@ final class MenuTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translator = $this->getMockBuilder(Translate::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $translator->expects(self::never())
-            ->method('__invoke');
-
         $expected = '';
 
         $htmlElement = $this->getMockBuilder(HtmlElementInterface::class)
@@ -8158,8 +7879,7 @@ final class MenuTest extends TestCase
             $escapeHtmlAttr,
             $renderer,
             $escapeHtml,
-            $htmlElement,
-            $translator
+            $htmlElement
         );
 
         $helper->setRole($role);
@@ -8380,11 +8100,11 @@ final class MenuTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translator = $this->getMockBuilder(Translate::class)
+        $translator = $this->getMockBuilder(Translator::class)
             ->disableOriginalConstructor()
             ->getMock();
         $translator->expects(self::exactly(2))
-            ->method('__invoke')
+            ->method('translate')
             ->withConsecutive([$pageLabel, $pageTextDomain], [$pageTitle, $pageTextDomain])
             ->willReturnOnConsecutiveCalls($pageLabelTranslated, $pageTitleTranslated);
 
@@ -8405,11 +8125,11 @@ final class MenuTest extends TestCase
             $escapeHtmlAttr,
             $renderer,
             $escapeHtml,
-            $htmlElement,
-            $translator
+            $htmlElement
         );
 
         $helper->setRole($role);
+        $helper->setTranslator($translator);
 
         assert($auth instanceof Acl);
         $helper->setAcl($auth);
@@ -8599,12 +8319,6 @@ final class MenuTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translator = $this->getMockBuilder(Translate::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $translator->expects(self::never())
-            ->method('__invoke');
-
         $expected = '';
 
         $htmlElement = $this->getMockBuilder(HtmlElementInterface::class)
@@ -8620,8 +8334,7 @@ final class MenuTest extends TestCase
             $escapeHtmlAttr,
             $renderer,
             $escapeHtml,
-            $htmlElement,
-            $translator
+            $htmlElement
         );
 
         $helper->setRole($role);
@@ -8842,11 +8555,11 @@ final class MenuTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translator = $this->getMockBuilder(Translate::class)
+        $translator = $this->getMockBuilder(Translator::class)
             ->disableOriginalConstructor()
             ->getMock();
         $translator->expects(self::exactly(2))
-            ->method('__invoke')
+            ->method('translate')
             ->withConsecutive([$pageLabel, $pageTextDomain], [$pageTitle, $pageTextDomain])
             ->willReturnOnConsecutiveCalls($pageLabelTranslated, $pageTitleTranslated);
 
@@ -8867,11 +8580,11 @@ final class MenuTest extends TestCase
             $escapeHtmlAttr,
             $renderer,
             $escapeHtml,
-            $htmlElement,
-            $translator
+            $htmlElement
         );
 
         $helper->setRole($role);
+        $helper->setTranslator($translator);
 
         assert($auth instanceof Acl);
         $helper->setAcl($auth);
@@ -9305,11 +9018,11 @@ final class MenuTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translator = $this->getMockBuilder(Translate::class)
+        $translator = $this->getMockBuilder(Translator::class)
             ->disableOriginalConstructor()
             ->getMock();
         $translator->expects(self::exactly(10))
-            ->method('__invoke')
+            ->method('translate')
             ->withConsecutive([$parentParentLabel, $parentParentTextDomain], [$parentParentTitle, $parentParentTextDomain], [$parentLabel, $parentTextDomain], [$parentTitle, $parentTextDomain], [$pageLabel, $pageTextDomain], [$pageTitle, $pageTextDomain], [$page2Label, $page2TextDomain], [$page2Title, $page2TextDomain], [$page3Label, $page3TextDomain], [$page3Title, $page3TextDomain])
             ->willReturnOnConsecutiveCalls($parentParentTranslatedLabel, $parentParentTranslatedTitle, $parentTranslatedLabel, $parentTranslatedTitle, $pageLabelTranslated, $pageTitleTranslated, $page2LabelTranslated, $page2TitleTranslated, $page3LabelTranslated, $page3TitleTranslated);
 
@@ -9342,11 +9055,11 @@ final class MenuTest extends TestCase
             $escapeHtmlAttr,
             $renderer,
             $escapeHtml,
-            $htmlElement,
-            $translator
+            $htmlElement
         );
 
         $helper->setRole($role);
+        $helper->setTranslator($translator);
 
         assert($auth instanceof Acl);
         $helper->setAcl($auth);
@@ -9761,11 +9474,11 @@ final class MenuTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translator = $this->getMockBuilder(Translate::class)
+        $translator = $this->getMockBuilder(Translator::class)
             ->disableOriginalConstructor()
             ->getMock();
         $translator->expects(self::exactly(8))
-            ->method('__invoke')
+            ->method('translate')
             ->withConsecutive([$parentParentLabel, $parentParentTextDomain], [$parentParentTitle, $parentParentTextDomain], [$parentLabel, $parentTextDomain], [$parentTitle, $parentTextDomain], [$pageLabel, $pageTextDomain], [$pageTitle, $pageTextDomain], [$page3Label, $page3TextDomain], [$page3Title, $page3TextDomain])
             ->willReturnOnConsecutiveCalls($parentParentTranslatedLabel, $parentParentTranslatedTitle, $parentTranslatedLabel, $parentTranslatedTitle, $pageLabelTranslated, $pageTitleTranslated, $page3LabelTranslated, $page3TitleTranslated);
 
@@ -9796,11 +9509,11 @@ final class MenuTest extends TestCase
             $escapeHtmlAttr,
             $renderer,
             $escapeHtml,
-            $htmlElement,
-            $translator
+            $htmlElement
         );
 
         $helper->setRole($role);
+        $helper->setTranslator($translator);
 
         assert($auth instanceof Acl);
         $helper->setAcl($auth);
@@ -10215,11 +9928,11 @@ final class MenuTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translator = $this->getMockBuilder(Translate::class)
+        $translator = $this->getMockBuilder(Translator::class)
             ->disableOriginalConstructor()
             ->getMock();
         $translator->expects(self::exactly(8))
-            ->method('__invoke')
+            ->method('translate')
             ->withConsecutive([$parentParentLabel, $parentParentTextDomain], [$parentParentTitle, $parentParentTextDomain], [$parentLabel, $parentTextDomain], [$parentTitle, $parentTextDomain], [$pageLabel, $pageTextDomain], [$pageTitle, $pageTextDomain], [$page3Label, $page3TextDomain], [$page3Title, $page3TextDomain])
             ->willReturnOnConsecutiveCalls($parentParentTranslatedLabel, $parentParentTranslatedTitle, $parentTranslatedLabel, $parentTranslatedTitle, $pageLabelTranslated, $pageTitleTranslated, $page3LabelTranslated, $page3TitleTranslated);
 
@@ -10250,11 +9963,11 @@ final class MenuTest extends TestCase
             $escapeHtmlAttr,
             $renderer,
             $escapeHtml,
-            $htmlElement,
-            $translator
+            $htmlElement
         );
 
         $helper->setRole($role);
+        $helper->setTranslator($translator);
 
         assert($auth instanceof Acl);
         $helper->setAcl($auth);
@@ -10688,11 +10401,11 @@ final class MenuTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translator = $this->getMockBuilder(Translate::class)
+        $translator = $this->getMockBuilder(Translator::class)
             ->disableOriginalConstructor()
             ->getMock();
         $translator->expects(self::exactly(10))
-            ->method('__invoke')
+            ->method('translate')
             ->withConsecutive([$parentParentLabel, $parentParentTextDomain], [$parentParentTitle, $parentParentTextDomain], [$parentLabel, $parentTextDomain], [$parentTitle, $parentTextDomain], [$pageLabel, $pageTextDomain], [$pageTitle, $pageTextDomain], [$page2Label, $page2TextDomain], [$page2Title, $page2TextDomain], [$page3Label, $page3TextDomain], [$page3Title, $page3TextDomain])
             ->willReturnOnConsecutiveCalls($parentParentTranslatedLabel, $parentParentTranslatedTitle, $parentTranslatedLabel, $parentTranslatedTitle, $pageLabelTranslated, $pageTitleTranslated, $page2LabelTranslated, $page2TitleTranslated, $page3LabelTranslated, $page3TitleTranslated);
 
@@ -10725,11 +10438,11 @@ final class MenuTest extends TestCase
             $escapeHtmlAttr,
             $renderer,
             $escapeHtml,
-            $htmlElement,
-            $translator
+            $htmlElement
         );
 
         $helper->setRole($role);
+        $helper->setTranslator($translator);
 
         assert($auth instanceof Acl);
         $helper->setAcl($auth);
@@ -11163,11 +10876,11 @@ final class MenuTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translator = $this->getMockBuilder(Translate::class)
+        $translator = $this->getMockBuilder(Translator::class)
             ->disableOriginalConstructor()
             ->getMock();
         $translator->expects(self::exactly(10))
-            ->method('__invoke')
+            ->method('translate')
             ->withConsecutive([$parentParentLabel, $parentParentTextDomain], [$parentParentTitle, $parentParentTextDomain], [$parentLabel, $parentTextDomain], [$parentTitle, $parentTextDomain], [$pageLabel, $pageTextDomain], [$pageTitle, $pageTextDomain], [$page2Label, $page2TextDomain], [$page2Title, $page2TextDomain], [$page3Label, $page3TextDomain], [$page3Title, $page3TextDomain])
             ->willReturnOnConsecutiveCalls($parentParentTranslatedLabel, $parentParentTranslatedTitle, $parentTranslatedLabel, $parentTranslatedTitle, $pageLabelTranslated, $pageTitleTranslated, $page2LabelTranslated, $page2TitleTranslated, $page3LabelTranslated, $page3TitleTranslated);
 
@@ -11200,11 +10913,11 @@ final class MenuTest extends TestCase
             $escapeHtmlAttr,
             $renderer,
             $escapeHtml,
-            $htmlElement,
-            $translator
+            $htmlElement
         );
 
         $helper->setRole($role);
+        $helper->setTranslator($translator);
 
         assert($auth instanceof Acl);
         $helper->setAcl($auth);
@@ -11641,11 +11354,11 @@ final class MenuTest extends TestCase
         $renderer->expects(self::never())
             ->method('getHelperPluginManager');
 
-        $translator = $this->getMockBuilder(Translate::class)
+        $translator = $this->getMockBuilder(Translator::class)
             ->disableOriginalConstructor()
             ->getMock();
         $translator->expects(self::exactly(10))
-            ->method('__invoke')
+            ->method('translate')
             ->withConsecutive([$parentParentLabel, $parentParentTextDomain], [$parentParentTitle, $parentParentTextDomain], [$parentLabel, $parentTextDomain], [$parentTitle, $parentTextDomain], [$pageLabel, $pageTextDomain], [$pageTitle, $pageTextDomain], [$page2Label, $page2TextDomain], [$page2Title, $page2TextDomain], [$page3Label, $page3TextDomain], [$page3Title, $page3TextDomain])
             ->willReturnOnConsecutiveCalls($parentParentTranslatedLabel, $parentParentTranslatedTitle, $parentTranslatedLabel, $parentTranslatedTitle, $pageLabelTranslated, $pageTitleTranslated, $page2LabelTranslated, $page2TitleTranslated, $page3LabelTranslated, $page3TitleTranslated);
 
@@ -11678,11 +11391,11 @@ final class MenuTest extends TestCase
             $escapeHtmlAttr,
             $renderer,
             $escapeHtml,
-            $htmlElement,
-            $translator
+            $htmlElement
         );
 
         $helper->setRole($role);
+        $helper->setTranslator($translator);
 
         assert($auth instanceof Acl);
         $helper->setAcl($auth);

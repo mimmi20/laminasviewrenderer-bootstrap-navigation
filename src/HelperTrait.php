@@ -26,6 +26,7 @@ use Mimmi20\NavigationHelper\FindActive\FindActiveInterface;
 use Mimmi20\NavigationHelper\Htmlify\HtmlifyInterface;
 use Psr\Container\ContainerExceptionInterface;
 
+use function assert;
 use function call_user_func_array;
 use function is_int;
 
@@ -191,6 +192,7 @@ trait HelperTrait
                     'role' => $this->getRole(),
                 ]
             );
+            assert($findActiveHelper instanceof FindActiveInterface);
         } catch (ContainerExceptionInterface $e) {
             $this->logger->err($e);
 

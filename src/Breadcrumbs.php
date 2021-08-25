@@ -12,7 +12,6 @@ declare(strict_types = 1);
 
 namespace Mimmi20\LaminasView\BootstrapNavigation;
 
-use Laminas\I18n\View\Helper\Translate;
 use Laminas\Log\Logger;
 use Laminas\Navigation\AbstractContainer;
 use Laminas\Navigation\Navigation;
@@ -27,6 +26,7 @@ use Laminas\View\Renderer\RendererInterface;
 use Mimmi20\NavigationHelper\ContainerParser\ContainerParserInterface;
 use Mimmi20\NavigationHelper\Htmlify\HtmlifyInterface;
 
+use function array_key_exists;
 use function array_merge;
 use function array_reverse;
 use function array_unshift;
@@ -60,8 +60,7 @@ final class Breadcrumbs extends \Laminas\View\Helper\Navigation\Breadcrumbs
         HtmlifyInterface $htmlify,
         ContainerParserInterface $containerParser,
         PhpRenderer $renderer,
-        EscapeHtml $escapeHtml,
-        ?Translate $translator = null
+        EscapeHtml $escapeHtml
     ) {
         $this->serviceLocator  = $serviceLocator;
         $this->logger          = $logger;
@@ -69,7 +68,6 @@ final class Breadcrumbs extends \Laminas\View\Helper\Navigation\Breadcrumbs
         $this->containerParser = $containerParser;
         $this->view            = $renderer;
         $this->escapeHtml      = $escapeHtml;
-        $this->translator      = $translator;
     }
 
     /**
@@ -265,7 +263,7 @@ final class Breadcrumbs extends \Laminas\View\Helper\Navigation\Breadcrumbs
         $active = $this->findActive($container);
 
         // find deepest active
-        if (!$active) {
+        if (!array_key_exists('page', $active) || !$active['page'] instanceof AbstractPage) {
             return '';
         }
 
@@ -279,10 +277,11 @@ final class Breadcrumbs extends \Laminas\View\Helper\Navigation\Breadcrumbs
                 $active->isActive()
             );
         } else {
-            $label = $active->getLabel();
+            $label = (string) $active->getLabel();
 
-            if (null !== $this->translator) {
-                $label = ($this->translator)($label, $active->getTextDomain());
+            if ('' !== $label && $this->hasTranslator()) {
+                $translator = $this->getTranslator();
+                $label      = $translator->translate($label, $active->getTextDomain());
             }
 
             $html[] = $this->renderBreadcrumbItem(
