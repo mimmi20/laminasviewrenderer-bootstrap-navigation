@@ -31,7 +31,6 @@ use Laminas\ServiceManager\ServiceManager;
 use Laminas\View\Helper\Navigation\AbstractHelper;
 use Laminas\View\HelperPluginManager;
 use Laminas\View\Renderer\PhpRenderer;
-use Laminas\View\Resolver\ResolverInterface as Resolver;
 use Laminas\View\Resolver\TemplatePathStack;
 use Mimmi20\LaminasView\Helper\HtmlElement\Helper\HtmlElementFactory;
 use Mimmi20\LaminasView\Helper\HtmlElement\Helper\HtmlElementInterface;
@@ -48,6 +47,7 @@ use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerExceptionInterface;
 use SebastianBergmann\RecursionContext\InvalidArgumentException;
 
+use function assert;
 use function class_exists;
 use function file_get_contents;
 use function sprintf;
@@ -138,7 +138,7 @@ abstract class AbstractTest extends TestCase
         $this->nav3 = new Navigation($config->get('nav_test3'));
 
         // setup view
-        $view = new PhpRenderer();
+        $view     = new PhpRenderer();
         $resolver = $view->resolver();
 
         assert($resolver instanceof TemplatePathStack);

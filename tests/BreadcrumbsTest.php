@@ -43,7 +43,7 @@ use const PHP_EOL;
 final class BreadcrumbsTest extends TestCase
 {
     /**
-     * @throws \Laminas\View\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     protected function tearDown(): void
     {
@@ -134,7 +134,7 @@ final class BreadcrumbsTest extends TestCase
      * @throws ExceptionInterface
      * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      * @throws \Laminas\Navigation\Exception\InvalidArgumentException
-     * @throws \Laminas\View\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function testSetContainer(): void
     {
@@ -222,7 +222,7 @@ final class BreadcrumbsTest extends TestCase
      * @throws Exception
      * @throws ExceptionInterface
      * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
-     * @throws \Laminas\View\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function testSetContainerWithStringDefaultAndNavigationNotFound(): void
     {
@@ -303,7 +303,7 @@ final class BreadcrumbsTest extends TestCase
      * @throws ExceptionInterface
      * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      * @throws \Laminas\Navigation\Exception\InvalidArgumentException
-     * @throws \Laminas\View\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function testSetContainerWithStringFound(): void
     {
@@ -382,7 +382,7 @@ final class BreadcrumbsTest extends TestCase
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExceptionInterface
      * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
-     * @throws \Laminas\View\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function testDoNotAccept(): void
     {
@@ -524,7 +524,7 @@ final class BreadcrumbsTest extends TestCase
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExceptionInterface
      * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
-     * @throws \Laminas\View\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function testDoNotAcceptWithException(): void
     {
@@ -661,7 +661,7 @@ final class BreadcrumbsTest extends TestCase
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExceptionInterface
      * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
-     * @throws \Laminas\View\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function testHtmlify(): void
     {
@@ -781,7 +781,7 @@ final class BreadcrumbsTest extends TestCase
      * @throws ExceptionInterface
      * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      * @throws \Laminas\Navigation\Exception\InvalidArgumentException
-     * @throws \Laminas\View\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function testFindActiveNoActivePages(): void
     {
@@ -929,7 +929,7 @@ final class BreadcrumbsTest extends TestCase
      * @throws ExceptionInterface
      * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      * @throws \Laminas\Navigation\Exception\InvalidArgumentException
-     * @throws \Laminas\View\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function testFindActiveOneActivePage(): void
     {
@@ -1087,7 +1087,7 @@ final class BreadcrumbsTest extends TestCase
      * @throws ExceptionInterface
      * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      * @throws \Laminas\Navigation\Exception\InvalidArgumentException
-     * @throws \Laminas\View\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function testFindActiveWithoutContainer(): void
     {
@@ -1196,7 +1196,7 @@ final class BreadcrumbsTest extends TestCase
      * @throws ExceptionInterface
      * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      * @throws \Laminas\Navigation\Exception\InvalidArgumentException
-     * @throws \Laminas\View\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function testFindActiveNoActivePageWithoutDepth(): void
     {
@@ -1349,7 +1349,7 @@ final class BreadcrumbsTest extends TestCase
      * @throws ExceptionInterface
      * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      * @throws \Laminas\Navigation\Exception\InvalidArgumentException
-     * @throws \Laminas\View\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function testFindActiveOneActivePageOutOfRange(): void
     {
@@ -1499,7 +1499,7 @@ final class BreadcrumbsTest extends TestCase
      * @throws ExceptionInterface
      * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      * @throws \Laminas\Navigation\Exception\InvalidArgumentException
-     * @throws \Laminas\View\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function testFindActiveOneActivePageRecursive(): void
     {
@@ -1667,7 +1667,7 @@ final class BreadcrumbsTest extends TestCase
      * @throws ExceptionInterface
      * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      * @throws \Laminas\Navigation\Exception\InvalidArgumentException
-     * @throws \Laminas\View\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function testFindActiveOneActivePageRecursive2(): void
     {
@@ -1815,7 +1815,7 @@ final class BreadcrumbsTest extends TestCase
      * @throws ExceptionInterface
      * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      * @throws \Laminas\Navigation\Exception\InvalidArgumentException
-     * @throws \Laminas\View\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function testFindActiveOneActivePageRecursive3(): void
     {
@@ -2039,7 +2039,7 @@ final class BreadcrumbsTest extends TestCase
     /**
      * @throws Exception
      * @throws ExceptionInterface
-     * @throws \Laminas\View\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function testRenderPartialWithParamsWithoutPartial(): void
     {
@@ -2131,7 +2131,7 @@ final class BreadcrumbsTest extends TestCase
     /**
      * @throws Exception
      * @throws ExceptionInterface
-     * @throws \Laminas\View\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function testRenderPartialWithParamsWithWrongPartial(): void
     {
@@ -2227,7 +2227,7 @@ final class BreadcrumbsTest extends TestCase
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExceptionInterface
      * @throws \Laminas\Navigation\Exception\InvalidArgumentException
-     * @throws \Laminas\View\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function testRenderPartialWithParams(): void
     {
@@ -2399,7 +2399,7 @@ final class BreadcrumbsTest extends TestCase
      * @throws ExceptionInterface
      * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      * @throws \Laminas\Navigation\Exception\InvalidArgumentException
-     * @throws \Laminas\View\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function testRenderPartialWithParamsAndArrayPartial(): void
     {
@@ -2569,7 +2569,7 @@ final class BreadcrumbsTest extends TestCase
      * @throws ExceptionInterface
      * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      * @throws \Laminas\Navigation\Exception\InvalidArgumentException
-     * @throws \Laminas\View\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function testRenderPartialWithParamsAndArrayPartialRenderingPage(): void
     {
@@ -2743,7 +2743,7 @@ final class BreadcrumbsTest extends TestCase
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExceptionInterface
      * @throws \Laminas\Navigation\Exception\InvalidArgumentException
-     * @throws \Laminas\View\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function testRenderPartialWithParamsNoActivePage(): void
     {
@@ -2896,7 +2896,7 @@ final class BreadcrumbsTest extends TestCase
     /**
      * @throws Exception
      * @throws ExceptionInterface
-     * @throws \Laminas\View\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function testRenderPartialWithoutPartial(): void
     {
@@ -2988,7 +2988,7 @@ final class BreadcrumbsTest extends TestCase
     /**
      * @throws Exception
      * @throws ExceptionInterface
-     * @throws \Laminas\View\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function testRenderPartialWithWrongPartial(): void
     {
@@ -3084,7 +3084,7 @@ final class BreadcrumbsTest extends TestCase
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExceptionInterface
      * @throws \Laminas\Navigation\Exception\InvalidArgumentException
-     * @throws \Laminas\View\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function testRenderPartial(): void
     {
@@ -3255,7 +3255,7 @@ final class BreadcrumbsTest extends TestCase
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExceptionInterface
      * @throws \Laminas\Navigation\Exception\InvalidArgumentException
-     * @throws \Laminas\View\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function testRenderPartialNoActivePage(): void
     {
@@ -3411,7 +3411,7 @@ final class BreadcrumbsTest extends TestCase
      * @throws ExceptionInterface
      * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      * @throws \Laminas\Navigation\Exception\InvalidArgumentException
-     * @throws \Laminas\View\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function testRenderPartialWithArrayPartial(): void
     {
@@ -3581,7 +3581,7 @@ final class BreadcrumbsTest extends TestCase
      * @throws ExceptionInterface
      * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      * @throws \Laminas\Navigation\Exception\InvalidArgumentException
-     * @throws \Laminas\View\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function testRenderPartialWithArrayPartialRenderingPage(): void
     {
@@ -3756,7 +3756,7 @@ final class BreadcrumbsTest extends TestCase
      * @throws ExceptionInterface
      * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      * @throws \Laminas\Navigation\Exception\InvalidArgumentException
-     * @throws \Laminas\View\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function testRenderStraightNoActivePage(): void
     {
@@ -3910,7 +3910,7 @@ final class BreadcrumbsTest extends TestCase
      * @throws ExceptionInterface
      * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      * @throws \Laminas\Navigation\Exception\InvalidArgumentException
-     * @throws \Laminas\View\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function testRenderStraight(): void
     {
@@ -4104,7 +4104,7 @@ final class BreadcrumbsTest extends TestCase
      * @throws ExceptionInterface
      * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      * @throws \Laminas\Navigation\Exception\InvalidArgumentException
-     * @throws \Laminas\View\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function testRenderStraightWithoutLinkAtEnd(): void
     {
@@ -4313,7 +4313,7 @@ final class BreadcrumbsTest extends TestCase
      * @throws ExceptionInterface
      * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      * @throws \Laminas\Navigation\Exception\InvalidArgumentException
-     * @throws \Laminas\View\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function testRenderStraightWithoutLinkAtEndWithLiClass(): void
     {
@@ -4524,7 +4524,7 @@ final class BreadcrumbsTest extends TestCase
      * @throws ExceptionInterface
      * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      * @throws \Laminas\Navigation\Exception\InvalidArgumentException
-     * @throws \Laminas\View\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function testRenderStraightWithoutLinkAtEndWithLiClass2(): void
     {
@@ -4738,7 +4738,7 @@ final class BreadcrumbsTest extends TestCase
      * @throws ExceptionInterface
      * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      * @throws \Laminas\Navigation\Exception\InvalidArgumentException
-     * @throws \Laminas\View\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function testRenderWithoutPartial(): void
     {
@@ -4931,7 +4931,7 @@ final class BreadcrumbsTest extends TestCase
      * @throws ExceptionInterface
      * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      * @throws \Laminas\Navigation\Exception\InvalidArgumentException
-     * @throws \Laminas\View\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function testRenderWithPartial(): void
     {
@@ -5085,7 +5085,7 @@ final class BreadcrumbsTest extends TestCase
      * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws \Laminas\Navigation\Exception\InvalidArgumentException
-     * @throws \Laminas\View\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function testToStringWithPartial(): void
     {

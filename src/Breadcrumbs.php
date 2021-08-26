@@ -14,7 +14,6 @@ namespace Mimmi20\LaminasView\BootstrapNavigation;
 
 use Laminas\Log\Logger;
 use Laminas\Navigation\AbstractContainer;
-use Laminas\Navigation\Navigation;
 use Laminas\Navigation\Page\AbstractPage;
 use Laminas\ServiceManager\ServiceLocatorInterface;
 use Laminas\Stdlib\Exception\InvalidArgumentException;
@@ -38,7 +37,6 @@ use function implode;
 use function is_array;
 use function is_int;
 use function is_object;
-use function is_string;
 use function sprintf;
 
 use const PHP_EOL;
@@ -55,12 +53,6 @@ final class Breadcrumbs extends \Laminas\View\Helper\Navigation\Breadcrumbs
     private EscapeHtml $escapeHtml;
 
     /**
-     * @param ServiceLocatorInterface $serviceLocator
-     * @param Logger $logger
-     * @param HtmlifyInterface $htmlify
-     * @param ContainerParserInterface $containerParser
-     * @param PhpRenderer $renderer
-     * @param EscapeHtml $escapeHtml
      * @throws void
      */
     public function __construct(
@@ -81,6 +73,7 @@ final class Breadcrumbs extends \Laminas\View\Helper\Navigation\Breadcrumbs
 
     /**
      * Returns minimum depth a page must have to be included when rendering
+     *
      * @throws void
      */
     public function getMinDepth(): ?int
@@ -98,7 +91,8 @@ final class Breadcrumbs extends \Laminas\View\Helper\Navigation\Breadcrumbs
      *
      * @param AbstractContainer|string|null $container [optional] container to render. Default is
      *                                                 to render the container registered in the helper.
-     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     *
+     * @throws InvalidArgumentException
      * @throws \Laminas\Navigation\Exception\InvalidArgumentException
      */
     public function renderStraight($container = null): string
@@ -127,8 +121,8 @@ final class Breadcrumbs extends \Laminas\View\Helper\Navigation\Breadcrumbs
      * @param AbstractContainer|string|null                 $container
      * @param array<int, string>|ModelInterface|string|null $partial
      *
-     * @throws Exception\RuntimeException         if no partial provided
-     * @throws Exception\InvalidArgumentException if partial is invalid array
+     * @throws Exception\RuntimeException                             if no partial provided
+     * @throws Exception\InvalidArgumentException                     if partial is invalid array
      * @throws InvalidArgumentException
      * @throws \Laminas\Navigation\Exception\InvalidArgumentException
      */
@@ -276,10 +270,6 @@ final class Breadcrumbs extends \Laminas\View\Helper\Navigation\Breadcrumbs
     }
 
     /**
-     * @param string $content
-     * @param string $liClass
-     * @param bool $active
-     * @return string
      * @throws void
      */
     private function renderBreadcrumbItem(string $content, string $liClass, bool $active): string
@@ -306,7 +296,6 @@ final class Breadcrumbs extends \Laminas\View\Helper\Navigation\Breadcrumbs
     }
 
     /**
-     * @return string
      * @throws void
      */
     private function renderSeparator(): string
@@ -316,6 +305,7 @@ final class Breadcrumbs extends \Laminas\View\Helper\Navigation\Breadcrumbs
 
     /**
      * @param array<string> $html
+     *
      * @throws void
      */
     private function combineRendered(array $html): string

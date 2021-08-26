@@ -17,19 +17,20 @@ use Laminas\Navigation\AbstractContainer;
 use Laminas\Navigation\Navigation;
 use Laminas\Navigation\Page\AbstractPage;
 use Laminas\ServiceManager\ServiceLocatorInterface;
-use Laminas\Stdlib\Exception\DomainException;
 use Laminas\Stdlib\Exception\InvalidArgumentException;
-use Laminas\View\Exception;
 use Laminas\View\Model\ModelInterface;
 use Mimmi20\NavigationHelper\Accept\AcceptHelperInterface;
 use Mimmi20\NavigationHelper\ContainerParser\ContainerParserInterface;
 use Mimmi20\NavigationHelper\FindActive\FindActiveInterface;
 use Mimmi20\NavigationHelper\Htmlify\HtmlifyInterface;
 use Psr\Container\ContainerExceptionInterface;
+use Throwable;
 
+use function array_key_exists;
 use function assert;
-use function call_user_func_array;
+use function is_array;
 use function is_int;
+use function is_string;
 
 /**
  * Base class for navigational helpers.
@@ -102,7 +103,7 @@ trait HelperTrait
     {
         try {
             return $this->render();
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             $this->logger->err($e);
 
             return '';
@@ -116,11 +117,10 @@ trait HelperTrait
      *
      * @param AbstractContainer|string|null $container default is null, meaning container will be reset
      *
-     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function setContainer($container = null): self
     {
-
         $container = $this->containerParser->parseContainer($container);
 
         assert($container instanceof AbstractContainer || null === $container);
@@ -154,8 +154,9 @@ trait HelperTrait
     /**
      * Sets which partial view script to use for rendering menu.
      *
-     * @param array<int, string>|ModelInterface|string|int|null $partial partial view script or null. If an array is
-     *                                                               given, the first value is used for the partial view script.
+     * @param array<int, string>|int|ModelInterface|string|null $partial partial view script or null. If an array is
+     *                                                                   given, the first value is used for the partial view script.
+     *
      * @throws void
      */
     public function setPartial($partial): self
@@ -171,6 +172,7 @@ trait HelperTrait
      * Returns partial view script to use for rendering menu.
      *
      * @return array<int, string>|ModelInterface|string|null
+     *
      * @throws void
      */
     public function getPartial()
@@ -265,9 +267,9 @@ trait HelperTrait
      *
      * @return bool Whether page should be accepted
      *
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
-     *
      * @throws void
+     *
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      */
     public function accept(AbstractPage $page, $recursive = true): bool
     {
@@ -295,6 +297,7 @@ trait HelperTrait
      * @param AbstractPage $page page to generate HTML for
      *
      * @return string HTML string (<a href="…">Label</a>)
+     *
      * @throws void
      */
     public function htmlify(AbstractPage $page): string
@@ -303,7 +306,6 @@ trait HelperTrait
     }
 
     /**
-     * @return ServiceLocatorInterface
      * @throws void
      */
     public function getServiceLocator(): ServiceLocatorInterface

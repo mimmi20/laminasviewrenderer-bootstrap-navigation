@@ -14,7 +14,6 @@ namespace Mimmi20\LaminasView\BootstrapNavigation;
 
 use Laminas\Log\Logger;
 use Laminas\Navigation\AbstractContainer;
-use Laminas\Navigation\Navigation;
 use Laminas\Navigation\Page\AbstractPage;
 use Laminas\ServiceManager\ServiceLocatorInterface;
 use Laminas\Stdlib\Exception\InvalidArgumentException;
@@ -28,6 +27,7 @@ use Mimmi20\NavigationHelper\ContainerParser\ContainerParserInterface;
 use RecursiveIteratorIterator;
 
 use function array_diff_key;
+use function array_filter;
 use function array_flip;
 use function array_key_exists;
 use function array_merge;
@@ -94,13 +94,6 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
     ];
 
     /**
-     * @param ServiceLocatorInterface $serviceLocator
-     * @param Logger $logger
-     * @param ContainerParserInterface $containerParser
-     * @param EscapeHtmlAttr $escapeHtmlAttr
-     * @param PhpRenderer $renderer
-     * @param EscapeHtml $escapeHtml
-     * @param HtmlElementInterface $htmlElement
      * @throws void
      */
     public function __construct(
@@ -133,7 +126,8 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
      *                                                       Default is to use the container retrieved from {@link getContainer()}.
      * @param array<string, bool|int|string|null> $options   [optional] options for controlling rendering
      * @phpstan-param array{in-navbar?: bool, ulClass?: string|null, tabs?: bool, pills?: bool, fill?: bool, justified?: bool, centered?: bool, right-aligned?: bool, vertical?: string, direction?: Direction, style?: self::STYLE_UL|self::STYLE_OL, substyle?: string, sublink?: Sublink, onlyActiveBranch?: bool, renderParents?: bool, indent?: int|string|null} $options
-     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     *
+     * @throws InvalidArgumentException
      * @throws \Laminas\Navigation\Exception\InvalidArgumentException
      */
     public function renderMenu($container = null, array $options = []): string
@@ -206,19 +200,20 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
      * </code>
      *
      * @param AbstractContainer|null $container     [optional] container to create menu from.
-     *                                                     Default is to use the container retrieved from {@link getContainer()}.
-     * @param string|null                   $ulClass       [optional] CSS class to use for UL element.
-     *                                                     Default is to use the value from {@link getUlClass()}.
-     * @param string|null                   $liClass       [optional] CSS class to use for LI elements
-     * @param int|string|null               $indent        [optional] indentation as a string or number
-     *                                                     of spaces. Default is to use the value retrieved from
-     *                                                     {@link getIndent()}.
-     * @param string|null                   $liActiveClass [optional] CSS class to use for UL
-     *                                                     element. Default is to use the value from {@link getUlClass()}.
+     *                                              Default is to use the container retrieved from {@link getContainer()}.
+     * @param string|null            $ulClass       [optional] CSS class to use for UL element.
+     *                                              Default is to use the value from {@link getUlClass()}.
+     * @param string|null            $liClass       [optional] CSS class to use for LI elements
+     * @param int|string|null        $indent        [optional] indentation as a string or number
+     *                                              of spaces. Default is to use the value retrieved from
+     *                                              {@link getIndent()}.
+     * @param string|null            $liActiveClass [optional] CSS class to use for UL
+     *                                              element. Default is to use the value from {@link getUlClass()}.
+     *
+     * @throws InvalidArgumentException
+     * @throws \Laminas\Navigation\Exception\InvalidArgumentException
      *
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
-     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
-     * @throws \Laminas\Navigation\Exception\InvalidArgumentException
      */
     public function renderSubMenu(
         ?AbstractContainer $container = null,
@@ -254,9 +249,10 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
      * @param bool         $escapeLabel        Whether or not to escape the label
      * @param bool         $addClassToListItem Whether or not to add the page class to the list item
      *
+     * @throws void
+     *
      * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
-     * @throws void
      */
     public function htmlify(AbstractPage $page, $escapeLabel = true, $addClassToListItem = false): string
     {
@@ -278,7 +274,7 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
      * @phpstan-param Sublink $subLink
      *
      * @throws \Laminas\Navigation\Exception\InvalidArgumentException
-     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      *
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      */
@@ -418,10 +414,10 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
      * @phpstan-param Style $style
      * @phpstan-param Sublink $subLink
      *
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
-     *
      * @throws \Laminas\Navigation\Exception\InvalidArgumentException
-     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
+     *
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      */
     protected function renderNormalMenu(
         AbstractContainer $container,
@@ -641,9 +637,9 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
      * @param AbstractContainer|string|null                 $container
      * @param array<int, string>|ModelInterface|string|null $partial
      *
-     * @throws Exception\RuntimeException         if no partial provided
-     * @throws Exception\InvalidArgumentException if partial is invalid array
-     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws Exception\RuntimeException                             if no partial provided
+     * @throws Exception\InvalidArgumentException                     if partial is invalid array
+     * @throws InvalidArgumentException
      * @throws \Laminas\Navigation\Exception\InvalidArgumentException
      */
     protected function renderPartialModel(array $params, $container, $partial): string
@@ -804,6 +800,7 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
      * @param AbstractPage                        $page    current page to check
      * @param array<string, bool|int|string|null> $options options for controlling rendering
      * @param int                                 $level   current level of rendering
+     *
      * @throws void
      */
     private function hasAcceptedSubpages(AbstractPage $page, array $options, int $level): bool
@@ -834,6 +831,7 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
      * @phpstan-param array{page?: AbstractPage|null, depth?: int|null} $found
      *
      * @return array<bool>
+     *
      * @throws void
      */
     private function isPageAccepted(AbstractPage $page, array $options, int $level, array $found): array
@@ -863,6 +861,7 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
      * @param array<int, string>                  $liClasses
      * @param array<string, string>               $pageAttributes
      * @phpstan-param array{role?: string, direction?: Direction, sublink?: Sublink, liActiveClass?: string, liClass?: string, addClassToListItem?: bool} $options
+     *
      * @throws \Laminas\Navigation\Exception\InvalidArgumentException
      */
     private function setAttributes(
@@ -909,7 +908,7 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
                 }
 
                 if (self::STYLE_SUBLINK_DETAILS !== $options['sublink']) {
-                    $pageClasses[] = 'dropdown-toggle';
+                    $pageClasses[]                    = 'dropdown-toggle';
                     $pageAttributes['data-bs-toggle'] = 'dropdown';
                 }
             }
@@ -963,6 +962,7 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
      * @param array<string, string>               $attributes
      *
      * @return string HTML string
+     *
      * @throws void
      */
     private function toHtml(
@@ -1019,7 +1019,7 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
     /**
      * @param array<string, bool|int|string|null> $options [optional] options to normalize
      *
-     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     private function normalizeUlClass(array $options): string
     {
@@ -1063,7 +1063,7 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
     /**
      * @param array<string, bool|int|string|null> $options [optional] options to normalize
      *
-     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     private function normalizeItemClass(array $options): string
     {
@@ -1080,6 +1080,7 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
     /**
      * @param array<string, AbstractPage|int|null> $found
      * @phpstan-param array{page?: AbstractPage|null, depth?: int|null} $found
+     *
      * @throws void
      */
     private function isActiveBranch(array $found, AbstractPage $page, ?int $maxDepth): bool
@@ -1113,6 +1114,7 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
 
     /**
      * @param array<int|string, string|null> $classes
+     *
      * @throws void
      */
     private function combineClasses(array $classes): string
