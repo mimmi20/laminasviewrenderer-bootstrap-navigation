@@ -12,12 +12,12 @@ declare(strict_types = 1);
 
 namespace Mimmi20\LaminasView\BootstrapNavigation;
 
-use InvalidArgumentException;
 use Laminas\Log\Logger;
 use Laminas\Navigation\AbstractContainer;
 use Laminas\Navigation\Navigation;
 use Laminas\Navigation\Page\AbstractPage;
 use Laminas\ServiceManager\ServiceLocatorInterface;
+use Laminas\Stdlib\Exception\InvalidArgumentException;
 use Laminas\View\Exception;
 use Laminas\View\Helper\EscapeHtml;
 use Laminas\View\Helper\EscapeHtmlAttr;
@@ -50,6 +50,10 @@ use const PHP_EOL;
 
 /**
  * Helper for rendering menus from navigation containers.
+ *
+ * @phpstan-type Direction Menu::DROP_ORIENTATION_DOWN|Menu::DROP_ORIENTATION_UP|Menu::DROP_ORIENTATION_START|Menu::DROP_ORIENTATION_END
+ * @phpstan-type Sublink Menu::STYLE_SUBLINK_LINK|Menu::STYLE_SUBLINK_SPAN|Menu::STYLE_SUBLINK_BUTTON|Menu::STYLE_SUBLINK_DETAILS
+ * @phpstan-type Style Menu::STYLE_UL|Menu::STYLE_OL
  */
 final class Menu extends \Laminas\View\Helper\Navigation\Menu
 {
@@ -89,6 +93,16 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
         'xxl', // added in Bootstrap 5
     ];
 
+    /**
+     * @param ServiceLocatorInterface $serviceLocator
+     * @param Logger $logger
+     * @param ContainerParserInterface $containerParser
+     * @param EscapeHtmlAttr $escapeHtmlAttr
+     * @param PhpRenderer $renderer
+     * @param EscapeHtml $escapeHtml
+     * @param HtmlElementInterface $htmlElement
+     * @throws void
+     */
     public function __construct(
         ServiceLocatorInterface $serviceLocator,
         Logger $logger,
@@ -118,9 +132,9 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
      * @param AbstractContainer|string|null       $container [optional] container to create menu from.
      *                                                       Default is to use the container retrieved from {@link getContainer()}.
      * @param array<string, bool|int|string|null> $options   [optional] options for controlling rendering
-     * @phpstan-param array{in-navbar?: bool, ulClass?: string|null, tabs?: bool, pills?: bool, fill?: bool, justified?: bool, centered?: bool, right-aligned?: bool, vertical?: string, direction?: self::DROP_ORIENTATION_*, style?: self::STYLE_UL|self::STYLE_OL, substyle?: string, sublink?: self::STYLE_SUBLINK_*, onlyActiveBranch?: bool, renderParents?: bool, indent?: int|string|null} $options
-     *
-     * @throws InvalidArgumentException
+     * @phpstan-param array{in-navbar?: bool, ulClass?: string|null, tabs?: bool, pills?: bool, fill?: bool, justified?: bool, centered?: bool, right-aligned?: bool, vertical?: string, direction?: Direction, style?: self::STYLE_UL|self::STYLE_OL, substyle?: string, sublink?: Sublink, onlyActiveBranch?: bool, renderParents?: bool, indent?: int|string|null} $options
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws \Laminas\Navigation\Exception\InvalidArgumentException
      */
     public function renderMenu($container = null, array $options = []): string
     {
@@ -149,7 +163,7 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
                 $options['sublink'],
                 $options['ulRole'],
                 $options['liRole'],
-                $options['role']
+                $options['role'] ?? ''
             );
         }
 
@@ -169,7 +183,7 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
             $options['sublink'],
             $options['ulRole'],
             $options['liRole'],
-            $options['role'],
+            $options['role'] ?? '',
             $options['dark']
         );
     }
@@ -191,7 +205,7 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
      * ));
      * </code>
      *
-     * @param AbstractContainer|string|null $container     [optional] container to create menu from.
+     * @param AbstractContainer|null $container     [optional] container to create menu from.
      *                                                     Default is to use the container retrieved from {@link getContainer()}.
      * @param string|null                   $ulClass       [optional] CSS class to use for UL element.
      *                                                     Default is to use the value from {@link getUlClass()}.
@@ -202,9 +216,9 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
      * @param string|null                   $liActiveClass [optional] CSS class to use for UL
      *                                                     element. Default is to use the value from {@link getUlClass()}.
      *
-     * @throws InvalidArgumentException
-     *
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws \Laminas\Navigation\Exception\InvalidArgumentException
      */
     public function renderSubMenu(
         ?AbstractContainer $container = null,
@@ -242,6 +256,7 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
      *
      * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
+     * @throws void
      */
     public function htmlify(AbstractPage $page, $escapeLabel = true, $addClassToListItem = false): string
     {
@@ -259,10 +274,11 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
      * @param bool              $escapeLabels       Whether or not to escape the labels
      * @param bool              $addClassToListItem Whether or not page class applied to <li> element
      * @param string            $liActiveClass      CSS class for active LI
-     * @phpstan-param self::DROP_ORIENTATION_* $direction
-     * @phpstan-param self::STYLE_SUBLINK_* $sublink
+     * @phpstan-param Direction $direction
+     * @phpstan-param Sublink $subLink
      *
-     * @throws Exception\InvalidArgumentException
+     * @throws \Laminas\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      *
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      */
@@ -280,7 +296,7 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
         string $subLink = self::STYLE_SUBLINK_LINK,
         ?string $ulRole = '',
         ?string $liRole = '',
-        ?string $role = ''
+        string $role = ''
     ): string {
         $active = $this->findActive($container, $minDepth - 1, $maxDepth);
 
@@ -344,7 +360,7 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
 
             $subHtml .= $indent . '    <li';
             if ([] !== $liClasses) {
-                $subHtml .= ' class="' . ($this->escapeHtmlAttr)(implode(' ', $liClasses)) . '"';
+                $subHtml .= ' class="' . ($this->escapeHtmlAttr)($this->combineClasses($liClasses)) . '"';
             }
 
             if (!empty($liRole)) {
@@ -397,11 +413,15 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
      * @param bool              $escapeLabels       Whether or not to escape the labels
      * @param bool              $addClassToListItem Whether or not page class applied to <li> element
      * @param string            $liActiveClass      CSS class for active LI
-     * @phpstan-param self::DROP_ORIENTATION_* $direction
-     * @phpstan-param self::STYLE_UL|self::STYLE_OL $style
-     * @phpstan-param self::STYLE_SUBLINK_* $sublink
+     * @param string            $liClass            CSS class for every LI
+     * @phpstan-param Direction $direction
+     * @phpstan-param Style $style
+     * @phpstan-param Sublink $subLink
      *
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
+     *
+     * @throws \Laminas\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      */
     protected function renderNormalMenu(
         AbstractContainer $container,
@@ -419,7 +439,7 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
         string $subLink = self::STYLE_SUBLINK_LINK,
         ?string $ulRole = '',
         ?string $liRole = '',
-        ?string $role = '',
+        string $role = '',
         bool $dark = false
     ): string {
         $html = '';
@@ -499,7 +519,7 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
                         $ulClasses[] = 'dropdown-menu-dark';
                     }
 
-                    $ulClass = ' class="' . ($this->escapeHtmlAttr)(implode(' ', $ulClasses)) . '"';
+                    $ulClass = ' class="' . ($this->escapeHtmlAttr)($this->combineClasses($ulClasses)) . '"';
 
                     if (null !== $prevPage && null !== $prevPage->getId()) {
                         $ulClass .= ' aria-labelledby="' . ($this->escapeHtmlAttr)($prevPage->getId()) . '"';
@@ -558,7 +578,13 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
             if ([] === $liClasses) {
                 $allLiClasses = '';
             } else {
-                $allLiClasses = ' class="' . ($this->escapeHtmlAttr)(implode(' ', array_unique($liClasses))) . '"';
+                $combinedLiClasses = $this->combineClasses($liClasses);
+
+                if ('' === $combinedLiClasses) {
+                    $allLiClasses = '';
+                } else {
+                    $allLiClasses = ' class="' . ($this->escapeHtmlAttr)($combinedLiClasses) . '"';
+                }
             }
 
             if (0 === $depth && !empty($liRole)) {
@@ -661,10 +687,10 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
      * Normalizes given render options.
      *
      * @param array<string, bool|int|string|null> $options [optional] options to normalize
-     * @phpstan-param array{ulClass?: string|null, liClass?: string|null, indent?: int|string|null, minDepth?: int|null, maxDepth?: int|null, onlyActiveBranch?: bool, escapeLabels?: bool, renderParents?: bool, addClassToListItem?: bool, liActiveClass?: string|null, tabs?: bool, pills?: bool, fill?: bool, justified?: bool, centered?: bool, right-aligned?: bool, vertical?: string, direction?: string, style?: string, substyle?: string, sublink?: string, in-navbar?: bool, dark?: bool} $options
+     * @phpstan-param array{ulClass?: string|null, liClass?: string|null, indent?: int|string|null, minDepth?: int|null, maxDepth?: int|null, onlyActiveBranch?: bool, escapeLabels?: bool, renderParents?: bool, addClassToListItem?: bool, liActiveClass?: string|null, tabs?: bool, pills?: bool, fill?: bool, justified?: bool, centered?: bool, right-aligned?: bool, vertical?: string, direction?: Direction, style?: Style, substyle?: string, sublink?: Sublink, in-navbar?: bool, dark?: bool} $options
      *
      * @return array<string, bool|int|string|null>
-     * @phpstan-return array{ulClass: string, liClass: string, indent: string, minDepth: int, maxDepth: int|null, onlyActiveBranch: bool, escapeLabels: bool, renderParents: bool, addClassToListItem: bool, liActiveClass: string, role: string|null, style: string, substyle: string, sublink: string, class: string, ulRole: string|null, liRole: string|null, direction: string, dark: bool}
+     * @phpstan-return array{ulClass: string, liClass: string, indent: string, minDepth: int, maxDepth: int|null, onlyActiveBranch: bool, escapeLabels: bool, renderParents: bool, addClassToListItem: bool, liActiveClass: string, role: string|null, style: Style, substyle: string, sublink: Sublink, class: string, ulRole: string|null, liRole: string|null, direction: Direction, dark: bool}
      *
      * @throws InvalidArgumentException
      */
@@ -778,6 +804,7 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
      * @param AbstractPage                        $page    current page to check
      * @param array<string, bool|int|string|null> $options options for controlling rendering
      * @param int                                 $level   current level of rendering
+     * @throws void
      */
     private function hasAcceptedSubpages(AbstractPage $page, array $options, int $level): bool
     {
@@ -807,6 +834,7 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
      * @phpstan-param array{page?: AbstractPage|null, depth?: int|null} $found
      *
      * @return array<bool>
+     * @throws void
      */
     private function isPageAccepted(AbstractPage $page, array $options, int $level, array $found): array
     {
@@ -834,7 +862,8 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
      * @param int                                 $level          current level of rendering
      * @param array<int, string>                  $liClasses
      * @param array<string, string>               $pageAttributes
-     * @phpstan-param array{role?: string, direction?: self::DROP_ORIENTATION_*, sublink?: self::STYLE_SUBLINK_BUTTON|self::STYLE_SUBLINK_DETAILS, liActiveClass?: string, liClass?: string, addClassToListItem?: string} $options
+     * @phpstan-param array{role?: string, direction?: Direction, sublink?: Sublink, liActiveClass?: string, liClass?: string, addClassToListItem?: bool} $options
+     * @throws \Laminas\Navigation\Exception\InvalidArgumentException
      */
     private function setAttributes(
         AbstractPage $page,
@@ -891,7 +920,9 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
 
         // Is page active?
         if ($isActive) {
-            $liClasses[] = $options['liActiveClass'];
+            if (array_key_exists('liActiveClass', $options)) {
+                $liClasses[] = $options['liActiveClass'];
+            }
 
             if (0 === $level) {
                 $pageAttributes['aria-current'] = 'page';
@@ -921,7 +952,7 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
             $pageClasses[] = $page->getClass();
         }
 
-        $pageAttributes['class'] = implode(' ', array_unique($pageClasses));
+        $pageAttributes['class'] = $this->combineClasses($pageClasses);
     }
 
     /**
@@ -932,6 +963,7 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
      * @param array<string, string>               $attributes
      *
      * @return string HTML string
+     * @throws void
      */
     private function toHtml(
         AbstractPage $page,
@@ -987,7 +1019,7 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
     /**
      * @param array<string, bool|int|string|null> $options [optional] options to normalize
      *
-     * @throws InvalidArgumentException
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      */
     private function normalizeUlClass(array $options): string
     {
@@ -1025,13 +1057,13 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
             $ulClasses[] = $this->getSizeClass($options['vertical'], 'flex-%s-row');
         }
 
-        return implode(' ', $ulClasses);
+        return $this->combineClasses($ulClasses);
     }
 
     /**
      * @param array<string, bool|int|string|null> $options [optional] options to normalize
      *
-     * @throws InvalidArgumentException
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      */
     private function normalizeItemClass(array $options): string
     {
@@ -1042,12 +1074,13 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
             $itemClasses[] = $this->getSizeClass($options['vertical'], 'text-%s-center');
         }
 
-        return implode(' ', $itemClasses);
+        return $this->combineClasses($itemClasses);
     }
 
     /**
      * @param array<string, AbstractPage|int|null> $found
      * @phpstan-param array{page?: AbstractPage|null, depth?: int|null} $found
+     * @throws void
      */
     private function isActiveBranch(array $found, AbstractPage $page, ?int $maxDepth): bool
     {
@@ -1076,5 +1109,14 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
         }
 
         return $accept;
+    }
+
+    /**
+     * @param array<int|string, string|null> $classes
+     * @throws void
+     */
+    private function combineClasses(array $classes): string
+    {
+        return implode(' ', array_unique(array_filter($classes)));
     }
 }

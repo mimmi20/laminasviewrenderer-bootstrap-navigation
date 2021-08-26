@@ -18,6 +18,7 @@ final class ConfigProvider
      * Return general-purpose laminas-navigation configuration.
      *
      * @return array<string, array<string, array<string, string>>>
+     * @throws void
      */
     public function __invoke(): array
     {
@@ -28,6 +29,7 @@ final class ConfigProvider
 
     /**
      * @return array<string, array<string, string>>
+     * @throws void
      */
     public function getNavigationHelperConfig(): array
     {

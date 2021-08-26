@@ -54,6 +54,15 @@ final class Breadcrumbs extends \Laminas\View\Helper\Navigation\Breadcrumbs
 
     private EscapeHtml $escapeHtml;
 
+    /**
+     * @param ServiceLocatorInterface $serviceLocator
+     * @param Logger $logger
+     * @param HtmlifyInterface $htmlify
+     * @param ContainerParserInterface $containerParser
+     * @param PhpRenderer $renderer
+     * @param EscapeHtml $escapeHtml
+     * @throws void
+     */
     public function __construct(
         ServiceLocatorInterface $serviceLocator,
         Logger $logger,
@@ -72,6 +81,7 @@ final class Breadcrumbs extends \Laminas\View\Helper\Navigation\Breadcrumbs
 
     /**
      * Returns minimum depth a page must have to be included when rendering
+     * @throws void
      */
     public function getMinDepth(): ?int
     {
@@ -265,6 +275,13 @@ final class Breadcrumbs extends \Laminas\View\Helper\Navigation\Breadcrumbs
         return $this->combineRendered($html);
     }
 
+    /**
+     * @param string $content
+     * @param string $liClass
+     * @param bool $active
+     * @return string
+     * @throws void
+     */
     private function renderBreadcrumbItem(string $content, string $liClass, bool $active): string
     {
         $classes = ['breadcrumb-item'];
@@ -288,6 +305,10 @@ final class Breadcrumbs extends \Laminas\View\Helper\Navigation\Breadcrumbs
         return $html;
     }
 
+    /**
+     * @return string
+     * @throws void
+     */
     private function renderSeparator(): string
     {
         return $this->getIndent() . '        ' . $this->getSeparator() . PHP_EOL;
@@ -295,6 +316,7 @@ final class Breadcrumbs extends \Laminas\View\Helper\Navigation\Breadcrumbs
 
     /**
      * @param array<string> $html
+     * @throws void
      */
     private function combineRendered(array $html): string
     {

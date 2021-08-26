@@ -31,6 +31,8 @@ use Laminas\ServiceManager\ServiceManager;
 use Laminas\View\Helper\Navigation\AbstractHelper;
 use Laminas\View\HelperPluginManager;
 use Laminas\View\Renderer\PhpRenderer;
+use Laminas\View\Resolver\ResolverInterface as Resolver;
+use Laminas\View\Resolver\TemplatePathStack;
 use Mimmi20\LaminasView\Helper\HtmlElement\Helper\HtmlElementFactory;
 use Mimmi20\LaminasView\Helper\HtmlElement\Helper\HtmlElementInterface;
 use Mimmi20\NavigationHelper\Accept\AcceptHelperFactory;
@@ -91,10 +93,11 @@ abstract class AbstractTest extends TestCase
      * Prepares the environment before running a test
      *
      * @throws Exception
-     * @throws InvalidArgumentException
      * @throws ContainerExceptionInterface
      * @throws \Laminas\Config\Exception\InvalidArgumentException
      * @throws RuntimeException
+     * @throws \Laminas\View\Exception\InvalidArgumentException
+     * @throws \Laminas\Navigation\Exception\InvalidArgumentException
      */
     protected function setUp(): void
     {
@@ -103,6 +106,8 @@ abstract class AbstractTest extends TestCase
         // read navigation config
         $this->files = $cwd . '/_files';
         $config      = ConfigFactory::fromFile($this->files . '/navigation.xml', true);
+
+        assert($config instanceof \Laminas\Config\Config);
 
         $sm = $this->serviceManager = new ServiceManager();
         $sm->setAllowOverride(true);
@@ -127,10 +132,6 @@ abstract class AbstractTest extends TestCase
         $logger->expects(static::never())
             ->method('debug');
 
-        // read navigation config
-        $this->_files = $cwd . '/_files';
-        $config       = ConfigFactory::fromFile($this->_files . '/navigation.xml', true);
-
         // setup containers from config
         $this->nav1 = new Navigation($config->get('nav_test1'));
         $this->nav2 = new Navigation($config->get('nav_test2'));
@@ -138,7 +139,11 @@ abstract class AbstractTest extends TestCase
 
         // setup view
         $view = new PhpRenderer();
-        $view->resolver()->addPath($cwd . '/_files/mvc/views');
+        $resolver = $view->resolver();
+
+        assert($resolver instanceof TemplatePathStack);
+
+        $resolver->addPath($cwd . '/_files/mvc/views');
 
         // setup service manager
         $smConfig = [
@@ -285,7 +290,7 @@ abstract class AbstractTest extends TestCase
 
         $translator = new Translator();
         $translator->getPluginManager()->setService('default', $loader);
-        $translator->addTranslationFile('default', null);
+        $translator->addTranslationFile('default', '');
 
         return $translator;
     }
@@ -320,8 +325,8 @@ abstract class AbstractTest extends TestCase
         $translator = new Translator();
         $translator->getPluginManager()->setService('default1', $loader1);
         $translator->getPluginManager()->setService('default2', $loader2);
-        $translator->addTranslationFile('default1', null, 'LaminasTest_1');
-        $translator->addTranslationFile('default2', null, 'LaminasTest_2');
+        $translator->addTranslationFile('default1', '', 'LaminasTest_1');
+        $translator->addTranslationFile('default2', '', 'LaminasTest_2');
 
         return $translator;
     }

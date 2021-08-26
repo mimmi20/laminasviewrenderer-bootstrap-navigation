@@ -25,3 +25,7 @@ parameters:
     - '~is not subtype of Throwable~'
     - '~Strict comparison using === between null and Mezzio\\Navigation\\ContainerInterface will always evaluate to false~'
     - '~Parameter #1 \$message of method Laminas\\Log\\Logger::err\(\) expects string, .* given~'
+    - '~Interop\\Container\\ContainerInterface~'
+    - '~Laminas\\View\\Helper\\Navigation\\(Breadcrumbs|Menu|AbstractHelper)::~'
+    - '~Method Mimmi20\\LaminasView\\BootstrapNavigation\\(Breadcrumbs|Menu)::__toString\(\) throws checked exception Laminas\\View\\Exception\\ExceptionInterface but it.s missing from the PHPDoc @throws tag~'
+    - '~Call to an undefined method Laminas\\Navigation\\(AbstractContainer|Navigation)::find(One|All)By(Label|Active)\(\)~'

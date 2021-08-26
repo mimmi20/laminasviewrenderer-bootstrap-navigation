@@ -44,579 +44,12 @@ use const PHP_EOL;
 final class MenuTest extends TestCase
 {
     /**
-     * @throws Exception
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \Laminas\View\Exception\InvalidArgumentException
      */
     protected function tearDown(): void
     {
         Menu::setDefaultAcl(null);
         Menu::setDefaultRole(null);
-    }
-
-    /**
-     * @throws Exception
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     */
-    public function testSetMaxDepth(): void
-    {
-        $maxDepth = 4;
-
-        $logger = $this->getMockBuilder(Logger::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $logger->expects(self::never())
-            ->method('emerg');
-        $logger->expects(self::never())
-            ->method('alert');
-        $logger->expects(self::never())
-            ->method('crit');
-        $logger->expects(self::never())
-            ->method('err');
-        $logger->expects(self::never())
-            ->method('warn');
-        $logger->expects(self::never())
-            ->method('notice');
-        $logger->expects(self::never())
-            ->method('info');
-        $logger->expects(self::never())
-            ->method('debug');
-
-        $serviceLocator = $this->getMockBuilder(ServiceLocatorInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $serviceLocator->expects(self::never())
-            ->method('has');
-        $serviceLocator->expects(self::never())
-            ->method('get');
-        $serviceLocator->expects(self::never())
-            ->method('build');
-
-        $containerParser = $this->getMockBuilder(ContainerParserInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $containerParser->expects(self::never())
-            ->method('parseContainer');
-
-        $escapeHtmlAttr = $this->getMockBuilder(EscapeHtmlAttr::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $escapeHtmlAttr->expects(self::never())
-            ->method('__invoke');
-
-        $escapeHtml = $this->getMockBuilder(EscapeHtml::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $escapeHtml->expects(self::never())
-            ->method('__invoke');
-
-        $renderer = $this->getMockBuilder(PhpRenderer::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $renderer->expects(self::never())
-            ->method('render');
-        $renderer->expects(self::never())
-            ->method('plugin');
-        $renderer->expects(self::never())
-            ->method('getHelperPluginManager');
-
-        $htmlElement = $this->getMockBuilder(HtmlElementInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $htmlElement->expects(self::never())
-            ->method('toHtml');
-
-        $helper = new Menu(
-            $serviceLocator,
-            $logger,
-            $containerParser,
-            $escapeHtmlAttr,
-            $renderer,
-            $escapeHtml,
-            $htmlElement
-        );
-
-        self::assertNull($helper->getMaxDepth());
-
-        $helper->setMaxDepth($maxDepth);
-
-        self::assertSame($maxDepth, $helper->getMaxDepth());
-    }
-
-    /**
-     * @throws Exception
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     */
-    public function testSetMinDepth(): void
-    {
-        $logger = $this->getMockBuilder(Logger::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $logger->expects(self::never())
-            ->method('emerg');
-        $logger->expects(self::never())
-            ->method('alert');
-        $logger->expects(self::never())
-            ->method('crit');
-        $logger->expects(self::never())
-            ->method('err');
-        $logger->expects(self::never())
-            ->method('warn');
-        $logger->expects(self::never())
-            ->method('notice');
-        $logger->expects(self::never())
-            ->method('info');
-        $logger->expects(self::never())
-            ->method('debug');
-
-        $serviceLocator = $this->getMockBuilder(ServiceLocatorInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $serviceLocator->expects(self::never())
-            ->method('has');
-        $serviceLocator->expects(self::never())
-            ->method('get');
-        $serviceLocator->expects(self::never())
-            ->method('build');
-
-        $containerParser = $this->getMockBuilder(ContainerParserInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $containerParser->expects(self::never())
-            ->method('parseContainer');
-
-        $escapeHtmlAttr = $this->getMockBuilder(EscapeHtmlAttr::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $escapeHtmlAttr->expects(self::never())
-            ->method('__invoke');
-
-        $escapeHtml = $this->getMockBuilder(EscapeHtml::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $escapeHtml->expects(self::never())
-            ->method('__invoke');
-
-        $renderer = $this->getMockBuilder(PhpRenderer::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $renderer->expects(self::never())
-            ->method('render');
-        $renderer->expects(self::never())
-            ->method('plugin');
-        $renderer->expects(self::never())
-            ->method('getHelperPluginManager');
-
-        $htmlElement = $this->getMockBuilder(HtmlElementInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $htmlElement->expects(self::never())
-            ->method('toHtml');
-
-        $helper = new Menu(
-            $serviceLocator,
-            $logger,
-            $containerParser,
-            $escapeHtmlAttr,
-            $renderer,
-            $escapeHtml,
-            $htmlElement
-        );
-
-        self::assertSame(0, $helper->getMinDepth());
-
-        $helper->setMinDepth(4);
-
-        self::assertSame(4, $helper->getMinDepth());
-
-        $helper->setMinDepth(-1);
-
-        self::assertSame(0, $helper->getMinDepth());
-
-        $helper->setMinDepth(0);
-
-        self::assertSame(0, $helper->getMinDepth());
-
-        $helper->setMinDepth(1);
-
-        self::assertSame(1, $helper->getMinDepth());
-
-        $helper->setMinDepth(4);
-
-        self::assertSame(4, $helper->getMinDepth());
-    }
-
-    /**
-     * @throws Exception
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     */
-    public function testSetRenderInvisible(): void
-    {
-        $logger = $this->getMockBuilder(Logger::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $logger->expects(self::never())
-            ->method('emerg');
-        $logger->expects(self::never())
-            ->method('alert');
-        $logger->expects(self::never())
-            ->method('crit');
-        $logger->expects(self::never())
-            ->method('err');
-        $logger->expects(self::never())
-            ->method('warn');
-        $logger->expects(self::never())
-            ->method('notice');
-        $logger->expects(self::never())
-            ->method('info');
-        $logger->expects(self::never())
-            ->method('debug');
-
-        $serviceLocator = $this->getMockBuilder(ServiceLocatorInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $serviceLocator->expects(self::never())
-            ->method('has');
-        $serviceLocator->expects(self::never())
-            ->method('get');
-        $serviceLocator->expects(self::never())
-            ->method('build');
-
-        $containerParser = $this->getMockBuilder(ContainerParserInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $containerParser->expects(self::never())
-            ->method('parseContainer');
-
-        $escapeHtmlAttr = $this->getMockBuilder(EscapeHtmlAttr::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $escapeHtmlAttr->expects(self::never())
-            ->method('__invoke');
-
-        $escapeHtml = $this->getMockBuilder(EscapeHtml::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $escapeHtml->expects(self::never())
-            ->method('__invoke');
-
-        $renderer = $this->getMockBuilder(PhpRenderer::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $renderer->expects(self::never())
-            ->method('render');
-        $renderer->expects(self::never())
-            ->method('plugin');
-        $renderer->expects(self::never())
-            ->method('getHelperPluginManager');
-
-        $htmlElement = $this->getMockBuilder(HtmlElementInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $htmlElement->expects(self::never())
-            ->method('toHtml');
-
-        $helper = new Menu(
-            $serviceLocator,
-            $logger,
-            $containerParser,
-            $escapeHtmlAttr,
-            $renderer,
-            $escapeHtml,
-            $htmlElement
-        );
-
-        self::assertFalse($helper->getRenderInvisible());
-
-        $helper->setRenderInvisible(true);
-
-        self::assertTrue($helper->getRenderInvisible());
-    }
-
-    /**
-     * @throws Exception
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     */
-    public function testSetRole(): void
-    {
-        $role        = 'testRole';
-        $defaultRole = 'testDefaultRole';
-
-        $logger = $this->getMockBuilder(Logger::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $logger->expects(self::never())
-            ->method('emerg');
-        $logger->expects(self::never())
-            ->method('alert');
-        $logger->expects(self::never())
-            ->method('crit');
-        $logger->expects(self::never())
-            ->method('err');
-        $logger->expects(self::never())
-            ->method('warn');
-        $logger->expects(self::never())
-            ->method('notice');
-        $logger->expects(self::never())
-            ->method('info');
-        $logger->expects(self::never())
-            ->method('debug');
-
-        $serviceLocator = $this->getMockBuilder(ServiceLocatorInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $serviceLocator->expects(self::never())
-            ->method('has');
-        $serviceLocator->expects(self::never())
-            ->method('get');
-        $serviceLocator->expects(self::never())
-            ->method('build');
-
-        $containerParser = $this->getMockBuilder(ContainerParserInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $containerParser->expects(self::never())
-            ->method('parseContainer');
-
-        $escapeHtmlAttr = $this->getMockBuilder(EscapeHtmlAttr::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $escapeHtmlAttr->expects(self::never())
-            ->method('__invoke');
-
-        $escapeHtml = $this->getMockBuilder(EscapeHtml::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $escapeHtml->expects(self::never())
-            ->method('__invoke');
-
-        $renderer = $this->getMockBuilder(PhpRenderer::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $renderer->expects(self::never())
-            ->method('render');
-        $renderer->expects(self::never())
-            ->method('plugin');
-        $renderer->expects(self::never())
-            ->method('getHelperPluginManager');
-
-        $htmlElement = $this->getMockBuilder(HtmlElementInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $htmlElement->expects(self::never())
-            ->method('toHtml');
-
-        $helper = new Menu(
-            $serviceLocator,
-            $logger,
-            $containerParser,
-            $escapeHtmlAttr,
-            $renderer,
-            $escapeHtml,
-            $htmlElement
-        );
-
-        self::assertNull($helper->getRole());
-        self::assertFalse($helper->hasRole());
-
-        Menu::setDefaultRole($defaultRole);
-
-        self::assertSame($defaultRole, $helper->getRole());
-        self::assertTrue($helper->hasRole());
-
-        $helper->setRole($role);
-
-        self::assertSame($role, $helper->getRole());
-        self::assertTrue($helper->hasRole());
-    }
-
-    /**
-     * @throws Exception
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     */
-    public function testSetUseAcl(): void
-    {
-        $logger = $this->getMockBuilder(Logger::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $logger->expects(self::never())
-            ->method('emerg');
-        $logger->expects(self::never())
-            ->method('alert');
-        $logger->expects(self::never())
-            ->method('crit');
-        $logger->expects(self::never())
-            ->method('err');
-        $logger->expects(self::never())
-            ->method('warn');
-        $logger->expects(self::never())
-            ->method('notice');
-        $logger->expects(self::never())
-            ->method('info');
-        $logger->expects(self::never())
-            ->method('debug');
-
-        $serviceLocator = $this->getMockBuilder(ServiceLocatorInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $serviceLocator->expects(self::never())
-            ->method('has');
-        $serviceLocator->expects(self::never())
-            ->method('get');
-        $serviceLocator->expects(self::never())
-            ->method('build');
-
-        $containerParser = $this->getMockBuilder(ContainerParserInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $containerParser->expects(self::never())
-            ->method('parseContainer');
-
-        $escapeHtmlAttr = $this->getMockBuilder(EscapeHtmlAttr::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $escapeHtmlAttr->expects(self::never())
-            ->method('__invoke');
-
-        $escapeHtml = $this->getMockBuilder(EscapeHtml::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $escapeHtml->expects(self::never())
-            ->method('__invoke');
-
-        $renderer = $this->getMockBuilder(PhpRenderer::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $renderer->expects(self::never())
-            ->method('render');
-        $renderer->expects(self::never())
-            ->method('plugin');
-        $renderer->expects(self::never())
-            ->method('getHelperPluginManager');
-
-        $htmlElement = $this->getMockBuilder(HtmlElementInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $htmlElement->expects(self::never())
-            ->method('toHtml');
-
-        $helper = new Menu(
-            $serviceLocator,
-            $logger,
-            $containerParser,
-            $escapeHtmlAttr,
-            $renderer,
-            $escapeHtml,
-            $htmlElement
-        );
-
-        self::assertTrue($helper->getUseAcl());
-
-        $helper->setUseAcl(false);
-
-        self::assertFalse($helper->getUseAcl());
-
-        $helper->setUseAcl();
-
-        self::assertTrue($helper->getUseAcl());
-    }
-
-    /**
-     * @throws Exception
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     */
-    public function testsetAcl(): void
-    {
-        $auth        = $this->createMock(Acl::class);
-        $defaultAuth = $this->createMock(Acl::class);
-
-        $logger = $this->getMockBuilder(Logger::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $logger->expects(self::never())
-            ->method('emerg');
-        $logger->expects(self::never())
-            ->method('alert');
-        $logger->expects(self::never())
-            ->method('crit');
-        $logger->expects(self::never())
-            ->method('err');
-        $logger->expects(self::never())
-            ->method('warn');
-        $logger->expects(self::never())
-            ->method('notice');
-        $logger->expects(self::never())
-            ->method('info');
-        $logger->expects(self::never())
-            ->method('debug');
-
-        $serviceLocator = $this->getMockBuilder(ServiceLocatorInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $serviceLocator->expects(self::never())
-            ->method('has');
-        $serviceLocator->expects(self::never())
-            ->method('get');
-        $serviceLocator->expects(self::never())
-            ->method('build');
-
-        $containerParser = $this->getMockBuilder(ContainerParserInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $containerParser->expects(self::never())
-            ->method('parseContainer');
-
-        $escapeHtmlAttr = $this->getMockBuilder(EscapeHtmlAttr::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $escapeHtmlAttr->expects(self::never())
-            ->method('__invoke');
-
-        $escapeHtml = $this->getMockBuilder(EscapeHtml::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $escapeHtml->expects(self::never())
-            ->method('__invoke');
-
-        $renderer = $this->getMockBuilder(PhpRenderer::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $renderer->expects(self::never())
-            ->method('render');
-        $renderer->expects(self::never())
-            ->method('plugin');
-        $renderer->expects(self::never())
-            ->method('getHelperPluginManager');
-
-        $htmlElement = $this->getMockBuilder(HtmlElementInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $htmlElement->expects(self::never())
-            ->method('toHtml');
-
-        $helper = new Menu(
-            $serviceLocator,
-            $logger,
-            $containerParser,
-            $escapeHtmlAttr,
-            $renderer,
-            $escapeHtml,
-            $htmlElement
-        );
-
-        self::assertNull($helper->getAcl());
-        self::assertFalse($helper->hasAcl());
-
-        assert($defaultAuth instanceof Acl);
-        Menu::setDefaultAcl($defaultAuth);
-
-        self::assertSame($defaultAuth, $helper->getAcl());
-        self::assertTrue($helper->hasAcl());
-
-        assert($auth instanceof Acl);
-        $helper->setAcl($auth);
-
-        self::assertSame($auth, $helper->getAcl());
-        self::assertTrue($helper->hasAcl());
     }
 
     /**
@@ -714,6 +147,9 @@ final class MenuTest extends TestCase
      * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExceptionInterface
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws \Laminas\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\View\Exception\InvalidArgumentException
      */
     public function testSetContainer(): void
     {
@@ -814,6 +250,8 @@ final class MenuTest extends TestCase
     /**
      * @throws Exception
      * @throws ExceptionInterface
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws \Laminas\View\Exception\InvalidArgumentException
      */
     public function testSetContainerWithStringDefaultAndNavigationNotFound(): void
     {
@@ -906,6 +344,9 @@ final class MenuTest extends TestCase
      * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExceptionInterface
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws \Laminas\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\View\Exception\InvalidArgumentException
      */
     public function testSetContainerWithStringFound(): void
     {
@@ -997,6 +438,8 @@ final class MenuTest extends TestCase
      * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExceptionInterface
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws \Laminas\View\Exception\InvalidArgumentException
      */
     public function testDoNotAccept(): void
     {
@@ -1152,6 +595,8 @@ final class MenuTest extends TestCase
      * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExceptionInterface
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws \Laminas\View\Exception\InvalidArgumentException
      */
     public function testHtmlify(): void
     {
@@ -1403,7 +848,9 @@ final class MenuTest extends TestCase
      * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExceptionInterface
-     * @throws \Mezzio\Navigation\Exception\ExceptionInterface
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws \Laminas\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\View\Exception\InvalidArgumentException
      */
     public function testFindActiveNoActivePages(): void
     {
@@ -1563,7 +1010,9 @@ final class MenuTest extends TestCase
      * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExceptionInterface
-     * @throws \Mezzio\Navigation\Exception\ExceptionInterface
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws \Laminas\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\View\Exception\InvalidArgumentException
      */
     public function testFindActiveOneActivePage(): void
     {
@@ -1733,6 +1182,9 @@ final class MenuTest extends TestCase
      * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExceptionInterface
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws \Laminas\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\View\Exception\InvalidArgumentException
      */
     public function testFindActiveWithoutContainer(): void
     {
@@ -1853,7 +1305,9 @@ final class MenuTest extends TestCase
      * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExceptionInterface
-     * @throws \Mezzio\Navigation\Exception\ExceptionInterface
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws \Laminas\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\View\Exception\InvalidArgumentException
      */
     public function testFindActiveOneActivePageWithoutDepth(): void
     {
@@ -2026,7 +1480,9 @@ final class MenuTest extends TestCase
      * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExceptionInterface
-     * @throws \Mezzio\Navigation\Exception\ExceptionInterface
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws \Laminas\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\View\Exception\InvalidArgumentException
      */
     public function testFindActiveOneActivePageOutOfRange(): void
     {
@@ -2188,7 +1644,9 @@ final class MenuTest extends TestCase
      * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExceptionInterface
-     * @throws \Mezzio\Navigation\Exception\ExceptionInterface
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws \Laminas\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\View\Exception\InvalidArgumentException
      */
     public function testFindActiveOneActivePageRecursive(): void
     {
@@ -2368,7 +1826,9 @@ final class MenuTest extends TestCase
      * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExceptionInterface
-     * @throws \Mezzio\Navigation\Exception\ExceptionInterface
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws \Laminas\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\View\Exception\InvalidArgumentException
      */
     public function testFindActiveOneActivePageRecursive2(): void
     {
@@ -2528,7 +1988,9 @@ final class MenuTest extends TestCase
      * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExceptionInterface
-     * @throws \Mezzio\Navigation\Exception\ExceptionInterface
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws \Laminas\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\View\Exception\InvalidArgumentException
      */
     public function testFindActiveOneActivePageRecursive3(): void
     {
@@ -3214,8 +2676,11 @@ final class MenuTest extends TestCase
 
     /**
      * @throws Exception
-     * @throws \InvalidArgumentException
+     *
      * @throws ExceptionInterface
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws \Laminas\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\View\Exception\InvalidArgumentException
      */
     public function testDoNotRenderIfNoPageIsActive(): void
     {
@@ -3322,6 +2787,8 @@ final class MenuTest extends TestCase
     /**
      * @throws Exception
      * @throws ExceptionInterface
+     * @throws \Laminas\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\View\Exception\InvalidArgumentException
      */
     public function testRenderPartialWithoutPartial(): void
     {
@@ -3426,6 +2893,8 @@ final class MenuTest extends TestCase
     /**
      * @throws Exception
      * @throws ExceptionInterface
+     * @throws \Laminas\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\View\Exception\InvalidArgumentException
      */
     public function testRenderPartialWithWrongPartial(): void
     {
@@ -3533,7 +3002,8 @@ final class MenuTest extends TestCase
      * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExceptionInterface
-     * @throws \Mezzio\Navigation\Exception\ExceptionInterface
+     * @throws \Laminas\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\View\Exception\InvalidArgumentException
      */
     public function testRenderPartial(): void
     {
@@ -3691,7 +3161,8 @@ final class MenuTest extends TestCase
      * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExceptionInterface
-     * @throws \Mezzio\Navigation\Exception\ExceptionInterface
+     * @throws \Laminas\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\View\Exception\InvalidArgumentException
      */
     public function testRenderPartialNoActivePage(): void
     {
@@ -3839,7 +3310,9 @@ final class MenuTest extends TestCase
      * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExceptionInterface
-     * @throws \Mezzio\Navigation\Exception\ExceptionInterface
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws \Laminas\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\View\Exception\InvalidArgumentException
      */
     public function testRenderPartialWithArrayPartial(): void
     {
@@ -3995,7 +3468,9 @@ final class MenuTest extends TestCase
      * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExceptionInterface
-     * @throws \Mezzio\Navigation\Exception\ExceptionInterface
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws \Laminas\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\View\Exception\InvalidArgumentException
      */
     public function testRenderPartialWithArrayPartialRenderingPage(): void
     {
@@ -4153,8 +3628,10 @@ final class MenuTest extends TestCase
     }
 
     /**
-     * @throws \InvalidArgumentException
+     *
      * @throws Exception
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws \Laminas\Navigation\Exception\InvalidArgumentException
      */
     public function testDoNotRenderMenuIfNoPageIsActive(): void
     {
@@ -4260,7 +3737,9 @@ final class MenuTest extends TestCase
 
     /**
      * @throws Exception
-     * @throws \InvalidArgumentException
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws \Laminas\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\View\Exception\InvalidArgumentException
      */
     public function testRenderMenuNoActivePage(): void
     {
@@ -4441,7 +3920,9 @@ final class MenuTest extends TestCase
 
     /**
      * @throws Exception
-     * @throws \InvalidArgumentException
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws \Laminas\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\View\Exception\InvalidArgumentException
      */
     public function testRenderMenu(): void
     {
@@ -4705,7 +4186,9 @@ final class MenuTest extends TestCase
 
     /**
      * @throws Exception
-     * @throws \InvalidArgumentException
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws \Laminas\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\View\Exception\InvalidArgumentException
      */
     public function testRenderMenuWithIndent(): void
     {
@@ -4972,7 +4455,9 @@ final class MenuTest extends TestCase
 
     /**
      * @throws Exception
-     * @throws \InvalidArgumentException
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws \Laminas\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\View\Exception\InvalidArgumentException
      */
     public function testRenderVerticalMenuException(): void
     {
@@ -5136,7 +4621,9 @@ final class MenuTest extends TestCase
 
     /**
      * @throws Exception
-     * @throws \InvalidArgumentException
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws \Laminas\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\View\Exception\InvalidArgumentException
      */
     public function testRenderVerticalMenu(): void
     {
@@ -5400,7 +4887,9 @@ final class MenuTest extends TestCase
 
     /**
      * @throws Exception
-     * @throws \InvalidArgumentException
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws \Laminas\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\View\Exception\InvalidArgumentException
      */
     public function testRenderVerticalMenu2(): void
     {
@@ -5664,7 +5153,9 @@ final class MenuTest extends TestCase
 
     /**
      * @throws Exception
-     * @throws \InvalidArgumentException
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws \Laminas\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\View\Exception\InvalidArgumentException
      */
     public function testRenderOlMenuWithMaxDepth(): void
     {
@@ -5930,7 +5421,9 @@ final class MenuTest extends TestCase
 
     /**
      * @throws Exception
-     * @throws \InvalidArgumentException
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws \Laminas\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\View\Exception\InvalidArgumentException
      */
     public function testRenderUlMenuWithTabs(): void
     {
@@ -6196,7 +5689,9 @@ final class MenuTest extends TestCase
      * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExceptionInterface
-     * @throws \Mezzio\Navigation\Exception\ExceptionInterface
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws \Laminas\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\View\Exception\InvalidArgumentException
      */
     public function testRenderPartialWithPartialModel(): void
     {
@@ -6363,7 +5858,9 @@ final class MenuTest extends TestCase
 
     /**
      * @throws Exception
-     * @throws \InvalidArgumentException
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws \Laminas\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\View\Exception\InvalidArgumentException
      */
     public function testRenderMenuWithTabsOnlyActiveBranchWithoutParents(): void
     {
@@ -6610,7 +6107,9 @@ final class MenuTest extends TestCase
 
     /**
      * @throws Exception
-     * @throws \InvalidArgumentException
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws \Laminas\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\View\Exception\InvalidArgumentException
      */
     public function testRenderMenuWithTabsOnlyActiveBranchWithoutParentsWithIndent(): void
     {
@@ -6859,7 +6358,9 @@ final class MenuTest extends TestCase
 
     /**
      * @throws Exception
-     * @throws \InvalidArgumentException
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws \Laminas\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\View\Exception\InvalidArgumentException
      */
     public function testRenderSubMenuWithTabsOnlyActiveBranchWithoutParents(): void
     {
@@ -7104,7 +6605,9 @@ final class MenuTest extends TestCase
 
     /**
      * @throws Exception
-     * @throws \InvalidArgumentException
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws \Laminas\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\View\Exception\InvalidArgumentException
      */
     public function testRenderSubMenuWithTabsOnlyActiveBranchWithoutParents2(): void
     {
@@ -7281,7 +6784,9 @@ final class MenuTest extends TestCase
 
     /**
      * @throws Exception
-     * @throws \InvalidArgumentException
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws \Laminas\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\View\Exception\InvalidArgumentException
      */
     public function testRenderSubMenuWithTabsOnlyActiveBranchWithoutParents3(): void
     {
@@ -7459,7 +6964,9 @@ final class MenuTest extends TestCase
 
     /**
      * @throws Exception
-     * @throws \InvalidArgumentException
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws \Laminas\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\View\Exception\InvalidArgumentException
      */
     public function testRenderSubMenuWithTabsOnlyActiveBranchWithoutParents4(): void
     {
@@ -7706,7 +7213,9 @@ final class MenuTest extends TestCase
 
     /**
      * @throws Exception
-     * @throws \InvalidArgumentException
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws \Laminas\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\View\Exception\InvalidArgumentException
      */
     public function testRenderMenuWithTabsOnlyActiveBranchWithoutParents2(): void
     {
@@ -7892,7 +7401,9 @@ final class MenuTest extends TestCase
 
     /**
      * @throws Exception
-     * @throws \InvalidArgumentException
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws \Laminas\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\View\Exception\InvalidArgumentException
      */
     public function testRenderMenuWithTabsOnlyActiveBranchWithoutParents3(): void
     {
@@ -8139,7 +7650,9 @@ final class MenuTest extends TestCase
 
     /**
      * @throws Exception
-     * @throws \InvalidArgumentException
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws \Laminas\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\View\Exception\InvalidArgumentException
      */
     public function testRenderMenuWithTabsOnlyActiveBranchWithoutParents4(): void
     {
@@ -8347,7 +7860,9 @@ final class MenuTest extends TestCase
 
     /**
      * @throws Exception
-     * @throws \InvalidArgumentException
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws \Laminas\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\View\Exception\InvalidArgumentException
      */
     public function testRenderMenuWithTabsOnlyActiveBranchWithoutParents5(): void
     {
@@ -8594,7 +8109,9 @@ final class MenuTest extends TestCase
 
     /**
      * @throws Exception
-     * @throws \InvalidArgumentException
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws \Laminas\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\View\Exception\InvalidArgumentException
      */
     public function testRenderMenu2(): void
     {
@@ -9069,7 +8586,9 @@ final class MenuTest extends TestCase
 
     /**
      * @throws Exception
-     * @throws \InvalidArgumentException
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws \Laminas\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\View\Exception\InvalidArgumentException
      */
     public function testRenderMenu3(): void
     {
@@ -9523,7 +9042,9 @@ final class MenuTest extends TestCase
 
     /**
      * @throws Exception
-     * @throws \InvalidArgumentException
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws \Laminas\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\View\Exception\InvalidArgumentException
      */
     public function testRenderMenu4(): void
     {
@@ -9977,7 +9498,9 @@ final class MenuTest extends TestCase
 
     /**
      * @throws Exception
-     * @throws \InvalidArgumentException
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws \Laminas\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\View\Exception\InvalidArgumentException
      */
     public function testRenderMenu5(): void
     {
@@ -10452,7 +9975,9 @@ final class MenuTest extends TestCase
 
     /**
      * @throws Exception
-     * @throws \InvalidArgumentException
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws \Laminas\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\View\Exception\InvalidArgumentException
      */
     public function testRenderMenu6(): void
     {
@@ -10927,7 +10452,9 @@ final class MenuTest extends TestCase
 
     /**
      * @throws Exception
-     * @throws \InvalidArgumentException
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws \Laminas\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\View\Exception\InvalidArgumentException
      */
     public function testRenderMenu7(): void
     {

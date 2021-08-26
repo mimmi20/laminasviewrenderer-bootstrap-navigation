@@ -53,11 +53,12 @@ final class BreadcrumbsTest extends AbstractTest
 
     /**
      * @throws Exception
-     * @throws InvalidArgumentException
      * @throws ExceptionInterface
      * @throws ContainerExceptionInterface
      * @throws \Laminas\Config\Exception\InvalidArgumentException
      * @throws RuntimeException
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws \Laminas\Navigation\Exception\InvalidArgumentException
      */
     protected function setUp(): void
     {
@@ -66,8 +67,6 @@ final class BreadcrumbsTest extends AbstractTest
         $plugin   = $this->serviceManager->get(ViewHelperPluginManager::class);
         $renderer = $this->serviceManager->get(PhpRenderer::class);
 
-        $translator = null;
-
         // create helper
         $this->helper = new Breadcrumbs(
             $this->serviceManager,
@@ -75,8 +74,7 @@ final class BreadcrumbsTest extends AbstractTest
             $this->serviceManager->get(HtmlifyInterface::class),
             $this->serviceManager->get(ContainerParserInterface::class),
             $renderer,
-            $plugin->get(EscapeHtml::class),
-            $translator
+            $plugin->get(EscapeHtml::class)
         );
 
         // set nav1 in helper as default
@@ -87,7 +85,6 @@ final class BreadcrumbsTest extends AbstractTest
     /**
      * @throws Exception
      * @throws InvalidArgumentException
-     * @throws ExceptionInterface
      */
     public function testHelperEntryPointWithoutAnyParams(): void
     {
@@ -99,7 +96,6 @@ final class BreadcrumbsTest extends AbstractTest
     /**
      * @throws Exception
      * @throws InvalidArgumentException
-     * @throws ExceptionInterface
      */
     public function testHelperEntryPointWithContainerParam(): void
     {
@@ -112,7 +108,6 @@ final class BreadcrumbsTest extends AbstractTest
     /**
      * @throws Exception
      * @throws InvalidArgumentException
-     * @throws ExceptionInterface
      */
     public function testNullOutContainer(): void
     {
@@ -319,6 +314,7 @@ final class BreadcrumbsTest extends AbstractTest
      * @throws Exception
      * @throws InvalidArgumentException
      * @throws ExceptionInterface
+     * @throws \Laminas\Navigation\Exception\InvalidArgumentException
      */
     public function testLastBreadcrumbShouldBeEscaped(): void
     {

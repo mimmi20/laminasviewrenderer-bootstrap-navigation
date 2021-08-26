@@ -95,6 +95,8 @@ trait HelperTrait
      * an exception to be thrown.
      *
      * Implements {@link ViewHelperInterface::__toString()}.
+     *
+     * @throws void
      */
     public function __toString(): string
     {
@@ -152,8 +154,9 @@ trait HelperTrait
     /**
      * Sets which partial view script to use for rendering menu.
      *
-     * @param array<int, string>|ModelInterface|string|null $partial partial view script or null. If an array is
+     * @param array<int, string>|ModelInterface|string|int|null $partial partial view script or null. If an array is
      *                                                               given, the first value is used for the partial view script.
+     * @throws void
      */
     public function setPartial($partial): self
     {
@@ -168,6 +171,7 @@ trait HelperTrait
      * Returns partial view script to use for rendering menu.
      *
      * @return array<int, string>|ModelInterface|string|null
+     * @throws void
      */
     public function getPartial()
     {
@@ -262,6 +266,8 @@ trait HelperTrait
      * @return bool Whether page should be accepted
      *
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
+     *
+     * @throws void
      */
     public function accept(AbstractPage $page, $recursive = true): bool
     {
@@ -289,12 +295,17 @@ trait HelperTrait
      * @param AbstractPage $page page to generate HTML for
      *
      * @return string HTML string (<a href="…">Label</a>)
+     * @throws void
      */
     public function htmlify(AbstractPage $page): string
     {
         return $this->htmlify->toHtml(static::class, $page);
     }
 
+    /**
+     * @return ServiceLocatorInterface
+     * @throws void
+     */
     public function getServiceLocator(): ServiceLocatorInterface
     {
         return $this->serviceLocator;

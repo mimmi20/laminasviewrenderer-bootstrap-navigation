@@ -43,496 +43,12 @@ use const PHP_EOL;
 final class BreadcrumbsTest extends TestCase
 {
     /**
-     * @throws Exception
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \Laminas\View\Exception\InvalidArgumentException
      */
     protected function tearDown(): void
     {
         Breadcrumbs::setDefaultAcl(null);
         Breadcrumbs::setDefaultRole(null);
-    }
-
-    /**
-     * @throws Exception
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     */
-    public function testSetMaxDepth(): void
-    {
-        $maxDepth = 4;
-
-        $logger = $this->getMockBuilder(Logger::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $logger->expects(self::never())
-            ->method('emerg');
-        $logger->expects(self::never())
-            ->method('alert');
-        $logger->expects(self::never())
-            ->method('crit');
-        $logger->expects(self::never())
-            ->method('err');
-        $logger->expects(self::never())
-            ->method('warn');
-        $logger->expects(self::never())
-            ->method('notice');
-        $logger->expects(self::never())
-            ->method('info');
-        $logger->expects(self::never())
-            ->method('debug');
-
-        $serviceLocator = $this->getMockBuilder(ServiceLocatorInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $serviceLocator->expects(self::never())
-            ->method('has');
-        $serviceLocator->expects(self::never())
-            ->method('get');
-        $serviceLocator->expects(self::never())
-            ->method('build');
-
-        $htmlify = $this->getMockBuilder(HtmlifyInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $htmlify->expects(self::never())
-            ->method('toHtml');
-
-        $containerParser = $this->getMockBuilder(ContainerParserInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $containerParser->expects(self::never())
-            ->method('parseContainer');
-
-        $escapeHtml = $this->getMockBuilder(EscapeHtml::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $escapeHtml->expects(self::never())
-            ->method('__invoke');
-
-        $renderer = $this->getMockBuilder(PhpRenderer::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $renderer->expects(self::never())
-            ->method('render');
-        $renderer->expects(self::never())
-            ->method('plugin');
-        $renderer->expects(self::never())
-            ->method('getHelperPluginManager');
-
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml);
-
-        self::assertNull($helper->getMaxDepth());
-
-        $helper->setMaxDepth($maxDepth);
-
-        self::assertSame($maxDepth, $helper->getMaxDepth());
-    }
-
-    /**
-     * @throws Exception
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     */
-    public function testSetMinDepth(): void
-    {
-        $logger = $this->getMockBuilder(Logger::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $logger->expects(self::never())
-            ->method('emerg');
-        $logger->expects(self::never())
-            ->method('alert');
-        $logger->expects(self::never())
-            ->method('crit');
-        $logger->expects(self::never())
-            ->method('err');
-        $logger->expects(self::never())
-            ->method('warn');
-        $logger->expects(self::never())
-            ->method('notice');
-        $logger->expects(self::never())
-            ->method('info');
-        $logger->expects(self::never())
-            ->method('debug');
-
-        $serviceLocator = $this->getMockBuilder(ServiceLocatorInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $serviceLocator->expects(self::never())
-            ->method('has');
-        $serviceLocator->expects(self::never())
-            ->method('get');
-        $serviceLocator->expects(self::never())
-            ->method('build');
-
-        $htmlify = $this->getMockBuilder(HtmlifyInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $htmlify->expects(self::never())
-            ->method('toHtml');
-
-        $containerParser = $this->getMockBuilder(ContainerParserInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $containerParser->expects(self::never())
-            ->method('parseContainer');
-
-        $escapeHtml = $this->getMockBuilder(EscapeHtml::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $escapeHtml->expects(self::never())
-            ->method('__invoke');
-
-        $renderer = $this->getMockBuilder(PhpRenderer::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $renderer->expects(self::never())
-            ->method('render');
-        $renderer->expects(self::never())
-            ->method('plugin');
-        $renderer->expects(self::never())
-            ->method('getHelperPluginManager');
-
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml);
-
-        self::assertSame(1, $helper->getMinDepth());
-
-        $helper->setMinDepth(4);
-
-        self::assertSame(4, $helper->getMinDepth());
-
-        $helper->setMinDepth(-1);
-
-        self::assertSame(1, $helper->getMinDepth());
-
-        $helper->setMinDepth(0);
-
-        self::assertSame(0, $helper->getMinDepth());
-
-        $helper->setMinDepth(1);
-
-        self::assertSame(1, $helper->getMinDepth());
-
-        $helper->setMinDepth(4);
-
-        self::assertSame(4, $helper->getMinDepth());
-    }
-
-    /**
-     * @throws Exception
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     */
-    public function testSetRenderInvisible(): void
-    {
-        $logger = $this->getMockBuilder(Logger::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $logger->expects(self::never())
-            ->method('emerg');
-        $logger->expects(self::never())
-            ->method('alert');
-        $logger->expects(self::never())
-            ->method('crit');
-        $logger->expects(self::never())
-            ->method('err');
-        $logger->expects(self::never())
-            ->method('warn');
-        $logger->expects(self::never())
-            ->method('notice');
-        $logger->expects(self::never())
-            ->method('info');
-        $logger->expects(self::never())
-            ->method('debug');
-
-        $serviceLocator = $this->getMockBuilder(ServiceLocatorInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $serviceLocator->expects(self::never())
-            ->method('has');
-        $serviceLocator->expects(self::never())
-            ->method('get');
-        $serviceLocator->expects(self::never())
-            ->method('build');
-
-        $htmlify = $this->getMockBuilder(HtmlifyInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $htmlify->expects(self::never())
-            ->method('toHtml');
-
-        $containerParser = $this->getMockBuilder(ContainerParserInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $containerParser->expects(self::never())
-            ->method('parseContainer');
-
-        $escapeHtml = $this->getMockBuilder(EscapeHtml::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $escapeHtml->expects(self::never())
-            ->method('__invoke');
-
-        $renderer = $this->getMockBuilder(PhpRenderer::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $renderer->expects(self::never())
-            ->method('render');
-        $renderer->expects(self::never())
-            ->method('plugin');
-        $renderer->expects(self::never())
-            ->method('getHelperPluginManager');
-
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml);
-
-        self::assertFalse($helper->getRenderInvisible());
-
-        $helper->setRenderInvisible(true);
-
-        self::assertTrue($helper->getRenderInvisible());
-    }
-
-    /**
-     * @throws Exception
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     */
-    public function testSetRole(): void
-    {
-        $role        = 'testRole';
-        $defaultRole = 'testDefaultRole';
-
-        $logger = $this->getMockBuilder(Logger::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $logger->expects(self::never())
-            ->method('emerg');
-        $logger->expects(self::never())
-            ->method('alert');
-        $logger->expects(self::never())
-            ->method('crit');
-        $logger->expects(self::never())
-            ->method('err');
-        $logger->expects(self::never())
-            ->method('warn');
-        $logger->expects(self::never())
-            ->method('notice');
-        $logger->expects(self::never())
-            ->method('info');
-        $logger->expects(self::never())
-            ->method('debug');
-
-        $serviceLocator = $this->getMockBuilder(ServiceLocatorInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $serviceLocator->expects(self::never())
-            ->method('has');
-        $serviceLocator->expects(self::never())
-            ->method('get');
-        $serviceLocator->expects(self::never())
-            ->method('build');
-
-        $htmlify = $this->getMockBuilder(HtmlifyInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $htmlify->expects(self::never())
-            ->method('toHtml');
-
-        $containerParser = $this->getMockBuilder(ContainerParserInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $containerParser->expects(self::never())
-            ->method('parseContainer');
-
-        $escapeHtml = $this->getMockBuilder(EscapeHtml::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $escapeHtml->expects(self::never())
-            ->method('__invoke');
-
-        $renderer = $this->getMockBuilder(PhpRenderer::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $renderer->expects(self::never())
-            ->method('render');
-        $renderer->expects(self::never())
-            ->method('plugin');
-        $renderer->expects(self::never())
-            ->method('getHelperPluginManager');
-
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml);
-
-        self::assertNull($helper->getRole());
-        self::assertFalse($helper->hasRole());
-
-        Breadcrumbs::setDefaultRole($defaultRole);
-
-        self::assertSame($defaultRole, $helper->getRole());
-        self::assertTrue($helper->hasRole());
-
-        $helper->setRole($role);
-
-        self::assertSame($role, $helper->getRole());
-        self::assertTrue($helper->hasRole());
-    }
-
-    /**
-     * @throws Exception
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     */
-    public function testSetUseAcl(): void
-    {
-        $logger = $this->getMockBuilder(Logger::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $logger->expects(self::never())
-            ->method('emerg');
-        $logger->expects(self::never())
-            ->method('alert');
-        $logger->expects(self::never())
-            ->method('crit');
-        $logger->expects(self::never())
-            ->method('err');
-        $logger->expects(self::never())
-            ->method('warn');
-        $logger->expects(self::never())
-            ->method('notice');
-        $logger->expects(self::never())
-            ->method('info');
-        $logger->expects(self::never())
-            ->method('debug');
-
-        $serviceLocator = $this->getMockBuilder(ServiceLocatorInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $serviceLocator->expects(self::never())
-            ->method('has');
-        $serviceLocator->expects(self::never())
-            ->method('get');
-        $serviceLocator->expects(self::never())
-            ->method('build');
-
-        $htmlify = $this->getMockBuilder(HtmlifyInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $htmlify->expects(self::never())
-            ->method('toHtml');
-
-        $containerParser = $this->getMockBuilder(ContainerParserInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $containerParser->expects(self::never())
-            ->method('parseContainer');
-
-        $escapeHtml = $this->getMockBuilder(EscapeHtml::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $escapeHtml->expects(self::never())
-            ->method('__invoke');
-
-        $renderer = $this->getMockBuilder(PhpRenderer::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $renderer->expects(self::never())
-            ->method('render');
-        $renderer->expects(self::never())
-            ->method('plugin');
-        $renderer->expects(self::never())
-            ->method('getHelperPluginManager');
-
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml);
-
-        self::assertTrue($helper->getUseAcl());
-
-        $helper->setUseAcl(false);
-
-        self::assertFalse($helper->getUseAcl());
-
-        $helper->setUseAcl();
-
-        self::assertTrue($helper->getUseAcl());
-    }
-
-    /**
-     * @throws Exception
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     */
-    public function testsetAcl(): void
-    {
-        $auth        = $this->createMock(Acl::class);
-        $defaultAuth = $this->createMock(Acl::class);
-
-        $logger = $this->getMockBuilder(Logger::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $logger->expects(self::never())
-            ->method('emerg');
-        $logger->expects(self::never())
-            ->method('alert');
-        $logger->expects(self::never())
-            ->method('crit');
-        $logger->expects(self::never())
-            ->method('err');
-        $logger->expects(self::never())
-            ->method('warn');
-        $logger->expects(self::never())
-            ->method('notice');
-        $logger->expects(self::never())
-            ->method('info');
-        $logger->expects(self::never())
-            ->method('debug');
-
-        $serviceLocator = $this->getMockBuilder(ServiceLocatorInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $serviceLocator->expects(self::never())
-            ->method('has');
-        $serviceLocator->expects(self::never())
-            ->method('get');
-        $serviceLocator->expects(self::never())
-            ->method('build');
-
-        $htmlify = $this->getMockBuilder(HtmlifyInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $htmlify->expects(self::never())
-            ->method('toHtml');
-
-        $containerParser = $this->getMockBuilder(ContainerParserInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $containerParser->expects(self::never())
-            ->method('parseContainer');
-
-        $escapeHtml = $this->getMockBuilder(EscapeHtml::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $escapeHtml->expects(self::never())
-            ->method('__invoke');
-
-        $renderer = $this->getMockBuilder(PhpRenderer::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $renderer->expects(self::never())
-            ->method('render');
-        $renderer->expects(self::never())
-            ->method('plugin');
-        $renderer->expects(self::never())
-            ->method('getHelperPluginManager');
-
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml);
-
-        self::assertNull($helper->getAcl());
-        self::assertFalse($helper->hasAcl());
-
-        assert($defaultAuth instanceof Acl);
-
-        Breadcrumbs::setDefaultAcl($defaultAuth);
-
-        self::assertSame($defaultAuth, $helper->getAcl());
-        self::assertTrue($helper->hasAcl());
-
-        assert($auth instanceof Acl);
-        $helper->setAcl($auth);
-
-        self::assertSame($auth, $helper->getAcl());
-        self::assertTrue($helper->hasAcl());
     }
 
     /**
@@ -616,6 +132,9 @@ final class BreadcrumbsTest extends TestCase
      * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExceptionInterface
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws \Laminas\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\View\Exception\InvalidArgumentException
      */
     public function testSetContainer(): void
     {
@@ -702,6 +221,8 @@ final class BreadcrumbsTest extends TestCase
     /**
      * @throws Exception
      * @throws ExceptionInterface
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws \Laminas\View\Exception\InvalidArgumentException
      */
     public function testSetContainerWithStringDefaultAndNavigationNotFound(): void
     {
@@ -780,6 +301,9 @@ final class BreadcrumbsTest extends TestCase
      * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExceptionInterface
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws \Laminas\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\View\Exception\InvalidArgumentException
      */
     public function testSetContainerWithStringFound(): void
     {
@@ -857,6 +381,8 @@ final class BreadcrumbsTest extends TestCase
      * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExceptionInterface
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws \Laminas\View\Exception\InvalidArgumentException
      */
     public function testDoNotAccept(): void
     {
@@ -997,6 +523,8 @@ final class BreadcrumbsTest extends TestCase
      * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExceptionInterface
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws \Laminas\View\Exception\InvalidArgumentException
      */
     public function testDoNotAcceptWithException(): void
     {
@@ -1132,6 +660,8 @@ final class BreadcrumbsTest extends TestCase
      * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExceptionInterface
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws \Laminas\View\Exception\InvalidArgumentException
      */
     public function testHtmlify(): void
     {
@@ -1248,84 +778,10 @@ final class BreadcrumbsTest extends TestCase
     /**
      * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     */
-    public function testSetIndent(): void
-    {
-        $logger = $this->getMockBuilder(Logger::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $logger->expects(self::never())
-            ->method('emerg');
-        $logger->expects(self::never())
-            ->method('alert');
-        $logger->expects(self::never())
-            ->method('crit');
-        $logger->expects(self::never())
-            ->method('err');
-        $logger->expects(self::never())
-            ->method('warn');
-        $logger->expects(self::never())
-            ->method('notice');
-        $logger->expects(self::never())
-            ->method('info');
-        $logger->expects(self::never())
-            ->method('debug');
-
-        $serviceLocator = $this->getMockBuilder(ServiceLocatorInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $serviceLocator->expects(self::never())
-            ->method('has');
-        $serviceLocator->expects(self::never())
-            ->method('get');
-        $serviceLocator->expects(self::never())
-            ->method('build');
-
-        $htmlify = $this->getMockBuilder(HtmlifyInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $htmlify->expects(self::never())
-            ->method('toHtml');
-
-        $containerParser = $this->getMockBuilder(ContainerParserInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $containerParser->expects(self::never())
-            ->method('parseContainer');
-
-        $escapeHtml = $this->getMockBuilder(EscapeHtml::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $escapeHtml->expects(self::never())
-            ->method('__invoke');
-
-        $renderer = $this->getMockBuilder(PhpRenderer::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $renderer->expects(self::never())
-            ->method('render');
-        $renderer->expects(self::never())
-            ->method('plugin');
-        $renderer->expects(self::never())
-            ->method('getHelperPluginManager');
-
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml);
-
-        self::assertSame('', $helper->getIndent());
-
-        $helper->setIndent(1);
-
-        self::assertSame(' ', $helper->getIndent());
-
-        $helper->setIndent('    ');
-
-        self::assertSame('    ', $helper->getIndent());
-    }
-
-    /**
-     * @throws Exception
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExceptionInterface
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws \Laminas\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\View\Exception\InvalidArgumentException
      */
     public function testFindActiveNoActivePages(): void
     {
@@ -1471,6 +927,9 @@ final class BreadcrumbsTest extends TestCase
      * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExceptionInterface
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws \Laminas\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\View\Exception\InvalidArgumentException
      */
     public function testFindActiveOneActivePage(): void
     {
@@ -1626,6 +1085,9 @@ final class BreadcrumbsTest extends TestCase
      * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExceptionInterface
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws \Laminas\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\View\Exception\InvalidArgumentException
      */
     public function testFindActiveWithoutContainer(): void
     {
@@ -1732,6 +1194,9 @@ final class BreadcrumbsTest extends TestCase
      * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExceptionInterface
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws \Laminas\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\View\Exception\InvalidArgumentException
      */
     public function testFindActiveNoActivePageWithoutDepth(): void
     {
@@ -1882,6 +1347,9 @@ final class BreadcrumbsTest extends TestCase
      * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExceptionInterface
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws \Laminas\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\View\Exception\InvalidArgumentException
      */
     public function testFindActiveOneActivePageOutOfRange(): void
     {
@@ -2029,6 +1497,9 @@ final class BreadcrumbsTest extends TestCase
      * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExceptionInterface
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws \Laminas\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\View\Exception\InvalidArgumentException
      */
     public function testFindActiveOneActivePageRecursive(): void
     {
@@ -2194,6 +1665,9 @@ final class BreadcrumbsTest extends TestCase
      * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExceptionInterface
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws \Laminas\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\View\Exception\InvalidArgumentException
      */
     public function testFindActiveOneActivePageRecursive2(): void
     {
@@ -2339,6 +1813,9 @@ final class BreadcrumbsTest extends TestCase
      * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExceptionInterface
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws \Laminas\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\View\Exception\InvalidArgumentException
      */
     public function testFindActiveOneActivePageRecursive3(): void
     {
@@ -2561,157 +2038,8 @@ final class BreadcrumbsTest extends TestCase
 
     /**
      * @throws Exception
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     */
-    public function testSetLinkLast(): void
-    {
-        $logger = $this->getMockBuilder(Logger::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $logger->expects(self::never())
-            ->method('emerg');
-        $logger->expects(self::never())
-            ->method('alert');
-        $logger->expects(self::never())
-            ->method('crit');
-        $logger->expects(self::never())
-            ->method('err');
-        $logger->expects(self::never())
-            ->method('warn');
-        $logger->expects(self::never())
-            ->method('notice');
-        $logger->expects(self::never())
-            ->method('info');
-        $logger->expects(self::never())
-            ->method('debug');
-
-        $serviceLocator = $this->getMockBuilder(ServiceLocatorInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $serviceLocator->expects(self::never())
-            ->method('has');
-        $serviceLocator->expects(self::never())
-            ->method('get');
-        $serviceLocator->expects(self::never())
-            ->method('build');
-
-        $htmlify = $this->getMockBuilder(HtmlifyInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $htmlify->expects(self::never())
-            ->method('toHtml');
-
-        $containerParser = $this->getMockBuilder(ContainerParserInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $containerParser->expects(self::never())
-            ->method('parseContainer');
-
-        $escapeHtml = $this->getMockBuilder(EscapeHtml::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $escapeHtml->expects(self::never())
-            ->method('__invoke');
-
-        $renderer = $this->getMockBuilder(PhpRenderer::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $renderer->expects(self::never())
-            ->method('render');
-        $renderer->expects(self::never())
-            ->method('plugin');
-        $renderer->expects(self::never())
-            ->method('getHelperPluginManager');
-
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml);
-
-        self::assertFalse($helper->getLinkLast());
-
-        $helper->setLinkLast(true);
-
-        self::assertTrue($helper->getLinkLast());
-
-        $helper->setLinkLast(false);
-
-        self::assertFalse($helper->getLinkLast());
-    }
-
-    /**
-     * @throws Exception
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     */
-    public function testSetSeparator(): void
-    {
-        $logger = $this->getMockBuilder(Logger::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $logger->expects(self::never())
-            ->method('emerg');
-        $logger->expects(self::never())
-            ->method('alert');
-        $logger->expects(self::never())
-            ->method('crit');
-        $logger->expects(self::never())
-            ->method('err');
-        $logger->expects(self::never())
-            ->method('warn');
-        $logger->expects(self::never())
-            ->method('notice');
-        $logger->expects(self::never())
-            ->method('info');
-        $logger->expects(self::never())
-            ->method('debug');
-
-        $serviceLocator = $this->getMockBuilder(ServiceLocatorInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $serviceLocator->expects(self::never())
-            ->method('has');
-        $serviceLocator->expects(self::never())
-            ->method('get');
-        $serviceLocator->expects(self::never())
-            ->method('build');
-
-        $htmlify = $this->getMockBuilder(HtmlifyInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $htmlify->expects(self::never())
-            ->method('toHtml');
-
-        $containerParser = $this->getMockBuilder(ContainerParserInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $containerParser->expects(self::never())
-            ->method('parseContainer');
-
-        $escapeHtml = $this->getMockBuilder(EscapeHtml::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $escapeHtml->expects(self::never())
-            ->method('__invoke');
-
-        $renderer = $this->getMockBuilder(PhpRenderer::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $renderer->expects(self::never())
-            ->method('render');
-        $renderer->expects(self::never())
-            ->method('plugin');
-        $renderer->expects(self::never())
-            ->method('getHelperPluginManager');
-
-        $helper = new Breadcrumbs($serviceLocator, $logger, $htmlify, $containerParser, $renderer, $escapeHtml);
-
-        self::assertSame(' &gt; ', $helper->getSeparator());
-
-        $helper->setSeparator('/');
-
-        self::assertSame('/', $helper->getSeparator());
-    }
-
-    /**
-     * @throws Exception
      * @throws ExceptionInterface
+     * @throws \Laminas\View\Exception\InvalidArgumentException
      */
     public function testRenderPartialWithParamsWithoutPartial(): void
     {
@@ -2803,6 +2131,7 @@ final class BreadcrumbsTest extends TestCase
     /**
      * @throws Exception
      * @throws ExceptionInterface
+     * @throws \Laminas\View\Exception\InvalidArgumentException
      */
     public function testRenderPartialWithParamsWithWrongPartial(): void
     {
@@ -2897,6 +2226,8 @@ final class BreadcrumbsTest extends TestCase
      * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExceptionInterface
+     * @throws \Laminas\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\View\Exception\InvalidArgumentException
      */
     public function testRenderPartialWithParams(): void
     {
@@ -3066,6 +2397,9 @@ final class BreadcrumbsTest extends TestCase
      * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExceptionInterface
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws \Laminas\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\View\Exception\InvalidArgumentException
      */
     public function testRenderPartialWithParamsAndArrayPartial(): void
     {
@@ -3233,6 +2567,9 @@ final class BreadcrumbsTest extends TestCase
      * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExceptionInterface
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws \Laminas\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\View\Exception\InvalidArgumentException
      */
     public function testRenderPartialWithParamsAndArrayPartialRenderingPage(): void
     {
@@ -3405,6 +2742,8 @@ final class BreadcrumbsTest extends TestCase
      * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExceptionInterface
+     * @throws \Laminas\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\View\Exception\InvalidArgumentException
      */
     public function testRenderPartialWithParamsNoActivePage(): void
     {
@@ -3557,6 +2896,7 @@ final class BreadcrumbsTest extends TestCase
     /**
      * @throws Exception
      * @throws ExceptionInterface
+     * @throws \Laminas\View\Exception\InvalidArgumentException
      */
     public function testRenderPartialWithoutPartial(): void
     {
@@ -3648,6 +2988,7 @@ final class BreadcrumbsTest extends TestCase
     /**
      * @throws Exception
      * @throws ExceptionInterface
+     * @throws \Laminas\View\Exception\InvalidArgumentException
      */
     public function testRenderPartialWithWrongPartial(): void
     {
@@ -3742,6 +3083,8 @@ final class BreadcrumbsTest extends TestCase
      * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExceptionInterface
+     * @throws \Laminas\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\View\Exception\InvalidArgumentException
      */
     public function testRenderPartial(): void
     {
@@ -3911,6 +3254,8 @@ final class BreadcrumbsTest extends TestCase
      * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExceptionInterface
+     * @throws \Laminas\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\View\Exception\InvalidArgumentException
      */
     public function testRenderPartialNoActivePage(): void
     {
@@ -4064,6 +3409,9 @@ final class BreadcrumbsTest extends TestCase
      * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExceptionInterface
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws \Laminas\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\View\Exception\InvalidArgumentException
      */
     public function testRenderPartialWithArrayPartial(): void
     {
@@ -4231,6 +3579,9 @@ final class BreadcrumbsTest extends TestCase
      * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExceptionInterface
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws \Laminas\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\View\Exception\InvalidArgumentException
      */
     public function testRenderPartialWithArrayPartialRenderingPage(): void
     {
@@ -4403,6 +3754,9 @@ final class BreadcrumbsTest extends TestCase
      * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExceptionInterface
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws \Laminas\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\View\Exception\InvalidArgumentException
      */
     public function testRenderStraightNoActivePage(): void
     {
@@ -4554,6 +3908,9 @@ final class BreadcrumbsTest extends TestCase
      * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExceptionInterface
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws \Laminas\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\View\Exception\InvalidArgumentException
      */
     public function testRenderStraight(): void
     {
@@ -4745,6 +4102,9 @@ final class BreadcrumbsTest extends TestCase
      * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExceptionInterface
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws \Laminas\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\View\Exception\InvalidArgumentException
      */
     public function testRenderStraightWithoutLinkAtEnd(): void
     {
@@ -4951,6 +4311,9 @@ final class BreadcrumbsTest extends TestCase
      * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExceptionInterface
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws \Laminas\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\View\Exception\InvalidArgumentException
      */
     public function testRenderStraightWithoutLinkAtEndWithLiClass(): void
     {
@@ -5159,6 +4522,9 @@ final class BreadcrumbsTest extends TestCase
      * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExceptionInterface
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws \Laminas\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\View\Exception\InvalidArgumentException
      */
     public function testRenderStraightWithoutLinkAtEndWithLiClass2(): void
     {
@@ -5370,6 +4736,9 @@ final class BreadcrumbsTest extends TestCase
      * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExceptionInterface
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws \Laminas\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\View\Exception\InvalidArgumentException
      */
     public function testRenderWithoutPartial(): void
     {
@@ -5560,6 +4929,9 @@ final class BreadcrumbsTest extends TestCase
      * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExceptionInterface
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws \Laminas\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\View\Exception\InvalidArgumentException
      */
     public function testRenderWithPartial(): void
     {
@@ -5712,6 +5084,8 @@ final class BreadcrumbsTest extends TestCase
     /**
      * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \Laminas\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\View\Exception\InvalidArgumentException
      */
     public function testToStringWithPartial(): void
     {
@@ -5862,6 +5236,7 @@ final class BreadcrumbsTest extends TestCase
     /**
      * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \Laminas\Navigation\Exception\InvalidArgumentException
      */
     public function testInvoke(): void
     {
@@ -5938,6 +5313,8 @@ final class BreadcrumbsTest extends TestCase
      * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExceptionInterface
+     * @throws \Laminas\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      */
     public function testDoNotRenderIfNoPageIsActive(): void
     {
