@@ -21,7 +21,6 @@ use Laminas\View\Exception;
 use Laminas\View\Helper\EscapeHtml;
 use Laminas\View\Model\ModelInterface;
 use Laminas\View\Renderer\PhpRenderer;
-use Laminas\View\Renderer\RendererInterface;
 use Mimmi20\NavigationHelper\ContainerParser\ContainerParserInterface;
 use Mimmi20\NavigationHelper\Htmlify\HtmlifyInterface;
 
