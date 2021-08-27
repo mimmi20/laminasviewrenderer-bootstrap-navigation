@@ -48,8 +48,6 @@ final class Breadcrumbs extends \Laminas\View\Helper\Navigation\Breadcrumbs
 {
     use HelperTrait;
 
-    private RendererInterface $renderer;
-
     private EscapeHtml $escapeHtml;
 
     /**
@@ -223,6 +221,7 @@ final class Breadcrumbs extends \Laminas\View\Helper\Navigation\Breadcrumbs
         }
 
         $active = $active['page'];
+        $html   = [];
 
         // put the deepest active page last in breadcrumbs
         if ($this->getLinkLast()) {

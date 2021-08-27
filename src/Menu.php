@@ -78,8 +78,6 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
 
     private EscapeHtmlAttr $escapeHtmlAttr;
 
-    private PhpRenderer $renderer;
-
     /**
      * Allowed sizes
      *
