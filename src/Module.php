@@ -21,7 +21,7 @@ final class Module implements ConfigProviderInterface, DependencyIndicatorInterf
      * Return default configuration for laminas-mvc applications.
      *
      * @return array<string, array<string, array<int|string, string>>>
-     * @phpstan-return array{view_helpers: array{aliases: array<string, class-string>, factories: array<class-string, class-string>}}
+     * @phpstan-return array{navigation_helpers: array{aliases: array<string, class-string>, factories: array<class-string, class-string>}}
      */
     public function getConfig(): array
     {
