@@ -10,11 +10,22 @@ parameters:
     - %currentWorkingDirectory%/vendor/autoload.php
     - %currentWorkingDirectory%/vendor/squizlabs/php_codesniffer/autoload.php
     - %currentWorkingDirectory%/vendor/squizlabs/php_codesniffer/src/Util/Tokens.php
-  exceptionRules:
-    reportUnusedCatchesOfUncheckedExceptions: true
-    uncheckedExceptions: []
+  checkGenericClassInNonGenericObjectType: false
   checkMissingIterableValueType: false
-  excludes_analyse:
-    - */tests/*/data/*
-#  ignoreErrors:
-#    - '~MockObject~'
+  treatPhpDocTypesAsCertain: false
+  implicitThrows: false
+  exceptions:
+    checkedExceptionRegexes:
+      - '#Exception#'
+      - '#Throwable#'
+    check:
+      missingCheckedExceptionInThrows: true
+      tooWideThrowType: true
+  ignoreErrors:
+    - '~is not subtype of Throwable~'
+    - '~Strict comparison using === between null and Mezzio\\Navigation\\ContainerInterface will always evaluate to false~'
+    - '~Parameter #1 \$message of method Laminas\\Log\\Logger::err\(\) expects string, .* given~'
+    - '~Interop\\Container\\ContainerInterface~'
+    - '~Laminas\\View\\Helper\\Navigation\\(Breadcrumbs|Menu|AbstractHelper)::~'
+    - '~Method Mimmi20\\LaminasView\\BootstrapNavigation\\(Breadcrumbs|Menu)::__toString\(\) throws checked exception Laminas\\View\\Exception\\ExceptionInterface but it.s missing from the PHPDoc @throws tag~'
+    - '~Call to an undefined method Laminas\\Navigation\\(AbstractContainer|Navigation)::find(One|All)By(Label|Active)\(\)~'
