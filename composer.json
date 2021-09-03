@@ -36,7 +36,7 @@
     "laminas/laminas-permissions-acl": "^2.8.0",
     "laminas/laminas-router": "^3.4.5",
     "laminas/laminas-servicemanager": "^3.7.0",
-    "mimmi20/coding-standard": "^2.4.2",
+    "mimmi20/coding-standard": "^2.4.4",
     "phpstan/extension-installer": "^1.1.0",
     "phpstan/phpstan": "^0.12.96",
     "phpstan/phpstan-deprecation-rules": "^0.12.6",
