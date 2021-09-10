@@ -28,7 +28,7 @@
     "ext-intl": "*",
     "laminas/laminas-authentication": "^2.8.0",
     "laminas/laminas-config": "^3.5.0",
-    "laminas/laminas-dependency-plugin": "^2.1.2",
+    "laminas/laminas-dependency-plugin": "^2.2.0",
     "laminas/laminas-escaper": "^2.8.0",
     "laminas/laminas-i18n": "^2.11.2",
     "laminas/laminas-modulemanager": "^2.10.2",
