@@ -21,7 +21,6 @@ use Laminas\View\Exception;
 use Laminas\View\Helper\EscapeHtml;
 use Laminas\View\Model\ModelInterface;
 use Laminas\View\Renderer\PhpRenderer;
-use Laminas\View\Renderer\RendererInterface;
 use Mimmi20\NavigationHelper\ContainerParser\ContainerParserInterface;
 use Mimmi20\NavigationHelper\Htmlify\HtmlifyInterface;
 
@@ -47,8 +46,6 @@ use const PHP_EOL;
 final class Breadcrumbs extends \Laminas\View\Helper\Navigation\Breadcrumbs
 {
     use HelperTrait;
-
-    private RendererInterface $renderer;
 
     private EscapeHtml $escapeHtml;
 
@@ -223,6 +220,7 @@ final class Breadcrumbs extends \Laminas\View\Helper\Navigation\Breadcrumbs
         }
 
         $active = $active['page'];
+        $html   = [];
 
         // put the deepest active page last in breadcrumbs
         if ($this->getLinkLast()) {
