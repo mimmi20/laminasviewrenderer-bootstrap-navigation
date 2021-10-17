@@ -12,20 +12,39 @@ declare(strict_types = 1);
 
 namespace Mimmi20\LaminasView\BootstrapNavigation;
 
+use Laminas\ServiceManager\Factory\InvokableFactory;
+use Laminas\View\Renderer\PhpRenderer;
+
 final class ConfigProvider
 {
     /**
      * Return general-purpose laminas-navigation configuration.
      *
      * @return array<string, array<string, array<string, string>>>
-     * @phpstan-return array{navigation_helpers: array{aliases: array<string, class-string>, factories: array<class-string, class-string>}}
+     * @phpstan-return array{navigation_helpers: array{aliases: array<string, class-string>, factories: array<class-string, class-string>}, dependencies: array{factories: array<class-string, class-string>}}
      *
      * @throws void
      */
     public function __invoke(): array
     {
         return [
+            'dependencies' => $this->getDependencyConfig(),
             'navigation_helpers' => $this->getNavigationHelperConfig(),
+        ];
+    }
+
+    /**
+     * Return application-level dependency configuration.
+     *
+     * @return array<string, array<string, string>>
+     * @phpstan-return array{factories: array<class-string, class-string>}
+     */
+    public function getDependencyConfig(): array
+    {
+        return [
+            'factories' => [
+                PhpRenderer::class => InvokableFactory::class,
+            ],
         ];
     }
 
