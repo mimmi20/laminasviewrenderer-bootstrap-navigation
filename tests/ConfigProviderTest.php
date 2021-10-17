@@ -12,6 +12,7 @@ declare(strict_types = 1);
 
 namespace Mimmi20Test\LaminasView\BootstrapNavigation;
 
+use Laminas\View\Renderer\PhpRenderer;
 use Mimmi20\LaminasView\BootstrapNavigation\Breadcrumbs;
 use Mimmi20\LaminasView\BootstrapNavigation\ConfigProvider;
 use Mimmi20\LaminasView\BootstrapNavigation\Menu;
@@ -52,6 +53,23 @@ final class ConfigProviderTest extends TestCase
      * @throws Exception
      * @throws InvalidArgumentException
      */
+    public function testProviderDefinesExpectedFactoryServices2(): void
+    {
+        $dependencyConfig = $this->provider->getDependencyConfig();
+        self::assertIsArray($dependencyConfig);
+
+        self::assertArrayHasKey('factories', $dependencyConfig);
+        $factories = $dependencyConfig['factories'];
+        self::assertIsArray($factories);
+        self::assertArrayHasKey(PhpRenderer::class, $factories);
+
+        self::assertArrayNotHasKey('aliases', $dependencyConfig);
+    }
+
+    /**
+     * @throws Exception
+     * @throws InvalidArgumentException
+     */
     public function testInvocationReturnsArrayWithDependencies(): void
     {
         $config = ($this->provider)();
@@ -71,5 +89,17 @@ final class ConfigProviderTest extends TestCase
         self::assertArrayHasKey('aliases', $navigationHelperConfig);
         $aliases = $navigationHelperConfig['aliases'];
         self::assertIsArray($aliases);
+
+        self::assertArrayHasKey('dependencies', $config);
+
+        $dependencyConfig = $config['dependencies'];
+        self::assertIsArray($dependencyConfig);
+
+        self::assertArrayHasKey('factories', $dependencyConfig);
+        $factories = $dependencyConfig['factories'];
+        self::assertIsArray($factories);
+        self::assertArrayHasKey(PhpRenderer::class, $factories);
+
+        self::assertArrayNotHasKey('aliases', $dependencyConfig);
     }
 }
