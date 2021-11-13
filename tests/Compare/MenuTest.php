@@ -66,18 +66,32 @@ final class MenuTest extends AbstractTest
     {
         parent::setUp();
 
-        $plugin   = $this->serviceManager->get(ViewHelperPluginManager::class);
-        $renderer = $this->serviceManager->get(PhpRenderer::class);
+        $plugin = $this->serviceManager->get(ViewHelperPluginManager::class);
+        assert($plugin instanceof ViewHelperPluginManager);
+
+        $logger          = $this->serviceManager->get(Logger::class);
+        $containerParser = $this->serviceManager->get(ContainerParserInterface::class);
+        $escapeHtmlAttr  = $plugin->get(EscapeHtmlAttr::class);
+        $renderer        = $this->serviceManager->get(PhpRenderer::class);
+        $escapeHtml      = $plugin->get(EscapeHtml::class);
+        $htmlElement     = $this->serviceManager->get(HtmlElementInterface::class);
+
+        assert($logger instanceof Logger);
+        assert($containerParser instanceof ContainerParserInterface);
+        assert($renderer instanceof PhpRenderer);
+        assert($escapeHtml instanceof EscapeHtml);
+        assert($escapeHtmlAttr instanceof EscapeHtmlAttr);
+        assert($htmlElement instanceof HtmlElementInterface);
 
         // create helper
         $this->helper = new Menu(
             $this->serviceManager,
-            $this->serviceManager->get(Logger::class),
-            $this->serviceManager->get(ContainerParserInterface::class),
-            $plugin->get(EscapeHtmlAttr::class),
+            $logger,
+            $containerParser,
+            $escapeHtmlAttr,
             $renderer,
-            $plugin->get(EscapeHtml::class),
-            $this->serviceManager->get(HtmlElementInterface::class)
+            $escapeHtml,
+            $htmlElement
         );
 
         // set nav1 in helper as default

@@ -16,7 +16,7 @@ use Interop\Container\ContainerInterface;
 use Laminas\Log\Logger;
 use Laminas\ServiceManager\ServiceLocatorInterface;
 use Laminas\View\Helper\EscapeHtml;
-use Laminas\View\HelperPluginManager as ViewHelperPluginManager;
+use Laminas\View\HelperPluginManager as ViewPluginManager;
 use Laminas\View\Renderer\PhpRenderer;
 use Mimmi20\NavigationHelper\ContainerParser\ContainerParserInterface;
 use Mimmi20\NavigationHelper\Htmlify\HtmlifyInterface;
@@ -35,15 +35,28 @@ final class BreadcrumbsFactory
     {
         assert($container instanceof ServiceLocatorInterface);
 
-        $plugin = $container->get(ViewHelperPluginManager::class);
+        $plugin = $container->get(ViewPluginManager::class);
+        assert($plugin instanceof ViewPluginManager);
+
+        $logger          = $container->get(Logger::class);
+        $htmlify         = $container->get(HtmlifyInterface::class);
+        $containerParser = $container->get(ContainerParserInterface::class);
+        $renderer        = $container->get(PhpRenderer::class);
+        $escapeHtml      = $plugin->get(EscapeHtml::class);
+
+        assert($logger instanceof Logger);
+        assert($htmlify instanceof HtmlifyInterface);
+        assert($containerParser instanceof ContainerParserInterface);
+        assert($renderer instanceof PhpRenderer);
+        assert($escapeHtml instanceof EscapeHtml);
 
         return new Breadcrumbs(
             $container,
-            $container->get(Logger::class),
-            $container->get(HtmlifyInterface::class),
-            $container->get(ContainerParserInterface::class),
-            $container->get(PhpRenderer::class),
-            $plugin->get(EscapeHtml::class)
+            $logger,
+            $htmlify,
+            $containerParser,
+            $renderer,
+            $escapeHtml
         );
     }
 }

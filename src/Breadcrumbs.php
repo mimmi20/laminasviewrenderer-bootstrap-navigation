@@ -36,6 +36,7 @@ use function implode;
 use function is_array;
 use function is_int;
 use function is_object;
+use function is_string;
 use function sprintf;
 
 use const PHP_EOL;
@@ -114,7 +115,7 @@ final class Breadcrumbs extends \Laminas\View\Helper\Navigation\Breadcrumbs
     /**
      * Render a partial with the given "model".
      *
-     * @param array<mixed>                                  $params
+     * @param array<string, mixed>                          $params
      * @param AbstractContainer|string|null                 $container
      * @param array<int, string>|ModelInterface|string|null $partial
      *
@@ -154,7 +155,8 @@ final class Breadcrumbs extends \Laminas\View\Helper\Navigation\Breadcrumbs
 
         assert($container instanceof AbstractContainer || null === $container);
 
-        $model  = array_merge($params, ['pages' => []], ['separator' => $this->getSeparator()]);
+        /** @var array<string, array<mixed>> $model */
+        $model  = array_merge($params, ['pages' => [], 'separator' => $this->getSeparator()]);
         $active = $this->findActive($container);
 
         if ([] !== $active) {
@@ -234,11 +236,17 @@ final class Breadcrumbs extends \Laminas\View\Helper\Navigation\Breadcrumbs
             $translator = $this->getTranslator();
 
             if ('' !== $label && null !== $translator) {
-                $label = $translator->translate($label, $active->getTextDomain());
+                $textDomain = $active->getTextDomain() ?? 'default';
+                assert(is_string($textDomain));
+
+                $label = $translator->translate($label, $textDomain);
             }
 
+            $label = ($this->escapeHtml)($label);
+            assert(is_string($label));
+
             $html[] = $this->renderBreadcrumbItem(
-                ($this->escapeHtml)($label),
+                $label,
                 $active->getCustomProperties()['liClass'] ?? '',
                 $active->isActive()
             );

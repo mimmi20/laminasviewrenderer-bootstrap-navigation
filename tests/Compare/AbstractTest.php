@@ -16,6 +16,8 @@ use Laminas\Config\Exception\RuntimeException;
 use Laminas\Config\Factory as ConfigFactory;
 use Laminas\I18n\Translator\Translator;
 use Laminas\Log\Logger;
+use Laminas\ModuleManager\ModuleManager;
+use Laminas\Mvc\Application;
 use Laminas\Mvc\Service\ServiceManagerConfig;
 use Laminas\Navigation\Navigation;
 use Laminas\Navigation\Service\ConstructedNavigationFactory;
@@ -133,9 +135,17 @@ abstract class AbstractTest extends TestCase
             ->method('debug');
 
         // setup containers from config
-        $this->nav1 = new Navigation($config->get('nav_test1'));
-        $this->nav2 = new Navigation($config->get('nav_test2'));
-        $this->nav3 = new Navigation($config->get('nav_test3'));
+        $nav1 = $config->get('nav_test1');
+        $nav2 = $config->get('nav_test2');
+        $nav3 = $config->get('nav_test3');
+
+        assert($nav1 instanceof \Laminas\Config\Config);
+        assert($nav2 instanceof \Laminas\Config\Config);
+        assert($nav3 instanceof \Laminas\Config\Config);
+
+        $this->nav1 = new Navigation($nav1);
+        $this->nav2 = new Navigation($nav2);
+        $this->nav3 = new Navigation($nav3);
 
         // setup view
         $view     = new PhpRenderer();
@@ -156,9 +166,7 @@ abstract class AbstractTest extends TestCase
                     'service_manager' => [
                         'factories' => [
                             'config' => static fn () => [
-                                'navigation' => [
-                                    'default' => $config->get('nav_test1'),
-                                ],
+                                'navigation' => ['default' => $nav1],
                             ],
                         ],
                     ],
@@ -189,9 +197,7 @@ abstract class AbstractTest extends TestCase
         $sm->setFactory(
             'config',
             static fn (): array => [
-                'navigation' => [
-                    'default' => $config->get('nav_test1'),
-                ],
+                'navigation' => ['default' => $nav1],
                 'view_helpers' => [
                     'aliases' => [
                         'navigation' => Navigation::class,
@@ -208,8 +214,14 @@ abstract class AbstractTest extends TestCase
 
         $sm->setService(PhpRenderer::class, $view);
         $sm->setService('ApplicationConfig', $smConfig);
-        $sm->get('ModuleManager')->loadModules();
-        $sm->get('Application')->bootstrap();
+
+        $moduleManager = $sm->get('ModuleManager');
+        assert($moduleManager instanceof ModuleManager);
+        $moduleManager->loadModules();
+
+        $application = $sm->get('Application');
+        assert($application instanceof Application);
+        $application->bootstrap();
         $sm->setFactory('Navigation', DefaultNavigationFactory::class);
 
         $sm->setService('nav1', $this->nav1);
@@ -217,8 +229,7 @@ abstract class AbstractTest extends TestCase
 
         $sm->setAllowOverride(false);
 
-        $app = $this->serviceManager->get('Application');
-        $app->getMvcEvent()->setRouteMatch(new V3RouteMatch([
+        $application->getMvcEvent()->setRouteMatch(new V3RouteMatch([
             'controller' => 'post',
             'action' => 'view',
             'id' => '1337',

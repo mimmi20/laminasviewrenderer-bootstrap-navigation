@@ -147,7 +147,7 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
                 $options['indent'],
                 $options['minDepth'],
                 $options['maxDepth'],
-                $options['escapeLabels'] ?? false,
+                $options['escapeLabels'],
                 $options['addClassToListItem'],
                 $options['liActiveClass'],
                 $options['liClass'],
@@ -166,7 +166,7 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
             $options['minDepth'],
             $options['maxDepth'],
             $options['onlyActiveBranch'],
-            $options['escapeLabels'] ?? false,
+            $options['escapeLabels'],
             $options['addClassToListItem'],
             $options['liActiveClass'],
             $options['liClass'],
@@ -974,12 +974,15 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
         $translator = $this->getTranslator();
 
         if (null !== $translator) {
+            $textDomain = $page->getTextDomain() ?? 'default';
+            assert(is_string($textDomain));
+
             if ('' !== $label) {
-                $label = $translator->translate($label, $page->getTextDomain());
+                $label = $translator->translate($label, $textDomain);
             }
 
             if (null !== $title) {
-                $title = $translator->translate($title, $page->getTextDomain());
+                $title = $translator->translate($title, $textDomain);
             }
         }
 
@@ -1003,12 +1006,13 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
 
         // remove sitemap specific attributes
         $attributes = array_diff_key(
-            array_merge($attributes, $page->getCustomProperties() ?? []),
+            array_merge($attributes, $page->getCustomProperties()),
             array_flip(['lastmod', 'changefreq', 'priority'])
         );
 
         if ('' !== $label && $options['escapeLabels']) {
             $label = ($this->escapeHtml)($label);
+            assert(is_string($label));
         }
 
         return $this->htmlElement->toHtml($element, $attributes, $label);
