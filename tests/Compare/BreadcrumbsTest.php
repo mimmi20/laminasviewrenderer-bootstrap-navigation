@@ -64,17 +64,29 @@ final class BreadcrumbsTest extends AbstractTest
     {
         parent::setUp();
 
-        $plugin   = $this->serviceManager->get(ViewHelperPluginManager::class);
-        $renderer = $this->serviceManager->get(PhpRenderer::class);
+        $plugin = $this->serviceManager->get(ViewHelperPluginManager::class);
+        assert($plugin instanceof ViewHelperPluginManager);
+
+        $logger          = $this->serviceManager->get(Logger::class);
+        $htmlify         = $this->serviceManager->get(HtmlifyInterface::class);
+        $containerParser = $this->serviceManager->get(ContainerParserInterface::class);
+        $renderer        = $this->serviceManager->get(PhpRenderer::class);
+        $escapeHtml      = $plugin->get(EscapeHtml::class);
+
+        assert($logger instanceof Logger);
+        assert($htmlify instanceof HtmlifyInterface);
+        assert($containerParser instanceof ContainerParserInterface);
+        assert($renderer instanceof PhpRenderer);
+        assert($escapeHtml instanceof EscapeHtml);
 
         // create helper
         $this->helper = new Breadcrumbs(
             $this->serviceManager,
-            $this->serviceManager->get(Logger::class),
-            $this->serviceManager->get(HtmlifyInterface::class),
-            $this->serviceManager->get(ContainerParserInterface::class),
+            $logger,
+            $htmlify,
+            $containerParser,
             $renderer,
-            $plugin->get(EscapeHtml::class)
+            $escapeHtml
         );
 
         // set nav1 in helper as default

@@ -661,7 +661,7 @@ final class MenuTest extends TestCase
         $page->expects(self::once())
             ->method('getLabel')
             ->willReturn($pageLabel);
-        $page->expects(self::exactly(2))
+        $page->expects(self::once())
             ->method('getTextDomain')
             ->willReturn($pageTextDomain);
         $page->expects(self::once())
@@ -3998,7 +3998,7 @@ final class MenuTest extends TestCase
         $page->expects(self::once())
             ->method('getLabel')
             ->willReturn($pageLabel);
-        $page->expects(self::exactly(2))
+        $page->expects(self::once())
             ->method('getTextDomain')
             ->willReturn($pageTextDomain);
         $page->expects(self::once())
@@ -4266,7 +4266,7 @@ final class MenuTest extends TestCase
         $page->expects(self::once())
             ->method('getLabel')
             ->willReturn($pageLabel);
-        $page->expects(self::exactly(2))
+        $page->expects(self::once())
             ->method('getTextDomain')
             ->willReturn($pageTextDomain);
         $page->expects(self::once())
@@ -4699,7 +4699,7 @@ final class MenuTest extends TestCase
         $page->expects(self::once())
             ->method('getLabel')
             ->willReturn($pageLabel);
-        $page->expects(self::exactly(2))
+        $page->expects(self::once())
             ->method('getTextDomain')
             ->willReturn($pageTextDomain);
         $page->expects(self::once())
@@ -4965,7 +4965,7 @@ final class MenuTest extends TestCase
         $page->expects(self::once())
             ->method('getLabel')
             ->willReturn($pageLabel);
-        $page->expects(self::exactly(2))
+        $page->expects(self::once())
             ->method('getTextDomain')
             ->willReturn($pageTextDomain);
         $page->expects(self::once())
@@ -5233,7 +5233,7 @@ final class MenuTest extends TestCase
         $page->expects(self::once())
             ->method('getLabel')
             ->willReturn($pageLabel);
-        $page->expects(self::exactly(2))
+        $page->expects(self::once())
             ->method('getTextDomain')
             ->willReturn($pageTextDomain);
         $page->expects(self::once())
@@ -5499,7 +5499,7 @@ final class MenuTest extends TestCase
         $page->expects(self::once())
             ->method('getLabel')
             ->willReturn($pageLabel);
-        $page->expects(self::exactly(2))
+        $page->expects(self::once())
             ->method('getTextDomain')
             ->willReturn($pageTextDomain);
         $page->expects(self::once())
@@ -5932,7 +5932,7 @@ final class MenuTest extends TestCase
         $page->expects(self::once())
             ->method('getLabel')
             ->willReturn($pageLabel);
-        $page->expects(self::exactly(2))
+        $page->expects(self::once())
             ->method('getTextDomain')
             ->willReturn($pageTextDomain);
         $page->expects(self::once())
@@ -6182,7 +6182,7 @@ final class MenuTest extends TestCase
         $page->expects(self::once())
             ->method('getLabel')
             ->willReturn($pageLabel);
-        $page->expects(self::exactly(2))
+        $page->expects(self::once())
             ->method('getTextDomain')
             ->willReturn($pageTextDomain);
         $page->expects(self::once())
@@ -6430,7 +6430,7 @@ final class MenuTest extends TestCase
         $page->expects(self::once())
             ->method('getLabel')
             ->willReturn($pageLabel);
-        $page->expects(self::exactly(2))
+        $page->expects(self::once())
             ->method('getTextDomain')
             ->willReturn($pageTextDomain);
         $page->expects(self::once())
@@ -7037,7 +7037,7 @@ final class MenuTest extends TestCase
         $page->expects(self::once())
             ->method('getLabel')
             ->willReturn($pageLabel);
-        $page->expects(self::exactly(2))
+        $page->expects(self::once())
             ->method('getTextDomain')
             ->willReturn($pageTextDomain);
         $page->expects(self::once())
@@ -7475,7 +7475,7 @@ final class MenuTest extends TestCase
         $page->expects(self::once())
             ->method('getLabel')
             ->willReturn($pageLabel);
-        $page->expects(self::exactly(2))
+        $page->expects(self::once())
             ->method('getTextDomain')
             ->willReturn($pageTextDomain);
         $page->expects(self::once())
@@ -7934,7 +7934,7 @@ final class MenuTest extends TestCase
         $page->expects(self::once())
             ->method('getLabel')
             ->willReturn($pageLabel);
-        $page->expects(self::exactly(2))
+        $page->expects(self::once())
             ->method('getTextDomain')
             ->willReturn($pageTextDomain);
         $page->expects(self::once())
@@ -8226,7 +8226,7 @@ final class MenuTest extends TestCase
         $page->expects(self::once())
             ->method('getLabel')
             ->willReturn($pageLabel);
-        $page->expects(self::exactly(2))
+        $page->expects(self::once())
             ->method('getTextDomain')
             ->willReturn($pageTextDomain);
         $page->expects(self::once())
@@ -8276,7 +8276,7 @@ final class MenuTest extends TestCase
         $page2->expects(self::once())
             ->method('getLabel')
             ->willReturn($page2Label);
-        $page2->expects(self::exactly(2))
+        $page2->expects(self::once())
             ->method('getTextDomain')
             ->willReturn($page2TextDomain);
         $page2->expects(self::once())
@@ -8326,7 +8326,7 @@ final class MenuTest extends TestCase
         $page3->expects(self::once())
             ->method('getLabel')
             ->willReturn($page3Label);
-        $page3->expects(self::exactly(2))
+        $page3->expects(self::once())
             ->method('getTextDomain')
             ->willReturn($page3TextDomain);
         $page3->expects(self::once())
@@ -8697,7 +8697,7 @@ final class MenuTest extends TestCase
         $page->expects(self::once())
             ->method('getLabel')
             ->willReturn($pageLabel);
-        $page->expects(self::exactly(2))
+        $page->expects(self::once())
             ->method('getTextDomain')
             ->willReturn($pageTextDomain);
         $page->expects(self::once())
@@ -8784,7 +8784,7 @@ final class MenuTest extends TestCase
         $page3->expects(self::once())
             ->method('getLabel')
             ->willReturn($page3Label);
-        $page3->expects(self::exactly(2))
+        $page3->expects(self::once())
             ->method('getTextDomain')
             ->willReturn($page3TextDomain);
         $page3->expects(self::once())
@@ -9153,7 +9153,7 @@ final class MenuTest extends TestCase
         $page->expects(self::once())
             ->method('getLabel')
             ->willReturn($pageLabel);
-        $page->expects(self::exactly(2))
+        $page->expects(self::once())
             ->method('getTextDomain')
             ->willReturn($pageTextDomain);
         $page->expects(self::once())
@@ -9240,7 +9240,7 @@ final class MenuTest extends TestCase
         $page3->expects(self::once())
             ->method('getLabel')
             ->willReturn($page3Label);
-        $page3->expects(self::exactly(2))
+        $page3->expects(self::once())
             ->method('getTextDomain')
             ->willReturn($page3TextDomain);
         $page3->expects(self::once())
@@ -9615,7 +9615,7 @@ final class MenuTest extends TestCase
         $page->expects(self::once())
             ->method('getLabel')
             ->willReturn($pageLabel);
-        $page->expects(self::exactly(2))
+        $page->expects(self::once())
             ->method('getTextDomain')
             ->willReturn($pageTextDomain);
         $page->expects(self::once())
@@ -9665,7 +9665,7 @@ final class MenuTest extends TestCase
         $page2->expects(self::once())
             ->method('getLabel')
             ->willReturn($page2Label);
-        $page2->expects(self::exactly(2))
+        $page2->expects(self::once())
             ->method('getTextDomain')
             ->willReturn($page2TextDomain);
         $page2->expects(self::once())
@@ -9715,7 +9715,7 @@ final class MenuTest extends TestCase
         $page3->expects(self::once())
             ->method('getLabel')
             ->willReturn($page3Label);
-        $page3->expects(self::exactly(2))
+        $page3->expects(self::once())
             ->method('getTextDomain')
             ->willReturn($page3TextDomain);
         $page3->expects(self::once())
@@ -10092,7 +10092,7 @@ final class MenuTest extends TestCase
         $page->expects(self::once())
             ->method('getLabel')
             ->willReturn($pageLabel);
-        $page->expects(self::exactly(2))
+        $page->expects(self::once())
             ->method('getTextDomain')
             ->willReturn($pageTextDomain);
         $page->expects(self::once())
@@ -10142,7 +10142,7 @@ final class MenuTest extends TestCase
         $page2->expects(self::once())
             ->method('getLabel')
             ->willReturn($page2Label);
-        $page2->expects(self::exactly(2))
+        $page2->expects(self::once())
             ->method('getTextDomain')
             ->willReturn($page2TextDomain);
         $page2->expects(self::once())
@@ -10192,7 +10192,7 @@ final class MenuTest extends TestCase
         $page3->expects(self::once())
             ->method('getLabel')
             ->willReturn($page3Label);
-        $page3->expects(self::exactly(2))
+        $page3->expects(self::once())
             ->method('getTextDomain')
             ->willReturn($page3TextDomain);
         $page3->expects(self::once())
@@ -10572,7 +10572,7 @@ final class MenuTest extends TestCase
         $page->expects(self::once())
             ->method('getLabel')
             ->willReturn($pageLabel);
-        $page->expects(self::exactly(2))
+        $page->expects(self::once())
             ->method('getTextDomain')
             ->willReturn($pageTextDomain);
         $page->expects(self::once())
@@ -10622,7 +10622,7 @@ final class MenuTest extends TestCase
         $page2->expects(self::once())
             ->method('getLabel')
             ->willReturn($page2Label);
-        $page2->expects(self::exactly(2))
+        $page2->expects(self::once())
             ->method('getTextDomain')
             ->willReturn($page2TextDomain);
         $page2->expects(self::once())
@@ -10672,7 +10672,7 @@ final class MenuTest extends TestCase
         $page3->expects(self::once())
             ->method('getLabel')
             ->willReturn($page3Label);
-        $page3->expects(self::exactly(2))
+        $page3->expects(self::once())
             ->method('getTextDomain')
             ->willReturn($page3TextDomain);
         $page3->expects(self::once())

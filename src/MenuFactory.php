@@ -37,15 +37,30 @@ final class MenuFactory
         assert($container instanceof ServiceLocatorInterface);
 
         $plugin = $container->get(ViewPluginManager::class);
+        assert($plugin instanceof ViewPluginManager);
+
+        $logger          = $container->get(Logger::class);
+        $containerParser = $container->get(ContainerParserInterface::class);
+        $escapeHtmlAttr  = $plugin->get(EscapeHtmlAttr::class);
+        $renderer        = $container->get(PhpRenderer::class);
+        $escapeHtml      = $plugin->get(EscapeHtml::class);
+        $htmlElement     = $container->get(HtmlElementInterface::class);
+
+        assert($logger instanceof Logger);
+        assert($containerParser instanceof ContainerParserInterface);
+        assert($renderer instanceof PhpRenderer);
+        assert($escapeHtml instanceof EscapeHtml);
+        assert($escapeHtmlAttr instanceof EscapeHtmlAttr);
+        assert($htmlElement instanceof HtmlElementInterface);
 
         return new Menu(
             $container,
-            $container->get(Logger::class),
-            $container->get(ContainerParserInterface::class),
-            $plugin->get(EscapeHtmlAttr::class),
-            $container->get(PhpRenderer::class),
-            $plugin->get(EscapeHtml::class),
-            $container->get(HtmlElementInterface::class)
+            $logger,
+            $containerParser,
+            $escapeHtmlAttr,
+            $renderer,
+            $escapeHtml,
+            $htmlElement
         );
     }
 }
