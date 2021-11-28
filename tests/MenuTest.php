@@ -2823,8 +2823,6 @@ final class MenuTest extends TestCase
         $serviceLocator->expects(self::never())
             ->method('build');
 
-        $container = new Navigation();
-
         $containerParser = $this->getMockBuilder(ContainerParserInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -2928,8 +2926,6 @@ final class MenuTest extends TestCase
             ->method('get');
         $serviceLocator->expects(self::never())
             ->method('build');
-
-        $container = new Navigation();
 
         $containerParser = $this->getMockBuilder(ContainerParserInterface::class)
             ->disableOriginalConstructor()
@@ -6788,7 +6784,6 @@ final class MenuTest extends TestCase
      */
     public function testRenderSubMenuWithTabsOnlyActiveBranchWithoutParents3(): void
     {
-        $indent = '    ';
         $logger = $this->getMockBuilder(Logger::class)
             ->disableOriginalConstructor()
             ->getMock();
