@@ -2786,7 +2786,6 @@ final class MenuTest extends TestCase
     /**
      * @throws Exception
      * @throws ExceptionInterface
-     * @throws \Laminas\Navigation\Exception\InvalidArgumentException
      * @throws InvalidArgumentException
      */
     public function testRenderPartialWithoutPartial(): void
@@ -2890,7 +2889,6 @@ final class MenuTest extends TestCase
     /**
      * @throws Exception
      * @throws ExceptionInterface
-     * @throws \Laminas\Navigation\Exception\InvalidArgumentException
      * @throws InvalidArgumentException
      */
     public function testRenderPartialWithWrongPartial(): void
