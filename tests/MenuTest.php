@@ -2786,7 +2786,6 @@ final class MenuTest extends TestCase
     /**
      * @throws Exception
      * @throws ExceptionInterface
-     * @throws \Laminas\Navigation\Exception\InvalidArgumentException
      * @throws InvalidArgumentException
      */
     public function testRenderPartialWithoutPartial(): void
@@ -2822,8 +2821,6 @@ final class MenuTest extends TestCase
             ->method('get');
         $serviceLocator->expects(self::never())
             ->method('build');
-
-        $container = new Navigation();
 
         $containerParser = $this->getMockBuilder(ContainerParserInterface::class)
             ->disableOriginalConstructor()
@@ -2892,7 +2889,6 @@ final class MenuTest extends TestCase
     /**
      * @throws Exception
      * @throws ExceptionInterface
-     * @throws \Laminas\Navigation\Exception\InvalidArgumentException
      * @throws InvalidArgumentException
      */
     public function testRenderPartialWithWrongPartial(): void
@@ -2928,8 +2924,6 @@ final class MenuTest extends TestCase
             ->method('get');
         $serviceLocator->expects(self::never())
             ->method('build');
-
-        $container = new Navigation();
 
         $containerParser = $this->getMockBuilder(ContainerParserInterface::class)
             ->disableOriginalConstructor()
@@ -6788,7 +6782,6 @@ final class MenuTest extends TestCase
      */
     public function testRenderSubMenuWithTabsOnlyActiveBranchWithoutParents3(): void
     {
-        $indent = '    ';
         $logger = $this->getMockBuilder(Logger::class)
             ->disableOriginalConstructor()
             ->getMock();
