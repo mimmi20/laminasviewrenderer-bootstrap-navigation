@@ -26,7 +26,7 @@
   },
   "require-dev": {
     "ext-intl": "*",
-    "laminas/laminas-authentication": "^2.8.0",
+    "laminas/laminas-authentication": "^2.9.0",
     "laminas/laminas-config": "^3.7.0",
     "laminas/laminas-dependency-plugin": "^2.2.0",
     "laminas/laminas-escaper": "^2.9.0",
