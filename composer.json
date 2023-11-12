@@ -29,7 +29,7 @@
     "laminas/laminas-authentication": "^2.8.0",
     "laminas/laminas-config": "^3.7.0",
     "laminas/laminas-dependency-plugin": "^2.2.0",
-    "laminas/laminas-escaper": "^2.9.0",
+    "laminas/laminas-escaper": "^2.12.0",
     "laminas/laminas-i18n": "^2.12.0",
     "laminas/laminas-modulemanager": "^2.11.0",
     "laminas/laminas-mvc": "^3.3.0",
