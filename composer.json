@@ -1,79 +1,92 @@
 {
-  "name": "mimmi20/laminasviewrenderer-bootstrap-navigation",
-  "description": "Provides viewhelper for Laminas Navigation to use with Bootstrap",
-  "license": "MIT",
-  "type": "library",
-  "authors": [
-    {
-      "name": "Thomas Müller",
-      "homepage": "https://github.com/mimmi20",
-      "role": "Developer"
+    "name": "mimmi20/laminasviewrenderer-bootstrap-navigation",
+    "description": "Provides viewhelper for Laminas Navigation to use with Bootstrap",
+    "license": "MIT",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Thomas Müller",
+            "homepage": "https://github.com/mimmi20",
+            "role": "Developer"
+        }
+    ],
+    "homepage": "https://github.com/mimmi20/laminasviewrenderer-bootstrap-navigation",
+    "support": {
+        "issues": "https://github.com/mimmi20/laminasviewrenderer-bootstrap-navigation/issues",
+        "source": "https://github.com/mimmi20/laminasviewrenderer-bootstrap-navigation"
+    },
+    "require": {
+        "php": "^8.1.0",
+        "ext-mbstring": "*",
+        "laminas/laminas-log": "^2.15.0",
+        "laminas/laminas-navigation": "^2.12.0",
+        "laminas/laminas-view": "^2.14.2",
+        "mimmi20/laminasviewrenderer-helper-htmlelement": "^1.0.3",
+        "mimmi20/navigation-helper-acceptpage": "^1.0.0",
+        "mimmi20/navigation-helper-containerparser": "^1.0.0",
+        "mimmi20/navigation-helper-findactive": "^1.0.0",
+        "mimmi20/navigation-helper-findroot": "^1.0.0",
+        "mimmi20/navigation-helper-htmlify": "^1.0.0"
+    },
+    "require-dev": {
+        "ext-ctype": "*",
+        "ext-dom": "*",
+        "ext-intl": "*",
+        "ext-simplexml": "*",
+        "ext-tokenizer": "*",
+        "ext-xml": "*",
+        "ext-xmlwriter": "*",
+        "ergebnis/composer-normalize": "^2.18.0",
+        "laminas/laminas-authentication": "^2.9.0",
+        "laminas/laminas-config": "^3.7.0",
+        "laminas/laminas-dependency-plugin": "^2.2.0",
+        "laminas/laminas-escaper": "^2.9.0",
+        "laminas/laminas-i18n": "^2.13.0",
+        "laminas/laminas-modulemanager": "^2.11.0",
+        "laminas/laminas-mvc": "^3.3.0",
+        "laminas/laminas-permissions-acl": "^2.9.0",
+        "laminas/laminas-router": "^3.5.0",
+        "laminas/laminas-servicemanager": "^3.10.0",
+        "mimmi20/coding-standard": "^2.5.1",
+        "phpstan/extension-installer": "^1.1.0",
+        "phpstan/phpstan": "^1.2.0",
+        "phpstan/phpstan-deprecation-rules": "^1.0.0",
+        "phpstan/phpstan-phpunit": "^1.0.0",
+        "phpunit/phpunit": "^9.5.10",
+        "rector/rector": "^0.12.7"
+    },
+    "suggest": {
+        "ext-intl": "required to use the Translator",
+        "laminas/laminas-config": "to provide page configuration (optional, as arrays and Traversables are also allowed)",
+        "laminas/laminas-i18n": "required to use the Translator",
+        "laminas/laminas-servicemanager": "to use the navigation factories",
+        "mimmi20/mezzio-generic-authorization": "to use authrization roles or privileges"
+    },
+    "autoload": {
+        "psr-4": {
+            "Mimmi20\\LaminasView\\BootstrapNavigation\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Mimmi20Test\\LaminasView\\BootstrapNavigation\\": "tests/"
+        }
+    },
+    "config": {
+        "preferred-install": "dist",
+        "lock": false,
+        "sort-packages": true,
+        "allow-plugins": {
+            "laminas/laminas-dependency-plugin": true,
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "phpstan/extension-installer": true,
+            "infection/extension-installer": true
+        }
+    },
+    "extra": {
+        "laminas": {
+            "component": "Mimmi20\\LaminasView\\BootstrapNavigation",
+            "config-provider": "Mimmi20\\LaminasView\\BootstrapNavigation\\ConfigProvider"
+        }
     }
-  ],
-  "homepage": "https://github.com/mimmi20/laminasviewrenderer-bootstrap-navigation",
-  "support": {
-    "issues": "https://github.com/mimmi20/laminasviewrenderer-bootstrap-navigation/issues",
-    "source": "https://github.com/mimmi20/laminasviewrenderer-bootstrap-navigation"
-  },
-  "require": {
-    "php": "^7.4.3 || ^8.0.0",
-    "ext-mbstring": "*",
-    "laminas/laminas-log": "^2.15.0",
-    "laminas/laminas-navigation": "^2.12.0",
-    "laminas/laminas-view": "^2.14.2",
-    "mimmi20/laminasviewrenderer-helper-htmlelement": "^1.0.3",
-    "mimmi20/navigation-helper-acceptpage": "^1.0.0",
-    "mimmi20/navigation-helper-containerparser": "^1.0.0",
-    "mimmi20/navigation-helper-findactive": "^1.0.0",
-    "mimmi20/navigation-helper-findroot": "^1.0.0",
-    "mimmi20/navigation-helper-htmlify": "^1.0.0"
-  },
-  "require-dev": {
-    "ext-intl": "*",
-    "ergebnis/composer-normalize": "^2.18.0",
-    "laminas/laminas-authentication": "^2.9.0",
-    "laminas/laminas-config": "^3.7.0",
-    "laminas/laminas-dependency-plugin": "^2.2.0",
-    "laminas/laminas-escaper": "^2.9.0",
-    "laminas/laminas-i18n": "^2.13.0",
-    "laminas/laminas-modulemanager": "^2.11.0",
-    "laminas/laminas-mvc": "^3.3.0",
-    "laminas/laminas-permissions-acl": "^2.9.0",
-    "laminas/laminas-router": "^3.5.0",
-    "laminas/laminas-servicemanager": "^3.10.0",
-    "mimmi20/coding-standard": "^2.5.1",
-    "phpstan/extension-installer": "^1.1.0",
-    "phpstan/phpstan": "^1.2.0",
-    "phpstan/phpstan-deprecation-rules": "^1.0.0",
-    "phpstan/phpstan-phpunit": "^1.0.0",
-    "phpunit/phpunit": "^9.5.10",
-    "rector/rector": "^0.12.7"
-  },
-  "suggest": {
-    "ext-intl": "required to use the Translator",
-    "laminas/laminas-config": "to provide page configuration (optional, as arrays and Traversables are also allowed)",
-    "laminas/laminas-i18n": "required to use the Translator",
-    "laminas/laminas-servicemanager": "to use the navigation factories",
-    "mimmi20/mezzio-generic-authorization": "to use authrization roles or privileges"
-  },
-  "autoload": {
-    "psr-4": {
-      "Mimmi20\\LaminasView\\BootstrapNavigation\\": "src/"
-    }
-  },
-  "autoload-dev": {
-    "psr-4": {
-      "Mimmi20Test\\LaminasView\\BootstrapNavigation\\": "tests/"
-    }
-  },
-  "config": {
-    "preferred-install": "dist",
-    "sort-packages": true
-  },
-  "extra": {
-    "laminas": {
-      "component": "Mimmi20\\LaminasView\\BootstrapNavigation",
-      "config-provider": "Mimmi20\\LaminasView\\BootstrapNavigation\\ConfigProvider"
-    }
-  }
 }

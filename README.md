@@ -7,22 +7,16 @@
 ## Code Status
 
 [![codecov](https://codecov.io/gh/mimmi20/laminasviewrenderer-bootstrap-navigation/branch/master/graph/badge.svg)](https://codecov.io/gh/mimmi20/laminasviewrenderer-bootstrap-navigation)
-[![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/mimmi20/laminasviewrenderer-bootstrap-navigation.svg)](http://isitmaintained.com/project/mimmi20/laminasviewrenderer-bootstrap-navigation "Average time to resolve an issue")
-[![Percentage of issues still open](http://isitmaintained.com/badge/open/mimmi20/laminasviewrenderer-bootstrap-navigation.svg)](http://isitmaintained.com/project/mimmi20/laminasviewrenderer-bootstrap-navigation "Percentage of issues still open")
+[![Average time to resolve an issue](https://isitmaintained.com/badge/resolution/mimmi20/laminasviewrenderer-bootstrap-navigation.svg)](https://isitmaintained.com/project/mimmi20/laminasviewrenderer-bootstrap-navigation "Average time to resolve an issue")
+[![Percentage of issues still open](https://isitmaintained.com/badge/open/mimmi20/laminasviewrenderer-bootstrap-navigation.svg)](https://isitmaintained.com/project/mimmi20/laminasviewrenderer-bootstrap-navigation "Percentage of issues still open")
 
 ## Installation
 
-:bulb: This is a great place for showing how to install the package, see below:
-
 Run
 
+```shell
+composer require mimmi20/laminasviewrenderer-bootstrap-navigation
 ```
-$ composer require mimmi20/laminasviewrenderer-bootstrap-navigation
-```
-
-## Usage
-
-:bulb: This is a great place for showing a few usage examples!
 
 ## License
 
