@@ -2,7 +2,7 @@
 /**
  * This file is part of the mimmi20/laminasviewrenderer-bootstrap-navigation package.
  *
- * Copyright (c) 2021, Thomas Mueller <mimmi20@live.de>
+ * Copyright (c) 2021-2023, Thomas Mueller <mimmi20@live.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -12,17 +12,19 @@ declare(strict_types = 1);
 
 namespace Mimmi20\LaminasView\BootstrapNavigation;
 
-use Laminas\Log\Logger;
+use Laminas\I18n\Exception\RuntimeException;
 use Laminas\Navigation\AbstractContainer;
 use Laminas\Navigation\Page\AbstractPage;
 use Laminas\ServiceManager\ServiceLocatorInterface;
 use Laminas\Stdlib\Exception\InvalidArgumentException;
 use Laminas\View\Exception;
+use Laminas\View\Exception\DomainException;
 use Laminas\View\Helper\EscapeHtml;
 use Laminas\View\Model\ModelInterface;
 use Laminas\View\Renderer\PhpRenderer;
 use Mimmi20\NavigationHelper\ContainerParser\ContainerParserInterface;
 use Mimmi20\NavigationHelper\Htmlify\HtmlifyInterface;
+use Psr\Container\ContainerExceptionInterface;
 
 use function array_key_exists;
 use function array_merge;
@@ -30,12 +32,10 @@ use function array_reverse;
 use function array_unshift;
 use function assert;
 use function count;
-use function get_class;
-use function gettype;
+use function get_debug_type;
 use function implode;
 use function is_array;
 use function is_int;
-use function is_object;
 use function is_string;
 use function sprintf;
 
@@ -48,25 +48,16 @@ final class Breadcrumbs extends \Laminas\View\Helper\Navigation\Breadcrumbs
 {
     use HelperTrait;
 
-    private EscapeHtml $escapeHtml;
-
-    /**
-     * @throws void
-     */
+    /** @throws void */
     public function __construct(
-        ServiceLocatorInterface $serviceLocator,
-        Logger $logger,
-        HtmlifyInterface $htmlify,
+        ServiceLocatorInterface $serviceBuilder,
         ContainerParserInterface $containerParser,
-        PhpRenderer $renderer,
-        EscapeHtml $escapeHtml
+        private readonly HtmlifyInterface $htmlify,
+        private readonly PhpRenderer $renderer,
+        private readonly EscapeHtml $escapeHtml,
     ) {
-        $this->serviceLocator  = $serviceLocator;
-        $this->logger          = $logger;
-        $this->htmlify         = $htmlify;
+        $this->serviceBuilder  = $serviceBuilder;
         $this->containerParser = $containerParser;
-        $this->view            = $renderer;
-        $this->escapeHtml      = $escapeHtml;
     }
 
     /**
@@ -74,7 +65,7 @@ final class Breadcrumbs extends \Laminas\View\Helper\Navigation\Breadcrumbs
      *
      * @throws void
      */
-    public function getMinDepth(): ?int
+    public function getMinDepth(): int | null
     {
         if (!is_int($this->minDepth) || 0 > $this->minDepth) {
             return 1;
@@ -87,17 +78,22 @@ final class Breadcrumbs extends \Laminas\View\Helper\Navigation\Breadcrumbs
      * Renders breadcrumbs by chaining 'a' elements with the separator
      * registered in the helper.
      *
-     * @param AbstractContainer|string|null $container [optional] container to render. Default is
+     * @param AbstractContainer<AbstractPage>|string|null $container [optional] container to render. Default is
      *                                                 to render the container registered in the helper.
      *
      * @throws InvalidArgumentException
      * @throws \Laminas\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\View\Exception\InvalidArgumentException
+     * @throws ContainerExceptionInterface
+     * @throws RuntimeException
+     *
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      */
     public function renderStraight($container = null): string
     {
         $content = $this->parentRenderStraight($container);
 
-        if ('' === $content) {
+        if ($content === '') {
             return '';
         }
 
@@ -107,40 +103,58 @@ final class Breadcrumbs extends \Laminas\View\Helper\Navigation\Breadcrumbs
         $html .= $indent . '    <ul class="breadcrumb">' . PHP_EOL;
         $html .= $content;
         $html .= $indent . '    </ul>' . PHP_EOL;
-        $html .= $indent . '</nav>' . PHP_EOL;
 
-        return $html;
+        return $html . ($indent . '</nav>' . PHP_EOL);
+    }
+
+    /**
+     * Returns an HTML string containing an 'a' element for the given page
+     *
+     * @param AbstractPage $page page to generate HTML for
+     *
+     * @return string HTML string (<a href="…">Label</a>)
+     *
+     * @throws \Laminas\View\Exception\InvalidArgumentException
+     * @throws RuntimeException
+     */
+    public function htmlify(AbstractPage $page): string
+    {
+        return $this->htmlify->toHtml(self::class, $page);
     }
 
     /**
      * Render a partial with the given "model".
      *
      * @param array<string, mixed>                          $params
-     * @param AbstractContainer|string|null                 $container
+     * @param AbstractContainer<AbstractPage>|string|null   $container
      * @param array<int, string>|ModelInterface|string|null $partial
      *
      * @throws Exception\RuntimeException                             if no partial provided
      * @throws Exception\InvalidArgumentException                     if partial is invalid array
      * @throws InvalidArgumentException
      * @throws \Laminas\Navigation\Exception\InvalidArgumentException
+     * @throws ContainerExceptionInterface
+     * @throws DomainException
+     *
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      */
     protected function renderPartialModel(array $params, $container, $partial): string
     {
-        if (null === $partial) {
+        if ($partial === null) {
             $partial = $this->getPartial();
         }
 
-        if (null === $partial || '' === $partial || [] === $partial) {
+        if ($partial === null || $partial === '' || $partial === []) {
             throw new Exception\RuntimeException(
-                'Unable to render breadcrumbs: No partial view script provided'
+                'Unable to render breadcrumbs: No partial view script provided',
             );
         }
 
         if (is_array($partial)) {
-            if (2 !== count($partial)) {
+            if (count($partial) !== 2) {
                 throw new Exception\InvalidArgumentException(
                     'Unable to render breadcrumbs: A view partial supplied as '
-                    . 'an array must contain one value: the partial view script'
+                    . 'an array must contain one value: the partial view script',
                 );
             }
 
@@ -149,17 +163,15 @@ final class Breadcrumbs extends \Laminas\View\Helper\Navigation\Breadcrumbs
 
         $container = $this->containerParser->parseContainer($container);
 
-        if (null === $container) {
+        if ($container === null) {
             $container = $this->getContainer();
         }
-
-        assert($container instanceof AbstractContainer || null === $container);
 
         /** @var array<string, array<mixed>> $model */
         $model  = array_merge($params, ['pages' => [], 'separator' => $this->getSeparator()]);
         $active = $this->findActive($container);
 
-        if ([] !== $active) {
+        if ($active !== []) {
             $active = $active['page'];
 
             assert(
@@ -167,8 +179,8 @@ final class Breadcrumbs extends \Laminas\View\Helper\Navigation\Breadcrumbs
                 sprintf(
                     '$active should be an Instance of %s, but was %s',
                     AbstractPage::class,
-                    is_object($active) ? get_class($active) : gettype($active)
-                )
+                    get_debug_type($active),
+                ),
             );
 
             $model['pages'][] = $active;
@@ -191,28 +203,29 @@ final class Breadcrumbs extends \Laminas\View\Helper\Navigation\Breadcrumbs
             $model['pages'] = array_reverse($model['pages']);
         }
 
-        return $this->view->render($partial, $model);
+        return $this->renderer->render($partial, $model);
     }
 
     /**
      * Renders breadcrumbs by chaining 'a' elements with the separator
      * registered in the helper.
      *
-     * @param AbstractContainer|string|null $container [optional] container to render. Default is
+     * @param AbstractContainer<AbstractPage>|string|null $container [optional] container to render. Default is
      *                                                 to render the container registered in the helper.
      *
      * @throws InvalidArgumentException
      * @throws \Laminas\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\View\Exception\InvalidArgumentException
+     * @throws ContainerExceptionInterface
+     * @throws RuntimeException
      */
-    private function parentRenderStraight($container = null): string
+    private function parentRenderStraight(AbstractContainer | string | null $container = null): string
     {
         $container = $this->containerParser->parseContainer($container);
 
-        if (null === $container) {
+        if ($container === null) {
             $container = $this->getContainer();
         }
-
-        assert($container instanceof AbstractContainer || null === $container);
 
         $active = $this->findActive($container);
 
@@ -229,13 +242,13 @@ final class Breadcrumbs extends \Laminas\View\Helper\Navigation\Breadcrumbs
             $html[] = $this->renderBreadcrumbItem(
                 $this->htmlify->toHtml(self::class, $active),
                 $active->getCustomProperties()['liClass'] ?? '',
-                $active->isActive()
+                $active->isActive(),
             );
         } else {
             $label      = (string) $active->getLabel();
             $translator = $this->getTranslator();
 
-            if ('' !== $label && null !== $translator) {
+            if ($label !== '' && $translator !== null) {
                 $textDomain = $active->getTextDomain() ?? 'default';
                 assert(is_string($textDomain));
 
@@ -248,7 +261,7 @@ final class Breadcrumbs extends \Laminas\View\Helper\Navigation\Breadcrumbs
             $html[] = $this->renderBreadcrumbItem(
                 $label,
                 $active->getCustomProperties()['liClass'] ?? '',
-                $active->isActive()
+                $active->isActive(),
             );
         }
 
@@ -259,7 +272,7 @@ final class Breadcrumbs extends \Laminas\View\Helper\Navigation\Breadcrumbs
                 $entry = $this->renderBreadcrumbItem(
                     $this->htmlify->toHtml(self::class, $parent),
                     $parent->getCustomProperties()['liClass'] ?? '',
-                    $parent->isActive()
+                    $parent->isActive(),
                 );
                 array_unshift($html, $entry);
             }
@@ -275,9 +288,7 @@ final class Breadcrumbs extends \Laminas\View\Helper\Navigation\Breadcrumbs
         return $this->combineRendered($html);
     }
 
-    /**
-     * @throws void
-     */
+    /** @throws void */
     private function renderBreadcrumbItem(string $content, string $liClass, bool $active): string
     {
         $classes = ['breadcrumb-item'];
@@ -294,16 +305,17 @@ final class Breadcrumbs extends \Laminas\View\Helper\Navigation\Breadcrumbs
 
         $indent = $this->getIndent();
 
-        $html  = $indent . '        ' . sprintf('<li class="%s"%s>', implode(' ', $classes), $aria) . PHP_EOL;
+        $html  = $indent . '        ' . sprintf(
+            '<li class="%s"%s>',
+            implode(' ', $classes),
+            $aria,
+        ) . PHP_EOL;
         $html .= $indent . '            ' . $content . PHP_EOL;
-        $html .= $indent . '        </li>' . PHP_EOL;
 
-        return $html;
+        return $html . ($indent . '        </li>' . PHP_EOL);
     }
 
-    /**
-     * @throws void
-     */
+    /** @throws void */
     private function renderSeparator(): string
     {
         return $this->getIndent() . '        ' . $this->getSeparator() . PHP_EOL;
@@ -316,6 +328,6 @@ final class Breadcrumbs extends \Laminas\View\Helper\Navigation\Breadcrumbs
      */
     private function combineRendered(array $html): string
     {
-        return [] !== $html ? implode($this->renderSeparator(), $html) : '';
+        return $html !== [] ? implode($this->renderSeparator(), $html) : '';
     }
 }
