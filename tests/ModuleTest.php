@@ -50,7 +50,7 @@ final class ModuleTest extends TestCase
 
         $config = $module->getModuleDependencies();
 
-        self::assertCount(8, $config);
+        self::assertCount(7, $config);
         self::assertArrayHasKey(0, $config);
         self::assertContains('Laminas\I18n', $config);
         self::assertContains('Laminas\Router', $config);
@@ -58,7 +58,6 @@ final class ModuleTest extends TestCase
         self::assertContains('Mimmi20\NavigationHelper\Accept', $config);
         self::assertContains('Mimmi20\NavigationHelper\ContainerParser', $config);
         self::assertContains('Mimmi20\NavigationHelper\FindActive', $config);
-        self::assertContains('Mimmi20\NavigationHelper\FindRoot', $config);
         self::assertContains('Mimmi20\NavigationHelper\Htmlify', $config);
     }
 }

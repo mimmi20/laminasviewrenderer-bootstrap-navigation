@@ -50,7 +50,6 @@ final class Module implements ConfigProviderInterface, DependencyIndicatorInterf
             'Mimmi20\NavigationHelper\Accept',
             'Mimmi20\NavigationHelper\ContainerParser',
             'Mimmi20\NavigationHelper\FindActive',
-            'Mimmi20\NavigationHelper\FindRoot',
             'Mimmi20\NavigationHelper\Htmlify',
         ];
     }

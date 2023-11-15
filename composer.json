@@ -24,7 +24,6 @@
         "mimmi20/navigation-helper-acceptpage": "^2.0.0",
         "mimmi20/navigation-helper-containerparser": "^3.0.2",
         "mimmi20/navigation-helper-findactive": "^2.0.0",
-        "mimmi20/navigation-helper-findroot": "^2.0.0",
         "mimmi20/navigation-helper-htmlify": "^3.0.0"
     },
     "require-dev": {
@@ -34,6 +33,7 @@
         "ext-simplexml": "*",
         "ext-tokenizer": "*",
         "ext-xml": "*",
+        "ext-xmlreader": "*",
         "ext-xmlwriter": "*",
         "infection/infection": "^0.27.8",
         "laminas/laminas-authentication": "^2.16.0",
