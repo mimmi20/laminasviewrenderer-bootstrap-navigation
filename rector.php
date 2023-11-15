@@ -1,6 +1,6 @@
 <?php
 /**
- * This file is part of the mimmi20/laminasviewrenderer-bootstrap-form package.
+ * This file is part of the mimmi20/laminasviewrenderer-bootstrap-navigation package.
  *
  * Copyright (c) 2021-2023, Thomas Mueller <mimmi20@live.de>
  *

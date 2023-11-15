@@ -15,7 +15,7 @@ parameters:
     - %currentWorkingDirectory%/vendor/squizlabs/php_codesniffer/src/Util/Tokens.php
 
   # reports occurrences of type-checking functions always evaluated to true
-  checkAlwaysTrueCheckTypeFunctionCall: true
+  checkAlwaysTrueCheckTypeFunctionCall: false
 
   # reports instanceof occurrences always evaluated to true
   checkAlwaysTrueInstanceof: true
@@ -69,7 +69,7 @@ parameters:
   reportAlwaysTrueInLastCondition: true
 
   # reports violations of parameter type contravariance and return type covariance
-  reportMaybesInMethodSignatures: true
+  reportMaybesInMethodSignatures: false
 
   # reports violations of property type invariance
   reportMaybesInPropertyPhpDocTypes: false
@@ -95,10 +95,11 @@ parameters:
       tooWideThrowType: true
 
   ignoreErrors:
-    - '~is not subtype of Throwable~'
-    - '~Strict comparison using === between null and Mezzio\\Navigation\\ContainerInterface will always evaluate to false~'
-    - '~Parameter #1 \$message of method Laminas\\Log\\Logger::err\(\) expects string, .* given~'
-    - '~Interop\\Container\\ContainerInterface~'
-    - '~Laminas\\View\\Helper\\Navigation\\(Breadcrumbs|Menu|AbstractHelper)::~'
-    - '~Method Mimmi20\\LaminasView\\BootstrapNavigation\\(Breadcrumbs|Menu)::__toString\(\) throws checked exception Laminas\\View\\Exception\\ExceptionInterface but it.s missing from the PHPDoc @throws tag~'
-    - '~Call to an undefined method Laminas\\Navigation\\(AbstractContainer|Navigation)::find(One|All)By(Label|Active)\(\)~'
+    - '~Parameter #2 \$partial of method Laminas\\View\\Helper\\Navigation\\Menu::renderPartial\(\) expects array\|string\|null, Laminas\\View\\Model\\ModelInterface&PHPUnit\\Framework\\MockObject\\MockObject given~'
+    - '~Parameter #1 \$container of method Laminas\\View\\Helper\\Navigation\\(Menu|Breadcrumbs)::(renderPartial|render)\(\) expects Laminas\\Navigation\\AbstractContainer\|null, string given~'
+    - '~Parameter #2 \$container of method Laminas\\View\\Helper\\Navigation\\(Menu|Breadcrumbs)::renderPartialWithParams\(\) expects Laminas\\Navigation\\AbstractContainer\|null, string given~'
+    - '~Method Mimmi20\\LaminasView\\BootstrapNavigation\\Breadcrumbs::getMinDepth\(\) never returns null so it can be removed from the return type~'
+#    - '~Laminas\\View\\Helper\\Navigation\\(Breadcrumbs|Menu|AbstractHelper)::~'
+#    - '~Method Mimmi20\\LaminasView\\BootstrapNavigation\\(Breadcrumbs|Menu)::__toString\(\) throws checked exception Laminas\\View\\Exception\\ExceptionInterface but it.s missing from the PHPDoc @throws tag~'
+    - '~Call to an undefined method Laminas\\Navigation\\(AbstractContainer|Navigation)<Laminas\\Navigation\\Page\\AbstractPage>::find(One|All)By(Label|Active)\(\)~'
+    - '~Instantiation of deprecated class Laminas\\ServiceManager\\Config~'

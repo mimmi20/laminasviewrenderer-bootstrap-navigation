@@ -2,7 +2,7 @@
 /**
  * This file is part of the mimmi20/laminasviewrenderer-bootstrap-navigation package.
  *
- * Copyright (c) 2021, Thomas Mueller <mimmi20@live.de>
+ * Copyright (c) 2021-2023, Thomas Mueller <mimmi20@live.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -12,14 +12,15 @@ declare(strict_types = 1);
 
 namespace Mimmi20Test\LaminasView\BootstrapNavigation\Compare;
 
+use Laminas\Config\Exception\InvalidArgumentException;
 use Laminas\Config\Exception\RuntimeException;
 use Laminas\Config\Factory as ConfigFactory;
 use Laminas\I18n\Translator\Translator;
-use Laminas\Log\Logger;
 use Laminas\ModuleManager\ModuleManager;
 use Laminas\Mvc\Application;
 use Laminas\Mvc\Service\ServiceManagerConfig;
 use Laminas\Navigation\Navigation;
+use Laminas\Navigation\Page\AbstractPage;
 use Laminas\Navigation\Service\ConstructedNavigationFactory;
 use Laminas\Navigation\Service\DefaultNavigationFactory;
 use Laminas\Permissions\Acl\Acl;
@@ -47,7 +48,6 @@ use Mimmi20\NavigationHelper\Htmlify\HtmlifyInterface;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerExceptionInterface;
-use SebastianBergmann\RecursionContext\InvalidArgumentException;
 
 use function assert;
 use function class_exists;
@@ -56,8 +56,10 @@ use function sprintf;
 
 /**
  * Base class for navigation view helper tests
+ *
+ * @template T of AbstractHelper
  */
-abstract class AbstractTest extends TestCase
+abstract class TestAbstract extends TestCase
 {
     protected ServiceManager $serviceManager;
 
@@ -67,27 +69,23 @@ abstract class AbstractTest extends TestCase
     protected string $files;
 
     /**
-     * Class name for view helper to test
-     */
-    protected string $helperName;
-
-    /**
-     * View helper
-     */
-    protected AbstractHelper $helper;
-
-    /**
      * The first container in the config file (files/navigation.xml)
+     *
+     * @var Navigation<AbstractPage>
      */
     protected Navigation $nav1;
 
     /**
      * The second container in the config file (files/navigation.xml)
+     *
+     * @var Navigation<AbstractPage>
      */
     protected Navigation $nav2;
 
     /**
      * The third container in the config file (files/navigation.xml)
+     *
+     * @var Navigation<AbstractPage>
      */
     protected Navigation $nav3;
 
@@ -96,7 +94,7 @@ abstract class AbstractTest extends TestCase
      *
      * @throws Exception
      * @throws ContainerExceptionInterface
-     * @throws \Laminas\Config\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      * @throws RuntimeException
      * @throws \Laminas\View\Exception\InvalidArgumentException
      * @throws \Laminas\Navigation\Exception\InvalidArgumentException
@@ -113,26 +111,6 @@ abstract class AbstractTest extends TestCase
 
         $sm = $this->serviceManager = new ServiceManager();
         $sm->setAllowOverride(true);
-
-        $logger = $this->getMockBuilder(Logger::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $logger->expects(static::never())
-            ->method('emerg');
-        $logger->expects(static::never())
-            ->method('alert');
-        $logger->expects(static::never())
-            ->method('crit');
-        $logger->expects(static::never())
-            ->method('err');
-        $logger->expects(static::never())
-            ->method('warn');
-        $logger->expects(static::never())
-            ->method('notice');
-        $logger->expects(static::never())
-            ->method('info');
-        $logger->expects(static::never())
-            ->method('debug');
 
         // setup containers from config
         $nav1 = $config->get('nav_test1');
@@ -181,8 +159,6 @@ abstract class AbstractTest extends TestCase
             $routerConfig->configureServiceManager($sm);
         }
 
-        $sm->setService(Logger::class, $logger);
-
         $sm->setFactory('Navigation', DefaultNavigationFactory::class);
         $sm->setFactory('navigation', DefaultNavigationFactory::class);
         $sm->setFactory('default', DefaultNavigationFactory::class);
@@ -194,9 +170,9 @@ abstract class AbstractTest extends TestCase
         $sm->setFactory(ContainerParserInterface::class, ContainerParserFactory::class);
         $sm->setFactory(FindActiveInterface::class, FindActiveFactory::class);
         $sm->setFactory(AcceptHelperInterface::class, AcceptHelperFactory::class);
-        $sm->setFactory(
+        $sm->setService(
             'config',
-            static fn (): array => [
+            [
                 'navigation' => ['default' => $nav1],
                 'view_helpers' => [
                     'aliases' => [
@@ -204,12 +180,12 @@ abstract class AbstractTest extends TestCase
                         'Navigation' => Navigation::class,
                     ],
                 ],
-            ]
+            ],
         );
 
         $sm->setFactory(
             HelperPluginManager::class,
-            static fn (): HelperPluginManager => new HelperPluginManager($sm)
+            static fn (): HelperPluginManager => new HelperPluginManager($sm),
         );
 
         $sm->setService(PhpRenderer::class, $view);
@@ -240,13 +216,15 @@ abstract class AbstractTest extends TestCase
      * Returns the contens of the expected $file
      *
      * @throws Exception
-     * @throws InvalidArgumentException
      */
     protected function getExpected(string $file): string
     {
         $content = file_get_contents($this->files . '/expected/' . $file);
 
-        static::assertIsString($content, sprintf('could not load file %s', $this->files . '/expected/' . $file));
+        static::assertIsString(
+            $content,
+            sprintf('could not load file %s', $this->files . '/expected/' . $file),
+        );
 
         return $content;
     }

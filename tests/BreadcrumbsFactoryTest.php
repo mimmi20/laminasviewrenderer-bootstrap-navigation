@@ -2,7 +2,7 @@
 /**
  * This file is part of the mimmi20/laminasviewrenderer-bootstrap-navigation package.
  *
- * Copyright (c) 2021, Thomas Mueller <mimmi20@live.de>
+ * Copyright (c) 2021-2023, Thomas Mueller <mimmi20@live.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -13,8 +13,6 @@ declare(strict_types = 1);
 namespace Mimmi20Test\LaminasView\BootstrapNavigation;
 
 use AssertionError;
-use Interop\Container\ContainerInterface;
-use Laminas\Log\Logger;
 use Laminas\ServiceManager\ServiceLocatorInterface;
 use Laminas\View\Helper\EscapeHtml;
 use Laminas\View\HelperPluginManager as ViewHelperPluginManager;
@@ -25,12 +23,17 @@ use Mimmi20\NavigationHelper\ContainerParser\ContainerParserInterface;
 use Mimmi20\NavigationHelper\Htmlify\HtmlifyInterface;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestCase;
-use SebastianBergmann\RecursionContext\InvalidArgumentException;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\ContainerInterface;
+
+use function get_debug_type;
+use function sprintf;
 
 final class BreadcrumbsFactoryTest extends TestCase
 {
     private BreadcrumbsFactory $factory;
 
+    /** @throws void */
     protected function setUp(): void
     {
         $this->factory = new BreadcrumbsFactory();
@@ -38,30 +41,10 @@ final class BreadcrumbsFactoryTest extends TestCase
 
     /**
      * @throws Exception
-     * @throws InvalidArgumentException
+     * @throws ContainerExceptionInterface
      */
     public function testInvocation(): void
     {
-        $logger = $this->getMockBuilder(Logger::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $logger->expects(self::never())
-            ->method('emerg');
-        $logger->expects(self::never())
-            ->method('alert');
-        $logger->expects(self::never())
-            ->method('crit');
-        $logger->expects(self::never())
-            ->method('err');
-        $logger->expects(self::never())
-            ->method('warn');
-        $logger->expects(self::never())
-            ->method('notice');
-        $logger->expects(self::never())
-            ->method('info');
-        $logger->expects(self::never())
-            ->method('debug');
-
         $htmlify         = $this->createMock(HtmlifyInterface::class);
         $containerParser = $this->createMock(ContainerParserInterface::class);
         $renderer        = $this->createMock(PhpRenderer::class);
@@ -80,10 +63,28 @@ final class BreadcrumbsFactoryTest extends TestCase
         $container = $this->getMockBuilder(ServiceLocatorInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $container->expects(self::exactly(5))
+        $matcher   = self::exactly(4);
+        $container->expects($matcher)
             ->method('get')
-            ->withConsecutive([ViewHelperPluginManager::class], [Logger::class], [HtmlifyInterface::class], [ContainerParserInterface::class], [PhpRenderer::class])
-            ->willReturnOnConsecutiveCalls($viewHelperPluginManager, $logger, $htmlify, $containerParser, $renderer);
+            ->willReturnCallback(
+                static function ($name, array | null $options = null) use ($matcher, $viewHelperPluginManager, $htmlify, $containerParser, $renderer): mixed {
+                    match ($matcher->numberOfInvocations()) {
+                        1 => self::assertSame(ViewHelperPluginManager::class, $name),
+                        2 => self::assertSame(HtmlifyInterface::class, $name),
+                        3 => self::assertSame(ContainerParserInterface::class, $name),
+                        default => self::assertSame(PhpRenderer::class, $name),
+                    };
+
+                    self::assertNull($options);
+
+                    return match ($matcher->numberOfInvocations()) {
+                        1 => $viewHelperPluginManager,
+                        2 => $htmlify,
+                        3 => $containerParser,
+                        default => $renderer,
+                    };
+                },
+            );
         $container->expects(self::never())
             ->method('has');
 
@@ -94,6 +95,7 @@ final class BreadcrumbsFactoryTest extends TestCase
 
     /**
      * @throws Exception
+     * @throws ContainerExceptionInterface
      */
     public function testInvocationWithAssertionError(): void
     {
@@ -105,7 +107,13 @@ final class BreadcrumbsFactoryTest extends TestCase
 
         $this->expectException(AssertionError::class);
         $this->expectExceptionCode(1);
-        $this->expectExceptionMessage('assert($container instanceof ServiceLocatorInterface)');
+        $this->expectExceptionMessage(
+            sprintf(
+                '$container should be an Instance of %s, but was %s',
+                ServiceLocatorInterface::class,
+                get_debug_type($container),
+            ),
+        );
 
         ($this->factory)($container);
     }
