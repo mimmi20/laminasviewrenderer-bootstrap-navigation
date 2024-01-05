@@ -29,7 +29,7 @@ final class ArrayTranslator implements Translator\Loader\FileLoaderInterface
      * @param string $locale
      * @param string $filename
      *
-     * @return TextDomain<mixed, mixed>
+     * @return TextDomain<(int|string), mixed>
      *
      * @throws void
      *
