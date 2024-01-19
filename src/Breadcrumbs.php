@@ -83,7 +83,7 @@ final class Breadcrumbs extends \Laminas\View\Helper\Navigation\Breadcrumbs
      *
      * @throws InvalidArgumentException
      * @throws \Laminas\Navigation\Exception\InvalidArgumentException
-     * @throws \Laminas\View\Exception\InvalidArgumentException
+     * @throws Exception\InvalidArgumentException
      * @throws ContainerExceptionInterface
      * @throws RuntimeException
      *
@@ -114,7 +114,7 @@ final class Breadcrumbs extends \Laminas\View\Helper\Navigation\Breadcrumbs
      *
      * @return string HTML string (<a href="…">Label</a>)
      *
-     * @throws \Laminas\View\Exception\InvalidArgumentException
+     * @throws Exception\InvalidArgumentException
      * @throws RuntimeException
      */
     public function htmlify(AbstractPage $page): string
@@ -215,7 +215,7 @@ final class Breadcrumbs extends \Laminas\View\Helper\Navigation\Breadcrumbs
      *
      * @throws InvalidArgumentException
      * @throws \Laminas\Navigation\Exception\InvalidArgumentException
-     * @throws \Laminas\View\Exception\InvalidArgumentException
+     * @throws Exception\InvalidArgumentException
      * @throws ContainerExceptionInterface
      * @throws RuntimeException
      */

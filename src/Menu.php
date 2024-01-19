@@ -121,7 +121,7 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
      * @throws InvalidArgumentException
      * @throws \Laminas\Navigation\Exception\InvalidArgumentException
      * @throws ContainerExceptionInterface
-     * @throws \Laminas\View\Exception\InvalidArgumentException
+     * @throws Exception\InvalidArgumentException
      *
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      */
@@ -206,7 +206,7 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
      * @throws InvalidArgumentException
      * @throws \Laminas\Navigation\Exception\InvalidArgumentException
      * @throws ContainerExceptionInterface
-     * @throws \Laminas\View\Exception\InvalidArgumentException
+     * @throws Exception\InvalidArgumentException
      *
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      */
@@ -244,7 +244,7 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
      * @param bool         $escapeLabel        Whether to escape the label
      * @param bool         $addClassToListItem Whether to add the page class to the list item
      *
-     * @throws \Laminas\View\Exception\InvalidArgumentException
+     * @throws Exception\InvalidArgumentException
      *
      * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
@@ -270,7 +270,7 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
      *
      * @throws \Laminas\Navigation\Exception\InvalidArgumentException
      * @throws InvalidArgumentException
-     * @throws \Laminas\View\Exception\InvalidArgumentException
+     * @throws Exception\InvalidArgumentException
      * @throws ContainerExceptionInterface
      *
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
@@ -416,7 +416,7 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
      *
      * @throws \Laminas\Navigation\Exception\InvalidArgumentException
      * @throws InvalidArgumentException
-     * @throws \Laminas\View\Exception\InvalidArgumentException
+     * @throws Exception\InvalidArgumentException
      * @throws ContainerExceptionInterface
      *
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
@@ -954,7 +954,7 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
      *
      * @return string HTML string
      *
-     * @throws \Laminas\View\Exception\InvalidArgumentException
+     * @throws Exception\InvalidArgumentException
      */
     private function toHtml(AbstractPage $page, array $options, array $attributes, bool $anySubpageAccepted): string
     {
