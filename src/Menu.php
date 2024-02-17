@@ -573,14 +573,14 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
                 $pageAttributes,
             );
 
-            if ($liClasses === []) {
-                $allLiClasses = '';
-            } else {
+            $allLiClasses = '';
+
+            if ($liClasses !== []) {
                 $combinedLiClasses = $this->combineClasses($liClasses);
 
-                $allLiClasses = $combinedLiClasses === ''
-                    ? ''
-                    : ' class="' . ($this->escapeHtmlAttr)($combinedLiClasses) . '"';
+                if ($combinedLiClasses !== '') {
+                    $allLiClasses = ' class="' . ($this->escapeHtmlAttr)($combinedLiClasses) . '"';
+                }
             }
 
             if ($depth === 0 && !empty($liRole)) {
