@@ -250,7 +250,7 @@ final class BreadcrumbsTest extends TestCase
     public function testSetContainerWithStringFound(): void
     {
         $container = $this->createMock(AbstractContainer::class);
-        $name      = 'Mezzio\\Navigation\\Top';
+        $name      = 'Mezzio\Navigation\Top';
 
         $serviceLocator = $this->getMockBuilder(ServiceLocatorInterface::class)
             ->disableOriginalConstructor()
@@ -309,7 +309,7 @@ final class BreadcrumbsTest extends TestCase
     public function testDoNotAccept(): void
     {
         $container = $this->createMock(AbstractContainer::class);
-        $name      = 'Mezzio\\Navigation\\Top';
+        $name      = 'Mezzio\Navigation\Top';
 
         $page = $this->getMockBuilder(AbstractPage::class)
             ->disableOriginalConstructor()
@@ -433,7 +433,7 @@ final class BreadcrumbsTest extends TestCase
         $exception = new ServiceNotFoundException('test');
 
         $container = $this->createMock(AbstractContainer::class);
-        $name      = 'Mezzio\\Navigation\\Top';
+        $name      = 'Mezzio\Navigation\Top';
 
         $page = $this->getMockBuilder(AbstractPage::class)
             ->disableOriginalConstructor()
@@ -555,7 +555,7 @@ final class BreadcrumbsTest extends TestCase
         $expected = '<a idEscaped="testIdEscaped" titleEscaped="testTitleTranslatedAndEscaped" classEscaped="testClassEscaped" hrefEscaped="#Escaped" targetEscaped="_blankEscaped">testLabelTranslatedAndEscaped</a>';
 
         $container = $this->createMock(AbstractContainer::class);
-        $name      = 'Mezzio\\Navigation\\Top';
+        $name      = 'Mezzio\Navigation\Top';
 
         $serviceLocator = $this->getMockBuilder(ServiceLocatorInterface::class)
             ->disableOriginalConstructor()
@@ -652,7 +652,7 @@ final class BreadcrumbsTest extends TestCase
      */
     public function testFindActiveNoActivePages(): void
     {
-        $name = 'Mezzio\\Navigation\\Top';
+        $name = 'Mezzio\Navigation\Top';
 
         $page = $this->getMockBuilder(AbstractPage::class)
             ->disableOriginalConstructor()
@@ -780,7 +780,7 @@ final class BreadcrumbsTest extends TestCase
      */
     public function testFindActiveOneActivePage(): void
     {
-        $name = 'Mezzio\\Navigation\\Top';
+        $name = 'Mezzio\Navigation\Top';
 
         $page = $this->getMockBuilder(AbstractPage::class)
             ->disableOriginalConstructor()
@@ -1007,7 +1007,7 @@ final class BreadcrumbsTest extends TestCase
      */
     public function testFindActiveNoActivePageWithoutDepth(): void
     {
-        $name = 'Mezzio\\Navigation\\Top';
+        $name = 'Mezzio\Navigation\Top';
 
         $page = $this->getMockBuilder(AbstractPage::class)
             ->disableOriginalConstructor()
@@ -1140,7 +1140,7 @@ final class BreadcrumbsTest extends TestCase
      */
     public function testFindActiveOneActivePageOutOfRange(): void
     {
-        $name = 'Mezzio\\Navigation\\Top';
+        $name = 'Mezzio\Navigation\Top';
 
         $page = $this->getMockBuilder(AbstractPage::class)
             ->disableOriginalConstructor()
@@ -1270,7 +1270,7 @@ final class BreadcrumbsTest extends TestCase
      */
     public function testFindActiveOneActivePageRecursive(): void
     {
-        $name = 'Mezzio\\Navigation\\Top';
+        $name = 'Mezzio\Navigation\Top';
 
         $resource  = 'testResource';
         $privilege = 'testPrivilege';
@@ -1418,7 +1418,7 @@ final class BreadcrumbsTest extends TestCase
      */
     public function testFindActiveOneActivePageRecursive2(): void
     {
-        $name = 'Mezzio\\Navigation\\Top';
+        $name = 'Mezzio\Navigation\Top';
 
         $resource  = 'testResource';
         $privilege = 'testPrivilege';
@@ -1546,7 +1546,7 @@ final class BreadcrumbsTest extends TestCase
      */
     public function testFindActiveOneActivePageRecursive3(): void
     {
-        $name = 'Mezzio\\Navigation\\Top';
+        $name = 'Mezzio\Navigation\Top';
 
         $resource  = 'testResource';
         $privilege = 'testPrivilege';
@@ -1727,7 +1727,7 @@ final class BreadcrumbsTest extends TestCase
      */
     public function testRenderPartialWithParamsWithoutPartial(): void
     {
-        $name = 'Mezzio\\Navigation\\Top';
+        $name = 'Mezzio\Navigation\Top';
 
         $serviceLocator = $this->getMockBuilder(ServiceLocatorInterface::class)
             ->disableOriginalConstructor()
@@ -1799,7 +1799,7 @@ final class BreadcrumbsTest extends TestCase
      */
     public function testRenderPartialWithParamsWithWrongPartial(): void
     {
-        $name = 'Mezzio\\Navigation\\Top';
+        $name = 'Mezzio\Navigation\Top';
 
         $serviceLocator = $this->getMockBuilder(ServiceLocatorInterface::class)
             ->disableOriginalConstructor()
@@ -1876,7 +1876,7 @@ final class BreadcrumbsTest extends TestCase
      */
     public function testRenderPartialWithParams(): void
     {
-        $name = 'Mezzio\\Navigation\\Top';
+        $name = 'Mezzio\Navigation\Top';
 
         $resource  = 'testResource';
         $privilege = 'testPrivilege';
@@ -2377,7 +2377,7 @@ final class BreadcrumbsTest extends TestCase
      */
     public function testRenderPartialWithParamsNoActivePage(): void
     {
-        $name = 'Mezzio\\Navigation\\Top';
+        $name = 'Mezzio\Navigation\Top';
 
         $page = $this->getMockBuilder(AbstractPage::class)
             ->disableOriginalConstructor()
@@ -2519,7 +2519,7 @@ final class BreadcrumbsTest extends TestCase
      */
     public function testRenderPartialWithoutPartial(): void
     {
-        $name = 'Mezzio\\Navigation\\Top';
+        $name = 'Mezzio\Navigation\Top';
 
         $serviceLocator = $this->getMockBuilder(ServiceLocatorInterface::class)
             ->disableOriginalConstructor()
@@ -2591,7 +2591,7 @@ final class BreadcrumbsTest extends TestCase
      */
     public function testRenderPartialWithWrongPartial(): void
     {
-        $name = 'Mezzio\\Navigation\\Top';
+        $name = 'Mezzio\Navigation\Top';
 
         $serviceLocator = $this->getMockBuilder(ServiceLocatorInterface::class)
             ->disableOriginalConstructor()
@@ -2668,7 +2668,7 @@ final class BreadcrumbsTest extends TestCase
      */
     public function testRenderPartial(): void
     {
-        $name = 'Mezzio\\Navigation\\Top';
+        $name = 'Mezzio\Navigation\Top';
 
         $resource  = 'testResource';
         $privilege = 'testPrivilege';
@@ -2827,7 +2827,7 @@ final class BreadcrumbsTest extends TestCase
      */
     public function testRenderPartialNoActivePage(): void
     {
-        $name = 'Mezzio\\Navigation\\Top';
+        $name = 'Mezzio\Navigation\Top';
 
         $page = $this->getMockBuilder(AbstractPage::class)
             ->disableOriginalConstructor()
@@ -3300,7 +3300,7 @@ final class BreadcrumbsTest extends TestCase
      */
     public function testRenderStraightNoActivePage(): void
     {
-        $name = 'Mezzio\\Navigation\\Top';
+        $name = 'Mezzio\Navigation\Top';
 
         $page = $this->getMockBuilder(AbstractPage::class)
             ->disableOriginalConstructor()
@@ -3444,7 +3444,7 @@ final class BreadcrumbsTest extends TestCase
      */
     public function testRenderStraight(): void
     {
-        $name = 'Mezzio\\Navigation\\Top';
+        $name = 'Mezzio\Navigation\Top';
 
         $resource  = 'testResource';
         $privilege = 'testPrivilege';
@@ -4253,7 +4253,7 @@ final class BreadcrumbsTest extends TestCase
      */
     public function testRenderWithoutPartial(): void
     {
-        $name      = 'Mezzio\\Navigation\\Top';
+        $name      = 'Mezzio\Navigation\Top';
         $resource  = 'testResource';
         $privilege = 'testPrivilege';
 
@@ -4448,7 +4448,7 @@ final class BreadcrumbsTest extends TestCase
      */
     public function testRenderWithPartial(): void
     {
-        $name = 'Mezzio\\Navigation\\Top';
+        $name = 'Mezzio\Navigation\Top';
 
         $page = $this->getMockBuilder(AbstractPage::class)
             ->disableOriginalConstructor()
@@ -4598,7 +4598,7 @@ final class BreadcrumbsTest extends TestCase
             ->method('isAllowed');
         assert($auth instanceof Acl);
 
-        $name = 'Mezzio\\Navigation\\Top';
+        $name = 'Mezzio\Navigation\Top';
 
         $page = $this->getMockBuilder(AbstractPage::class)
             ->disableOriginalConstructor()

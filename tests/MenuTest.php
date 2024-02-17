@@ -292,7 +292,7 @@ final class MenuTest extends TestCase
     public function testSetContainerWithStringFound(): void
     {
         $container = $this->createMock(AbstractContainer::class);
-        $name      = 'Mezzio\\Navigation\\Top';
+        $name      = 'Mezzio\Navigation\Top';
 
         $serviceLocator = $this->getMockBuilder(ServiceLocatorInterface::class)
             ->disableOriginalConstructor()
@@ -364,7 +364,7 @@ final class MenuTest extends TestCase
     public function testDoNotAccept(): void
     {
         $container = $this->createMock(AbstractContainer::class);
-        $name      = 'Mezzio\\Navigation\\Top';
+        $name      = 'Mezzio\Navigation\Top';
 
         $page = $this->getMockBuilder(AbstractPage::class)
             ->disableOriginalConstructor()
@@ -501,7 +501,7 @@ final class MenuTest extends TestCase
         $expected = '<a idEscaped="testIdEscaped" titleEscaped="testTitleTranslatedAndEscaped" classEscaped="testClassEscaped" hrefEscaped="#Escaped" targetEscaped="_blankEscaped">testLabelTranslatedAndEscaped</a>';
 
         $container = $this->createMock(AbstractContainer::class);
-        $name      = 'Mezzio\\Navigation\\Top';
+        $name      = 'Mezzio\Navigation\Top';
 
         $serviceLocator = $this->getMockBuilder(ServiceLocatorInterface::class)
             ->disableOriginalConstructor()
@@ -728,7 +728,7 @@ final class MenuTest extends TestCase
      */
     public function testFindActiveNoActivePages(): void
     {
-        $name = 'Mezzio\\Navigation\\Top';
+        $name = 'Mezzio\Navigation\Top';
 
         $page = $this->getMockBuilder(AbstractPage::class)
             ->disableOriginalConstructor()
@@ -869,7 +869,7 @@ final class MenuTest extends TestCase
      */
     public function testFindActiveOneActivePage(): void
     {
-        $name = 'Mezzio\\Navigation\\Top';
+        $name = 'Mezzio\Navigation\Top';
 
         $page = $this->getMockBuilder(AbstractPage::class)
             ->disableOriginalConstructor()
@@ -1122,7 +1122,7 @@ final class MenuTest extends TestCase
      */
     public function testFindActiveOneActivePageWithoutDepth(): void
     {
-        $name = 'Mezzio\\Navigation\\Top';
+        $name = 'Mezzio\Navigation\Top';
 
         $page = $this->getMockBuilder(AbstractPage::class)
             ->disableOriginalConstructor()
@@ -1276,7 +1276,7 @@ final class MenuTest extends TestCase
      */
     public function testFindActiveOneActivePageOutOfRange(): void
     {
-        $name = 'Mezzio\\Navigation\\Top';
+        $name = 'Mezzio\Navigation\Top';
 
         $page = $this->getMockBuilder(AbstractPage::class)
             ->disableOriginalConstructor()
@@ -1419,7 +1419,7 @@ final class MenuTest extends TestCase
      */
     public function testFindActiveOneActivePageRecursive(): void
     {
-        $name = 'Mezzio\\Navigation\\Top';
+        $name = 'Mezzio\Navigation\Top';
 
         $resource  = 'testResource';
         $privilege = 'testPrivilege';
@@ -1580,7 +1580,7 @@ final class MenuTest extends TestCase
      */
     public function testFindActiveOneActivePageRecursive2(): void
     {
-        $name = 'Mezzio\\Navigation\\Top';
+        $name = 'Mezzio\Navigation\Top';
 
         $resource  = 'testResource';
         $privilege = 'testPrivilege';
@@ -1721,7 +1721,7 @@ final class MenuTest extends TestCase
      */
     public function testFindActiveOneActivePageRecursive3(): void
     {
-        $name = 'Mezzio\\Navigation\\Top';
+        $name = 'Mezzio\Navigation\Top';
 
         $resource  = 'testResource';
         $privilege = 'testPrivilege';
@@ -2343,7 +2343,7 @@ final class MenuTest extends TestCase
      */
     public function testRenderPartialWithoutPartial(): void
     {
-        $name = 'Mezzio\\Navigation\\Top';
+        $name = 'Mezzio\Navigation\Top';
 
         $serviceLocator = $this->getMockBuilder(ServiceLocatorInterface::class)
             ->disableOriginalConstructor()
@@ -2425,7 +2425,7 @@ final class MenuTest extends TestCase
      */
     public function testRenderPartialWithWrongPartial(): void
     {
-        $name = 'Mezzio\\Navigation\\Top';
+        $name = 'Mezzio\Navigation\Top';
 
         $serviceLocator = $this->getMockBuilder(ServiceLocatorInterface::class)
             ->disableOriginalConstructor()
@@ -2512,7 +2512,7 @@ final class MenuTest extends TestCase
      */
     public function testRenderPartial(): void
     {
-        $name = 'Mezzio\\Navigation\\Top';
+        $name = 'Mezzio\Navigation\Top';
 
         $resource  = 'testResource';
         $privilege = 'testPrivilege';
@@ -2649,7 +2649,7 @@ final class MenuTest extends TestCase
      */
     public function testRenderPartialNoActivePage(): void
     {
-        $name = 'Mezzio\\Navigation\\Top';
+        $name = 'Mezzio\Navigation\Top';
 
         $page = $this->getMockBuilder(AbstractPage::class)
             ->disableOriginalConstructor()
@@ -3178,7 +3178,7 @@ final class MenuTest extends TestCase
      */
     public function testRenderMenuNoActivePage(): void
     {
-        $name = 'Mezzio\\Navigation\\Top';
+        $name = 'Mezzio\Navigation\Top';
 
         $page = $this->getMockBuilder(AbstractPage::class)
             ->disableOriginalConstructor()
@@ -3361,7 +3361,7 @@ final class MenuTest extends TestCase
      */
     public function testRenderMenu(): void
     {
-        $name = 'Mezzio\\Navigation\\Top';
+        $name = 'Mezzio\Navigation\Top';
 
         $resource  = 'testResource';
         $privilege = 'testPrivilege';
@@ -3730,7 +3730,7 @@ final class MenuTest extends TestCase
     {
         $indent = '    ';
 
-        $name = 'Mezzio\\Navigation\\Top';
+        $name = 'Mezzio\Navigation\Top';
 
         $resource  = 'testResource';
         $privilege = 'testPrivilege';
@@ -4098,7 +4098,7 @@ final class MenuTest extends TestCase
      */
     public function testRenderVerticalMenuException(): void
     {
-        $name = 'Mezzio\\Navigation\\Top';
+        $name = 'Mezzio\Navigation\Top';
 
         $resource  = 'testResource';
         $privilege = 'testPrivilege';
@@ -4244,7 +4244,7 @@ final class MenuTest extends TestCase
      */
     public function testRenderVerticalMenu(): void
     {
-        $name = 'Mezzio\\Navigation\\Top';
+        $name = 'Mezzio\Navigation\Top';
 
         $resource  = 'testResource';
         $privilege = 'testPrivilege';
@@ -4611,7 +4611,7 @@ final class MenuTest extends TestCase
      */
     public function testRenderVerticalMenu2(): void
     {
-        $name = 'Mezzio\\Navigation\\Top';
+        $name = 'Mezzio\Navigation\Top';
 
         $resource  = 'testResource';
         $privilege = 'testPrivilege';
@@ -4984,7 +4984,7 @@ final class MenuTest extends TestCase
      */
     public function testRenderOlMenuWithMaxDepth(): void
     {
-        $name = 'Mezzio\\Navigation\\Top';
+        $name = 'Mezzio\Navigation\Top';
 
         $resource  = 'testResource';
         $privilege = 'testPrivilege';
@@ -5359,7 +5359,7 @@ final class MenuTest extends TestCase
      */
     public function testRenderUlMenuWithTabs(): void
     {
-        $name = 'Mezzio\\Navigation\\Top';
+        $name = 'Mezzio\Navigation\Top';
 
         $resource  = 'testResource';
         $privilege = 'testPrivilege';
@@ -5905,7 +5905,7 @@ final class MenuTest extends TestCase
      */
     public function testRenderMenuWithTabsOnlyActiveBranchWithoutParents(): void
     {
-        $name = 'Mezzio\\Navigation\\Top';
+        $name = 'Mezzio\Navigation\Top';
 
         $resource  = 'testResource';
         $privilege = 'testPrivilege';
@@ -6207,7 +6207,7 @@ final class MenuTest extends TestCase
     public function testRenderMenuWithTabsOnlyActiveBranchWithoutParentsWithIndent(): void
     {
         $indent = '    ';
-        $name   = 'Mezzio\\Navigation\\Top';
+        $name   = 'Mezzio\Navigation\Top';
 
         $resource  = 'testResource';
         $privilege = 'testPrivilege';
@@ -7399,7 +7399,7 @@ final class MenuTest extends TestCase
      */
     public function testRenderMenuWithTabsOnlyActiveBranchWithoutParents2(): void
     {
-        $name = 'Mezzio\\Navigation\\Top';
+        $name = 'Mezzio\Navigation\Top';
 
         $resource  = 'testResource';
         $privilege = 'testPrivilege';
@@ -7582,7 +7582,7 @@ final class MenuTest extends TestCase
      */
     public function testRenderMenuWithTabsOnlyActiveBranchWithoutParents3(): void
     {
-        $name = 'Mezzio\\Navigation\\Top';
+        $name = 'Mezzio\Navigation\Top';
 
         $resource  = 'testResource';
         $privilege = 'testPrivilege';
@@ -7883,7 +7883,7 @@ final class MenuTest extends TestCase
      */
     public function testRenderMenuWithTabsOnlyActiveBranchWithoutParents4(): void
     {
-        $name = 'Mezzio\\Navigation\\Top';
+        $name = 'Mezzio\Navigation\Top';
 
         $resource  = 'testResource';
         $privilege = 'testPrivilege';
@@ -8096,7 +8096,7 @@ final class MenuTest extends TestCase
      */
     public function testRenderMenuWithTabsOnlyActiveBranchWithoutParents5(): void
     {
-        $name = 'Mezzio\\Navigation\\Top';
+        $name = 'Mezzio\Navigation\Top';
 
         $resource  = 'testResource';
         $privilege = 'testPrivilege';
@@ -8407,7 +8407,7 @@ final class MenuTest extends TestCase
      */
     public function testRenderMenu2(): void
     {
-        $name = 'Mezzio\\Navigation\\Top';
+        $name = 'Mezzio\Navigation\Top';
 
         $resource  = 'testResource';
         $privilege = 'testPrivilege';
@@ -9005,7 +9005,7 @@ final class MenuTest extends TestCase
      */
     public function testRenderMenu3(): void
     {
-        $name = 'Mezzio\\Navigation\\Top';
+        $name = 'Mezzio\Navigation\Top';
 
         $resource  = 'testResource';
         $privilege = 'testPrivilege';
@@ -9559,7 +9559,7 @@ final class MenuTest extends TestCase
      */
     public function testRenderMenu4(): void
     {
-        $name = 'Mezzio\\Navigation\\Top';
+        $name = 'Mezzio\Navigation\Top';
 
         $resource  = 'testResource';
         $privilege = 'testPrivilege';
@@ -10109,7 +10109,7 @@ final class MenuTest extends TestCase
      */
     public function testRenderMenu5(): void
     {
-        $name = 'Mezzio\\Navigation\\Top';
+        $name = 'Mezzio\Navigation\Top';
 
         $resource  = 'testResource';
         $privilege = 'testPrivilege';
@@ -10716,7 +10716,7 @@ final class MenuTest extends TestCase
      */
     public function testRenderMenu6(): void
     {
-        $name = 'Mezzio\\Navigation\\Top';
+        $name = 'Mezzio\Navigation\Top';
 
         $resource  = 'testResource';
         $privilege = 'testPrivilege';
@@ -11323,7 +11323,7 @@ final class MenuTest extends TestCase
      */
     public function testRenderMenu7(): void
     {
-        $name = 'Mezzio\\Navigation\\Top';
+        $name = 'Mezzio\Navigation\Top';
 
         $resource  = 'testResource';
         $privilege = 'testPrivilege';

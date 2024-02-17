@@ -52,12 +52,12 @@ updates:
       - dependency-name: "psr/container"
         versions:
           - ">= 0"
-      - dependency-name: "friendsofphp/php-cs-fixer"
-        versions:
-          - ">= v3.45.0"
-      - dependency-name: "mimmi20/coding-standard"
-        versions:
-          - ">= 5.2.7"
+#      - dependency-name: "friendsofphp/php-cs-fixer"
+#        versions:
+#          - ">= v3.45.0"
+#      - dependency-name: "mimmi20/coding-standard"
+#        versions:
+#          - ">= 5.2.7"
 
   - package-ecosystem: "github-actions"
 
