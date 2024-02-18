@@ -47,7 +47,7 @@ jobs:
     uses: "mimmi20/ci/.github/workflows/analytics.yml@master"
     with:
       extensions: "ctype, curl, dom, iconv, intl, mbstring, simplexml, tokenizer, xml, xmlreader, xmlwriter"
-      ini-values: "opcache.enable=1, opcache.fast_shutdown=0, zend.assertions=1, assert.exception=On, intl.default_locale=de, intl.use_exceptions=1, zend.exception_ignore_args=0"
+      ini-values: "opcache.enable=1, opcache.fast_shutdown=0, zend.assertions=1, assert.exception=On, intl.default_locale=de, intl.use_exceptions=1, zend.exception_ignore_args=0, pcre.jit=1, pcre.backtrack_limit=10000000"
       composer-options: "--optimize-autoloader --prefer-dist --prefer-stable -v"
       skip-phpstan: false
       skip-rector: false
