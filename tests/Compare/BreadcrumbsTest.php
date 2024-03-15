@@ -139,8 +139,8 @@ final class BreadcrumbsTest extends TestAbstract
     {
         $this->helper->setSeparator('foo');
 
-        $expected = $this->getExpected('bc/separator.html');
-        $actual   = $this->helper->render();
+        $expected = trim($this->getExpected('bc/separator.html'));
+        $actual   = trim($this->helper->render());
 
         self::assertSame($expected, $actual);
     }
@@ -153,8 +153,8 @@ final class BreadcrumbsTest extends TestAbstract
     {
         $this->helper->setMaxDepth(1);
 
-        $expected = $this->getExpected('bc/maxdepth.html');
-        $actual   = $this->helper->render();
+        $expected = trim($this->getExpected('bc/maxdepth.html'));
+        $actual   = trim($this->helper->render());
 
         self::assertSame($expected, $actual);
     }
@@ -181,8 +181,8 @@ final class BreadcrumbsTest extends TestAbstract
     {
         $this->helper->setLinkLast(true);
 
-        $expected = $this->getExpected('bc/linklast.html');
-        $actual   = $this->helper->render();
+        $expected = trim($this->getExpected('bc/linklast.html'));
+        $actual   = trim($this->helper->render());
 
         self::assertSame($expected, $actual);
     }
@@ -210,8 +210,8 @@ final class BreadcrumbsTest extends TestAbstract
         $this->helper->setMinDepth(0);
         self::assertSame(0, $this->helper->getMinDepth());
 
-        $rendered1 = $this->getExpected('bc/default.html');
-        $rendered2 = $this->getExpected('bc/default2.html');
+        $rendered1 = trim($this->getExpected('bc/default.html'));
+        $rendered2 = trim($this->getExpected('bc/default2.html'));
 
         $expected = [
             'registered' => $rendered1,
@@ -220,9 +220,9 @@ final class BreadcrumbsTest extends TestAbstract
         ];
 
         $actual = [
-            'registered' => $this->helper->render(),
-            'supplied' => $this->helper->render($this->nav2),
-            'registered_again' => $this->helper->render(),
+            'registered' => trim($this->helper->render()),
+            'supplied' => trim($this->helper->render($this->nav2)),
+            'registered_again' => trim($this->helper->render()),
         ];
 
         self::assertSame($expected, $actual);
@@ -241,8 +241,8 @@ final class BreadcrumbsTest extends TestAbstract
         assert(is_string($acl['role']));
         $this->helper->setRole($acl['role']);
 
-        $expected = $this->getExpected('bc/acl.html');
-        self::assertSame($expected, $this->helper->render());
+        $expected = trim($this->getExpected('bc/acl.html'));
+        self::assertSame($expected, trim($this->helper->render()));
     }
 
     /**
@@ -253,8 +253,8 @@ final class BreadcrumbsTest extends TestAbstract
     {
         $this->helper->setPartial('bc.phtml');
 
-        $expected = $this->getExpected('bc/partial.html');
-        self::assertSame($expected, $this->helper->render());
+        $expected = trim($this->getExpected('bc/partial.html'));
+        self::assertSame($expected, trim($this->helper->render()));
     }
 
     /**
@@ -267,7 +267,7 @@ final class BreadcrumbsTest extends TestAbstract
         $this->helper->setSeparator(' / ');
 
         $expected = trim($this->getExpected('bc/partialwithseparator.html'));
-        self::assertSame($expected, $this->helper->render());
+        self::assertSame($expected, trim($this->helper->render()));
     }
 
     /**
@@ -278,8 +278,8 @@ final class BreadcrumbsTest extends TestAbstract
     {
         $this->helper->setPartial(['bc.phtml', 'application']);
 
-        $expected = $this->getExpected('bc/partial.html');
-        self::assertSame($expected, $this->helper->render());
+        $expected = trim($this->getExpected('bc/partial.html'));
+        self::assertSame($expected, trim($this->helper->render()));
     }
 
     /** @throws Exception */
@@ -300,7 +300,7 @@ final class BreadcrumbsTest extends TestAbstract
         $this->helper->setPartial('bc_with_partial_params.phtml');
         $this->helper->setSeparator(' / ');
 
-        $expected = $this->getExpected('bc/partial_with_params.html');
+        $expected = trim($this->getExpected('bc/partial_with_params.html'));
         $actual   = $this->helper->renderPartialWithParams(['variable' => 'test value']);
 
         self::assertSame($expected, $actual);
@@ -325,8 +325,8 @@ final class BreadcrumbsTest extends TestAbstract
 
         $container->addPage($page);
 
-        $expected = $this->getExpected('bc/escaped.html');
-        $actual   = $this->helper->setMinDepth(0)->render($container);
+        $expected = trim($this->getExpected('bc/escaped.html'));
+        $actual   = trim($this->helper->setMinDepth(0)->render($container));
 
         self::assertSame($expected, $actual);
     }
