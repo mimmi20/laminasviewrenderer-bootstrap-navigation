@@ -40,12 +40,12 @@ use const PHP_EOL;
 /**
  * Tests Mezzio\Navigation\LaminasView\View\Helper\Navigation\Menu.
  *
- * @extends TestAbstract<Menu>
+ * @extends AbstractTestCase<Menu>
  */
 #[Group('Laminas_View')]
 #[Group('Laminas_View_Helper')]
 #[Group('Compare')]
-final class MenuTest extends TestAbstract
+final class MenuTest extends AbstractTestCase
 {
     /**
      * View helper

@@ -58,24 +58,34 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
 {
     use HelperTrait;
 
+    /** @api */
     public const STYLE_UL = 'ul';
 
+    /** @api */
     public const STYLE_OL = 'ol';
 
+    /** @api */
     public const STYLE_SUBLINK_LINK = 'link';
 
+    /** @api */
     public const STYLE_SUBLINK_SPAN = 'span';
 
+    /** @api */
     public const STYLE_SUBLINK_BUTTON = 'button';
 
+    /** @api */
     public const STYLE_SUBLINK_DETAILS = 'details';
 
+    /** @api */
     public const DROP_ORIENTATION_DOWN = 'down';
 
+    /** @api */
     public const DROP_ORIENTATION_UP = 'up';
 
+    /** @api */
     public const DROP_ORIENTATION_START = 'start';
 
+    /** @api */
     public const DROP_ORIENTATION_END = 'end';
 
     /**
