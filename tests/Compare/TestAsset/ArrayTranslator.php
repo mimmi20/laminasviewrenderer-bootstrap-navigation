@@ -20,8 +20,15 @@ use Laminas\I18n\Translator\TextDomain;
 /** @phpcs:disable SlevomatCodingStandard.Classes.ForbiddenPublicProperty.ForbiddenPublicProperty */
 final class ArrayTranslator implements Translator\Loader\FileLoaderInterface
 {
-    /** @var array<string, string> */
-    public array $translations = [];
+    /**
+     * @param array<string, string> $translations
+     *
+     * @throws void
+     */
+    public function __construct(private readonly array $translations)
+    {
+        // nothing to do
+    }
 
     /**
      * Load translations from a file.
@@ -35,6 +42,7 @@ final class ArrayTranslator implements Translator\Loader\FileLoaderInterface
      *
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
+     * @api
      */
     public function load($filename, $locale): TextDomain
     {
