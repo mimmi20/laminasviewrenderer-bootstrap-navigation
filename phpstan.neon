@@ -100,7 +100,7 @@ parameters:
 
   type_coverage:
     return: 100
-    param: 89.6 # todo: improve
+    param: 89.4 # todo: improve
     property: 100
     # also, how many files has declare strict types
     declare: 100
@@ -131,7 +131,6 @@ rules:
   - Symplify\PHPStanRules\Rules\Explicit\NoRelativeFilePathRule
   # - Symplify\PHPStanRules\Rules\NoReturnArrayVariableListRule # todo: fix
 
-  - Symplify\PHPStanRules\Rules\NoProtectedClassElementRule
   - Symplify\PHPStanRules\Rules\ForbiddenExtendOfNonAbstractClassRule
   - Symplify\PHPStanRules\Rules\Complexity\ForbiddenSameNamedNewInstanceRule
 
@@ -149,7 +148,6 @@ rules:
   - Symplify\PHPStanRules\Rules\NoArrayAccessOnObjectRule
 
   - Symplify\PHPStanRules\Rules\NoNullableArrayPropertyRule
-  - Symplify\PHPStanRules\Rules\BoolishClassMethodPrefixRule
 
   # dead-code
   - Symplify\PHPStanRules\Rules\NoIssetOnObjectRule

@@ -13,6 +13,7 @@ declare(strict_types = 1);
 namespace Mimmi20\LaminasView\BootstrapNavigation;
 
 use Laminas\ServiceManager\Factory\InvokableFactory;
+use Laminas\View\HelperPluginManager;
 use Laminas\View\Renderer\PhpRenderer;
 
 final class ConfigProvider
@@ -48,6 +49,7 @@ final class ConfigProvider
         return [
             'factories' => [
                 PhpRenderer::class => InvokableFactory::class,
+                HelperPluginManager::class => HelperPluginManagerFactory::class,
             ],
         ];
     }
