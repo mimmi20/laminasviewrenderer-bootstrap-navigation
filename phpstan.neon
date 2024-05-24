@@ -126,9 +126,7 @@ rules:
   # code complexity
   - Symplify\PHPStanRules\Rules\Explicit\NoMixedPropertyFetcherRule
   - Symplify\PHPStanRules\Rules\Explicit\NoMixedMethodCallerRule
-  - Symplify\PHPStanRules\Rules\Enum\RequireEnumDocBlockOnConstantListPassRule
   - Symplify\PHPStanRules\Rules\NoDynamicNameRule
-  - Symplify\PHPStanRules\Rules\Explicit\NoRelativeFilePathRule
   # - Symplify\PHPStanRules\Rules\NoReturnArrayVariableListRule # todo: fix
 
   - Symplify\PHPStanRules\Rules\ForbiddenExtendOfNonAbstractClassRule
@@ -143,7 +141,6 @@ rules:
 
   # paths
   - Symplify\PHPStanRules\Rules\NoMissingDirPathRule
-  - Symplify\PHPStanRules\Rules\NoAbstractMethodRule
   # - Symplify\PHPStanRules\Rules\NoReferenceRule # References are required
   - Symplify\PHPStanRules\Rules\NoArrayAccessOnObjectRule
 
