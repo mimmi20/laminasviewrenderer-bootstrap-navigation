@@ -126,6 +126,7 @@ parameters:
     - '~Call to an undefined method Laminas\\Navigation\\(AbstractContainer|Navigation)<Laminas\\Navigation\\Page\\AbstractPage>::find(One|All)By(Label|Active)\(\)~'
     - '~Instantiation of deprecated class Laminas\\ServiceManager\\Config~'
     - '~Mimmi20\\Mezzio\\Navigation\\ContainerInterface~'
+    - '~deprecated interface Laminas\\I18n\\Translator\\TranslatorInterface~'
 
 rules:
   # code complexity
