@@ -21,7 +21,7 @@
     "laminas/laminas-navigation": "^2.19.1",
     "laminas/laminas-stdlib": "^3.19.0",
     "laminas/laminas-view": "^2.35.0",
-    "mimmi20/laminasviewrenderer-helper-htmlelement": "^2.0.8",
+    "mimmi20/laminasviewrenderer-helper-htmlelement": "^2.0.9",
     "mimmi20/navigation-helper-acceptpage": "^2.1.4",
     "mimmi20/navigation-helper-containerparser": "^4.0.4",
     "mimmi20/navigation-helper-findactive": "^2.1.4",
@@ -48,7 +48,7 @@
     "laminas/laminas-servicemanager": "^3.22.1",
     "mimmi20/coding-standard": "^5.2.43",
     "phpstan/extension-installer": "^1.4.3",
-    "phpstan/phpstan": "^1.12.3",
+    "phpstan/phpstan": "^1.12.4",
     "phpstan/phpstan-deprecation-rules": "^1.2.1",
     "phpstan/phpstan-phpunit": "^1.4.0",
     "phpunit/phpunit": "^10.5.25",
@@ -58,7 +58,7 @@
     "symplify/phpstan-rules": "^13.0.1",
     "tomasvotruba/cognitive-complexity": "^0.2.3",
     "tomasvotruba/type-coverage": "^0.3.1",
-    "tomasvotruba/unused-public": "^0.3.11"
+    "tomasvotruba/unused-public": "^0.4.0"
   },
   "suggest": {
     "ext-intl": "required to use the Translator",
