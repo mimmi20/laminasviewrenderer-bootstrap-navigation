@@ -48,7 +48,7 @@
     "laminas/laminas-servicemanager": "^3.22.1",
     "mimmi20/coding-standard": "^5.2.44",
     "phpstan/extension-installer": "^1.4.3",
-    "phpstan/phpstan": "^1.12.8",
+    "phpstan/phpstan": "^1.12.9",
     "phpstan/phpstan-deprecation-rules": "^1.2.1",
     "phpstan/phpstan-phpunit": "^1.4.0",
     "phpunit/phpunit": "^10.5.25",
