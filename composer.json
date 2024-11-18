@@ -41,7 +41,7 @@
     "laminas/laminas-config": "^3.10.0",
     "laminas/laminas-escaper": "^2.14.0",
     "laminas/laminas-i18n": "^2.29.0",
-    "laminas/laminas-modulemanager": "^2.16.0",
+    "laminas/laminas-modulemanager": "^2.17.0",
     "laminas/laminas-mvc": "^3.7.0",
     "laminas/laminas-permissions-acl": "^2.16.0",
     "laminas/laminas-router": "^3.14.0",
