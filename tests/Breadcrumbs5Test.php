@@ -52,7 +52,7 @@ final class Breadcrumbs5Test extends TestCase
      * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      * @throws \Laminas\Navigation\Exception\InvalidArgumentException
      * @throws InvalidArgumentException
-     * @throws ContainerExceptionInterface
+     * @throws  ContainerExceptionInterface
      * @throws RuntimeException
      */
     public function testRenderStraightWithoutLinkAtEndWithLiClass2(): void
