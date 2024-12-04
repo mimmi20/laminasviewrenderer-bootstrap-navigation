@@ -17,6 +17,7 @@ use Laminas\View\Renderer\PhpRenderer;
 use Mimmi20\LaminasView\BootstrapNavigation\Breadcrumbs;
 use Mimmi20\LaminasView\BootstrapNavigation\ConfigProvider;
 use Mimmi20\LaminasView\BootstrapNavigation\Menu;
+use Override;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestCase;
 
@@ -25,6 +26,7 @@ final class ConfigProviderTest extends TestCase
     private ConfigProvider $provider;
 
     /** @throws void */
+    #[Override]
     protected function setUp(): void
     {
         $this->provider = new ConfigProvider();

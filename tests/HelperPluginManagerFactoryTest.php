@@ -15,6 +15,7 @@ namespace Mimmi20Test\LaminasView\BootstrapNavigation;
 
 use Laminas\View\HelperPluginManager;
 use Mimmi20\LaminasView\BootstrapNavigation\HelperPluginManagerFactory;
+use Override;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerExceptionInterface;
@@ -25,6 +26,7 @@ final class HelperPluginManagerFactoryTest extends TestCase
     private HelperPluginManagerFactory $factory;
 
     /** @throws void */
+    #[Override]
     protected function setUp(): void
     {
         $this->factory = new HelperPluginManagerFactory();

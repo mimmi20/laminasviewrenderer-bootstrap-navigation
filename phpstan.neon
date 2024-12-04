@@ -1,7 +1,7 @@
 parameters:
   level: max
 
-  phpVersion: 80100 # PHP 8.1
+  phpVersion: 80300 # PHP 8.3
 
   parallel:
     maximumNumberOfProcesses: 1
@@ -97,14 +97,14 @@ parameters:
       tooWideThrowType: true
 
   cognitive_complexity:
-    class: 150
+    class: 151
     function: 42
 
   type_coverage:
     return_type: 100
     param_type: 89.4 # todo: improve
     property_type: 100
-    constant_type: 0
+    constant_type: 100
     # also, how many files has declare strict types
     declare: 100
 

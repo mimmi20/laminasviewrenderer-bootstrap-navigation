@@ -29,6 +29,7 @@ use Mimmi20\LaminasView\BootstrapNavigation\Breadcrumbs;
 use Mimmi20\NavigationHelper\ContainerParser\ContainerParserInterface;
 use Mimmi20\NavigationHelper\FindActive\FindActiveInterface;
 use Mimmi20\NavigationHelper\Htmlify\HtmlifyInterface;
+use Override;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerExceptionInterface;
@@ -40,6 +41,7 @@ use const PHP_EOL;
 final class Breadcrumbs4Test extends TestCase
 {
     /** @throws InvalidArgumentException */
+    #[Override]
     protected function tearDown(): void
     {
         Breadcrumbs::setDefaultAcl(null);

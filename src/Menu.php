@@ -25,6 +25,7 @@ use Laminas\View\Model\ModelInterface;
 use Laminas\View\Renderer\PhpRenderer;
 use Mimmi20\LaminasView\Helper\HtmlElement\Helper\HtmlElementInterface;
 use Mimmi20\NavigationHelper\ContainerParser\ContainerParserInterface;
+use Override;
 use Psr\Container\ContainerExceptionInterface;
 use RecursiveIteratorIterator;
 
@@ -60,34 +61,34 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
     use HelperTrait;
 
     /** @api */
-    public const STYLE_UL = 'ul';
+    public const string STYLE_UL = 'ul';
 
     /** @api */
-    public const STYLE_OL = 'ol';
+    public const string STYLE_OL = 'ol';
 
     /** @api */
-    public const STYLE_SUBLINK_LINK = 'link';
+    public const string STYLE_SUBLINK_LINK = 'link';
 
     /** @api */
-    public const STYLE_SUBLINK_SPAN = 'span';
+    public const string STYLE_SUBLINK_SPAN = 'span';
 
     /** @api */
-    public const STYLE_SUBLINK_BUTTON = 'button';
+    public const string STYLE_SUBLINK_BUTTON = 'button';
 
     /** @api */
-    public const STYLE_SUBLINK_DETAILS = 'details';
+    public const string STYLE_SUBLINK_DETAILS = 'details';
 
     /** @api */
-    public const DROP_ORIENTATION_DOWN = 'down';
+    public const string DROP_ORIENTATION_DOWN = 'down';
 
     /** @api */
-    public const DROP_ORIENTATION_UP = 'up';
+    public const string DROP_ORIENTATION_UP = 'up';
 
     /** @api */
-    public const DROP_ORIENTATION_START = 'start';
+    public const string DROP_ORIENTATION_START = 'start';
 
     /** @api */
-    public const DROP_ORIENTATION_END = 'end';
+    public const string DROP_ORIENTATION_END = 'end';
 
     /**
      * Allowed sizes
@@ -136,6 +137,7 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
      *
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      */
+    #[Override]
     public function renderMenu($container = null, array $options = []): string
     {
         $container = $this->containerParser->parseContainer($container);
@@ -221,6 +223,7 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
      *
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      */
+    #[Override]
     public function renderSubMenu(
         AbstractContainer | null $container = null,
         $ulClass = null,
@@ -260,6 +263,7 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
      * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      */
+    #[Override]
     public function htmlify(AbstractPage $page, $escapeLabel = true, $addClassToListItem = false): string
     {
         return $this->toHtml($page, ['escapeLabels' => $escapeLabel, 'sublink' => null], [], true);
@@ -286,6 +290,7 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
      *
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      */
+    #[Override]
     protected function renderDeepestMenu(
         AbstractContainer $container,
         $ulClass,
@@ -432,6 +437,7 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
      *
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      */
+    #[Override]
     protected function renderNormalMenu(
         AbstractContainer $container,
         $ulClass,
@@ -656,6 +662,7 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
      *
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      */
+    #[Override]
     protected function renderPartialModel(array $params, $container, $partial): string
     {
         if ($partial === null) {
@@ -702,6 +709,7 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
      *
      * @throws InvalidArgumentException
      */
+    #[Override]
     protected function normalizeOptions(array $options = []): array
     {
         if (isset($options['indent'])) {
@@ -1020,6 +1028,11 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
             $label = ($this->escapeHtml)($label);
             assert(is_string($label));
         }
+
+        $attributes = array_filter(
+            $attributes,
+            static fn (mixed $value): bool => $value !== null && $value !== '',
+        );
 
         return $this->htmlElement->toHtml($element, $attributes, $label);
     }

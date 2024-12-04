@@ -32,6 +32,7 @@ use Mimmi20\LaminasView\Helper\HtmlElement\Helper\HtmlElementInterface;
 use Mimmi20\NavigationHelper\Accept\AcceptHelperInterface;
 use Mimmi20\NavigationHelper\ContainerParser\ContainerParserInterface;
 use Mimmi20\NavigationHelper\FindActive\FindActiveInterface;
+use Override;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerExceptionInterface;
@@ -43,6 +44,7 @@ use const PHP_EOL;
 final class Menu6Test extends TestCase
 {
     /** @throws InvalidArgumentException */
+    #[Override]
     protected function tearDown(): void
     {
         Menu::setDefaultAcl(null);
