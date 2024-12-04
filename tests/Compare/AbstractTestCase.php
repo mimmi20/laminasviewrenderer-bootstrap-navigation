@@ -13,9 +13,6 @@ declare(strict_types = 1);
 
 namespace Mimmi20Test\LaminasView\BootstrapNavigation\Compare;
 
-use Laminas\Config\Exception\InvalidArgumentException;
-use Laminas\Config\Exception\RuntimeException;
-use Laminas\Config\Factory as ConfigFactory;
 use Laminas\I18n\Translator\Translator;
 use Laminas\ModuleManager\ModuleManager;
 use Laminas\Mvc\Application;
@@ -32,6 +29,7 @@ use Laminas\Router\RouteMatch as V3RouteMatch;
 use Laminas\ServiceManager\Config;
 use Laminas\ServiceManager\Exception\ContainerModificationsNotAllowedException;
 use Laminas\ServiceManager\ServiceManager;
+use Laminas\View\Exception\InvalidArgumentException;
 use Laminas\View\Helper\Navigation\AbstractHelper;
 use Laminas\View\HelperPluginManager;
 use Laminas\View\Renderer\PhpRenderer;
@@ -46,6 +44,7 @@ use Mimmi20\NavigationHelper\FindActive\FindActiveFactory;
 use Mimmi20\NavigationHelper\FindActive\FindActiveInterface;
 use Mimmi20\NavigationHelper\Htmlify\HtmlifyFactory;
 use Mimmi20\NavigationHelper\Htmlify\HtmlifyInterface;
+use Override;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerExceptionInterface;
@@ -96,31 +95,24 @@ abstract class AbstractTestCase extends TestCase
      * @throws Exception
      * @throws ContainerExceptionInterface
      * @throws InvalidArgumentException
-     * @throws RuntimeException
-     * @throws \Laminas\View\Exception\InvalidArgumentException
      * @throws \Laminas\Navigation\Exception\InvalidArgumentException
      */
+    #[Override]
     protected function setUp(): void
     {
         $cwd = __DIR__;
 
         // read navigation config
         $this->files = $cwd . '/_files';
-        $config      = ConfigFactory::fromFile($this->files . '/navigation.xml', true);
-
-        assert($config instanceof \Laminas\Config\Config);
+        $config      = require $this->files . '/navigation.php';
 
         $sm = $this->serviceManager = new ServiceManager();
         $sm->setAllowOverride(true);
 
         // setup containers from config
-        $nav1 = $config->get('nav_test1');
-        $nav2 = $config->get('nav_test2');
-        $nav3 = $config->get('nav_test3');
-
-        assert($nav1 instanceof \Laminas\Config\Config);
-        assert($nav2 instanceof \Laminas\Config\Config);
-        assert($nav3 instanceof \Laminas\Config\Config);
+        $nav1 = $config['nav_test1'];
+        $nav2 = $config['nav_test2'];
+        $nav3 = $config['nav_test3'];
 
         $this->nav1 = new Navigation($nav1);
         $this->nav2 = new Navigation($nav2);

@@ -23,6 +23,7 @@ use Laminas\View\Model\ModelInterface;
 use Mimmi20\NavigationHelper\Accept\AcceptHelperInterface;
 use Mimmi20\NavigationHelper\ContainerParser\ContainerParserInterface;
 use Mimmi20\NavigationHelper\FindActive\FindActiveInterface;
+use Override;
 use Psr\Container\ContainerExceptionInterface;
 
 use function array_key_exists;
@@ -72,6 +73,7 @@ trait HelperTrait
      *
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      */
+    #[Override]
     public function __invoke($container = null): self
     {
         if ($container !== null) {
@@ -91,6 +93,7 @@ trait HelperTrait
      *
      * @throws ExceptionInterface
      */
+    #[Override]
     public function __toString(): string
     {
         return $this->render();
@@ -107,6 +110,7 @@ trait HelperTrait
      *
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      */
+    #[Override]
     public function setContainer($container = null): self
     {
         $container = $this->containerParser->parseContainer($container);
@@ -128,6 +132,7 @@ trait HelperTrait
      *
      * @throws \Laminas\Navigation\Exception\InvalidArgumentException
      */
+    #[Override]
     public function getContainer(): AbstractContainer
     {
         if ($this->pageContainer === null) {
@@ -147,6 +152,7 @@ trait HelperTrait
      *
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      */
+    #[Override]
     public function setPartial($partial): self
     {
         if (
@@ -168,6 +174,7 @@ trait HelperTrait
      *
      * @throws void
      */
+    #[Override]
     public function getPartial(): array | ModelInterface | string | null
     {
         return $this->partialTemplate;
@@ -199,6 +206,7 @@ trait HelperTrait
      *
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      */
+    #[Override]
     public function findActive($container, $minDepth = null, $maxDepth = -1): array
     {
         $container = $this->containerParser->parseContainer($container);
@@ -266,6 +274,7 @@ trait HelperTrait
      *
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      */
+    #[Override]
     public function accept(AbstractPage $page, $recursive = true): bool
     {
         $acceptHelper = $this->serviceBuilder->build(
@@ -281,6 +290,7 @@ trait HelperTrait
     }
 
     /** @throws void */
+    #[Override]
     public function getServiceLocator(): ServiceLocatorInterface
     {
         return $this->serviceBuilder;

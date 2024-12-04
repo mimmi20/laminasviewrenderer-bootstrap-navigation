@@ -30,6 +30,7 @@ use Mimmi20\NavigationHelper\Accept\AcceptHelperInterface;
 use Mimmi20\NavigationHelper\ContainerParser\ContainerParserInterface;
 use Mimmi20\NavigationHelper\FindActive\FindActiveInterface;
 use Mimmi20\NavigationHelper\Htmlify\HtmlifyInterface;
+use Override;
 use PHPUnit\Framework\Constraint\IsInstanceOf;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestCase;
@@ -40,6 +41,7 @@ use function assert;
 final class Breadcrumbs1Test extends TestCase
 {
     /** @throws InvalidArgumentException */
+    #[Override]
     protected function tearDown(): void
     {
         Breadcrumbs::setDefaultAcl(null);

@@ -17,16 +17,17 @@ namespace Mimmi20Test\LaminasView\BootstrapNavigation\Compare\TestAsset;
 
 use Laminas\I18n\Translator;
 use Laminas\I18n\Translator\TextDomain;
+use Override;
 
 /** @phpcs:disable SlevomatCodingStandard.Classes.ForbiddenPublicProperty.ForbiddenPublicProperty */
-final class ArrayTranslator implements Translator\Loader\FileLoaderInterface
+final readonly class ArrayTranslator implements Translator\Loader\FileLoaderInterface
 {
     /**
      * @param array<string, string> $translations
      *
      * @throws void
      */
-    public function __construct(private readonly array $translations)
+    public function __construct(private array $translations)
     {
         // nothing to do
     }
@@ -45,6 +46,7 @@ final class ArrayTranslator implements Translator\Loader\FileLoaderInterface
      * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
      * @api
      */
+    #[Override]
     public function load($filename, $locale): TextDomain
     {
         return new TextDomain($this->translations);

@@ -13,11 +13,10 @@ declare(strict_types = 1);
 
 namespace Mimmi20Test\LaminasView\BootstrapNavigation\Compare;
 
-use Laminas\Config\Exception\InvalidArgumentException;
-use Laminas\Config\Exception\RuntimeException;
 use Laminas\Navigation\Navigation;
 use Laminas\Navigation\Page\AbstractPage;
 use Laminas\Permissions\Acl\AclInterface;
+use Laminas\Stdlib\Exception\InvalidArgumentException;
 use Laminas\View\Exception\ExceptionInterface;
 use Laminas\View\Helper\EscapeHtml;
 use Laminas\View\HelperPluginManager as ViewHelperPluginManager;
@@ -25,6 +24,7 @@ use Laminas\View\Renderer\PhpRenderer;
 use Mimmi20\LaminasView\BootstrapNavigation\Breadcrumbs;
 use Mimmi20\NavigationHelper\ContainerParser\ContainerParserInterface;
 use Mimmi20\NavigationHelper\Htmlify\HtmlifyInterface;
+use Override;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Exception;
 use Psr\Container\ContainerExceptionInterface;
@@ -58,10 +58,9 @@ final class BreadcrumbsTest extends AbstractTestCase
      * @throws ExceptionInterface
      * @throws ContainerExceptionInterface
      * @throws InvalidArgumentException
-     * @throws RuntimeException
-     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      * @throws \Laminas\Navigation\Exception\InvalidArgumentException
      */
+    #[Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -96,7 +95,7 @@ final class BreadcrumbsTest extends AbstractTestCase
     /**
      * @throws Exception
      * @throws \Laminas\Navigation\Exception\InvalidArgumentException
-     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function testHelperEntryPointWithoutAnyParams(): void
     {
@@ -108,7 +107,7 @@ final class BreadcrumbsTest extends AbstractTestCase
     /**
      * @throws Exception
      * @throws \Laminas\Navigation\Exception\InvalidArgumentException
-     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function testHelperEntryPointWithContainerParam(): void
     {
@@ -121,7 +120,7 @@ final class BreadcrumbsTest extends AbstractTestCase
     /**
      * @throws Exception
      * @throws \Laminas\Navigation\Exception\InvalidArgumentException
-     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function testNullOutContainer(): void
     {
@@ -337,6 +336,7 @@ final class BreadcrumbsTest extends AbstractTestCase
      *
      * @throws Exception
      */
+    #[Override]
     protected function getExpected(string $file): string
     {
         return str_replace(

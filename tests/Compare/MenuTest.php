@@ -13,11 +13,11 @@ declare(strict_types = 1);
 
 namespace Mimmi20Test\LaminasView\BootstrapNavigation\Compare;
 
-use Laminas\Config\Exception\InvalidArgumentException;
-use Laminas\Config\Exception\RuntimeException;
 use Laminas\Navigation\Page\AbstractPage;
 use Laminas\Permissions\Acl\AclInterface;
+use Laminas\Stdlib\Exception\InvalidArgumentException;
 use Laminas\View\Exception\ExceptionInterface;
+use Laminas\View\Exception\RuntimeException;
 use Laminas\View\Helper\EscapeHtml;
 use Laminas\View\Helper\EscapeHtmlAttr;
 use Laminas\View\HelperPluginManager as ViewHelperPluginManager;
@@ -25,6 +25,7 @@ use Laminas\View\Renderer\PhpRenderer;
 use Mimmi20\LaminasView\BootstrapNavigation\Menu;
 use Mimmi20\LaminasView\Helper\HtmlElement\Helper\HtmlElementInterface;
 use Mimmi20\NavigationHelper\ContainerParser\ContainerParserInterface;
+use Override;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Exception;
 use Psr\Container\ContainerExceptionInterface;
@@ -58,10 +59,9 @@ final class MenuTest extends AbstractTestCase
      * @throws ExceptionInterface
      * @throws ContainerExceptionInterface
      * @throws InvalidArgumentException
-     * @throws RuntimeException
-     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      * @throws \Laminas\Navigation\Exception\InvalidArgumentException
      */
+    #[Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -99,7 +99,7 @@ final class MenuTest extends AbstractTestCase
      * @throws Exception
      * @throws ContainerExceptionInterface
      * @throws \Laminas\View\Exception\InvalidArgumentException
-     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      * @throws \Laminas\Navigation\Exception\InvalidArgumentException
      */
     public function testCanRenderMenuFromServiceAlias(): void
@@ -112,7 +112,7 @@ final class MenuTest extends AbstractTestCase
 
     /**
      * @throws Exception
-     * @throws \Laminas\View\Exception\RuntimeException
+     * @throws RuntimeException
      * @throws \Laminas\View\Exception\InvalidArgumentException
      */
     public function testCanRenderPartialFromServiceAlias(): void
@@ -128,7 +128,7 @@ final class MenuTest extends AbstractTestCase
     /**
      * @throws Exception
      * @throws \Laminas\Navigation\Exception\InvalidArgumentException
-     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function testHelperEntryPointWithoutAnyParams(): void
     {
@@ -140,7 +140,7 @@ final class MenuTest extends AbstractTestCase
     /**
      * @throws Exception
      * @throws \Laminas\Navigation\Exception\InvalidArgumentException
-     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function testHelperEntryPointWithContainerParam(): void
     {
@@ -152,7 +152,7 @@ final class MenuTest extends AbstractTestCase
     /**
      * @throws Exception
      * @throws \Laminas\Navigation\Exception\InvalidArgumentException
-     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function testNullingOutContainerInHelper(): void
     {
@@ -164,7 +164,7 @@ final class MenuTest extends AbstractTestCase
      * @throws Exception
      * @throws ContainerExceptionInterface
      * @throws \Laminas\View\Exception\InvalidArgumentException
-     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      * @throws \Laminas\Navigation\Exception\InvalidArgumentException
      */
     public function testSetIndentAndOverrideInRenderMenu(): void
@@ -186,7 +186,7 @@ final class MenuTest extends AbstractTestCase
 
     /**
      * @throws Exception
-     * @throws \Laminas\View\Exception\RuntimeException
+     * @throws RuntimeException
      * @throws ExceptionInterface
      */
     public function testRenderSuppliedContainerWithoutInterfering(): void
@@ -210,7 +210,7 @@ final class MenuTest extends AbstractTestCase
 
     /**
      * @throws Exception
-     * @throws \Laminas\View\Exception\RuntimeException
+     * @throws RuntimeException
      * @throws \Laminas\View\Exception\InvalidArgumentException
      * @throws ExceptionInterface
      * @throws \Laminas\Permissions\Acl\Exception\InvalidArgumentException
@@ -231,7 +231,7 @@ final class MenuTest extends AbstractTestCase
 
     /**
      * @throws Exception
-     * @throws \Laminas\View\Exception\RuntimeException
+     * @throws RuntimeException
      * @throws \Laminas\View\Exception\InvalidArgumentException
      * @throws ExceptionInterface
      * @throws \Laminas\Permissions\Acl\Exception\InvalidArgumentException
@@ -252,7 +252,7 @@ final class MenuTest extends AbstractTestCase
 
     /**
      * @throws Exception
-     * @throws \Laminas\View\Exception\RuntimeException
+     * @throws RuntimeException
      * @throws \Laminas\View\Exception\InvalidArgumentException
      * @throws ExceptionInterface
      * @throws \Laminas\Permissions\Acl\Exception\InvalidArgumentException
@@ -277,7 +277,7 @@ final class MenuTest extends AbstractTestCase
      * @throws \Laminas\Permissions\Acl\Exception\InvalidArgumentException
      * @throws ContainerExceptionInterface
      * @throws \Laminas\View\Exception\InvalidArgumentException
-     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      * @throws \Laminas\Navigation\Exception\InvalidArgumentException
      */
     public function testDisablingAclWhenUsingUl(): void
@@ -300,7 +300,7 @@ final class MenuTest extends AbstractTestCase
      * @throws \Laminas\Permissions\Acl\Exception\InvalidArgumentException
      * @throws ContainerExceptionInterface
      * @throws \Laminas\View\Exception\InvalidArgumentException
-     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      * @throws \Laminas\Navigation\Exception\InvalidArgumentException
      */
     public function testDisablingAclWhenUsingOl(): void
@@ -323,7 +323,7 @@ final class MenuTest extends AbstractTestCase
      * @throws \Laminas\Permissions\Acl\Exception\InvalidArgumentException
      * @throws ContainerExceptionInterface
      * @throws \Laminas\View\Exception\InvalidArgumentException
-     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      * @throws \Laminas\Navigation\Exception\InvalidArgumentException
      */
     public function testDisablingAclWhenUsingButton(): void
@@ -349,7 +349,7 @@ final class MenuTest extends AbstractTestCase
      * @throws \Laminas\Permissions\Acl\Exception\InvalidArgumentException
      * @throws ContainerExceptionInterface
      * @throws \Laminas\View\Exception\InvalidArgumentException
-     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      * @throws \Laminas\Navigation\Exception\InvalidArgumentException
      */
     public function testDisablingAclWhenUsingDetails(): void
@@ -372,7 +372,7 @@ final class MenuTest extends AbstractTestCase
 
     /**
      * @throws Exception
-     * @throws \Laminas\View\Exception\RuntimeException
+     * @throws RuntimeException
      * @throws ExceptionInterface
      */
     public function testSetUlCssClass(): void
@@ -387,7 +387,7 @@ final class MenuTest extends AbstractTestCase
 
     /**
      * @throws Exception
-     * @throws \Laminas\View\Exception\RuntimeException
+     * @throws RuntimeException
      * @throws ExceptionInterface
      */
     public function testSetLiActiveCssClass(): void
@@ -404,7 +404,7 @@ final class MenuTest extends AbstractTestCase
      * @throws Exception
      * @throws ContainerExceptionInterface
      * @throws \Laminas\View\Exception\InvalidArgumentException
-     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      * @throws \Laminas\Navigation\Exception\InvalidArgumentException
      */
     public function testOptionEscapeLabelsAsTrue(): void
@@ -431,7 +431,7 @@ final class MenuTest extends AbstractTestCase
      * @throws Exception
      * @throws ContainerExceptionInterface
      * @throws \Laminas\View\Exception\InvalidArgumentException
-     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      * @throws \Laminas\Navigation\Exception\InvalidArgumentException
      */
     public function testOptionEscapeLabelsAsFalse(): void
@@ -456,7 +456,7 @@ final class MenuTest extends AbstractTestCase
 
     /**
      * @throws Exception
-     * @throws \Laminas\View\Exception\RuntimeException
+     * @throws RuntimeException
      * @throws ExceptionInterface
      */
     public function testRenderingPartial(): void
@@ -471,7 +471,7 @@ final class MenuTest extends AbstractTestCase
 
     /**
      * @throws Exception
-     * @throws \Laminas\View\Exception\RuntimeException
+     * @throws RuntimeException
      * @throws ExceptionInterface
      */
     public function testRenderingPartialBySpecifyingAnArrayAsPartial(): void
@@ -486,7 +486,7 @@ final class MenuTest extends AbstractTestCase
 
     /**
      * @throws Exception
-     * @throws \Laminas\View\Exception\RuntimeException
+     * @throws RuntimeException
      * @throws \Laminas\View\Exception\InvalidArgumentException
      */
     public function testRenderingPartialWithParams(): void
@@ -512,7 +512,7 @@ final class MenuTest extends AbstractTestCase
      * @throws Exception
      * @throws ContainerExceptionInterface
      * @throws \Laminas\View\Exception\InvalidArgumentException
-     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      * @throws \Laminas\Navigation\Exception\InvalidArgumentException
      */
     public function testSetMaxDepth(): void
@@ -529,7 +529,7 @@ final class MenuTest extends AbstractTestCase
      * @throws Exception
      * @throws ContainerExceptionInterface
      * @throws \Laminas\View\Exception\InvalidArgumentException
-     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      * @throws \Laminas\Navigation\Exception\InvalidArgumentException
      */
     public function testSetMinDepth(): void
@@ -546,7 +546,7 @@ final class MenuTest extends AbstractTestCase
      * @throws Exception
      * @throws ContainerExceptionInterface
      * @throws \Laminas\View\Exception\InvalidArgumentException
-     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      * @throws \Laminas\Navigation\Exception\InvalidArgumentException
      */
     public function testSetBothDepts(): void
@@ -563,7 +563,7 @@ final class MenuTest extends AbstractTestCase
      * @throws Exception
      * @throws ContainerExceptionInterface
      * @throws \Laminas\View\Exception\InvalidArgumentException
-     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      * @throws \Laminas\Navigation\Exception\InvalidArgumentException
      */
     public function testSetOnlyActiveBranch(): void
@@ -580,7 +580,7 @@ final class MenuTest extends AbstractTestCase
      * @throws Exception
      * @throws ContainerExceptionInterface
      * @throws \Laminas\View\Exception\InvalidArgumentException
-     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      * @throws \Laminas\Navigation\Exception\InvalidArgumentException
      */
     public function testSetRenderParents(): void
@@ -597,7 +597,7 @@ final class MenuTest extends AbstractTestCase
      * @throws Exception
      * @throws ContainerExceptionInterface
      * @throws \Laminas\View\Exception\InvalidArgumentException
-     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      * @throws \Laminas\Navigation\Exception\InvalidArgumentException
      */
     public function testSetOnlyActiveBranchAndMinDepth(): void
@@ -614,7 +614,7 @@ final class MenuTest extends AbstractTestCase
      * @throws Exception
      * @throws ContainerExceptionInterface
      * @throws \Laminas\View\Exception\InvalidArgumentException
-     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      * @throws \Laminas\Navigation\Exception\InvalidArgumentException
      */
     public function testOnlyActiveBranchAndMaxDepth(): void
@@ -631,7 +631,7 @@ final class MenuTest extends AbstractTestCase
      * @throws Exception
      * @throws ContainerExceptionInterface
      * @throws \Laminas\View\Exception\InvalidArgumentException
-     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      * @throws \Laminas\Navigation\Exception\InvalidArgumentException
      */
     public function testOnlyActiveBranchAndBothDepthsSpecified(): void
@@ -648,7 +648,7 @@ final class MenuTest extends AbstractTestCase
      * @throws Exception
      * @throws ContainerExceptionInterface
      * @throws \Laminas\View\Exception\InvalidArgumentException
-     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      * @throws \Laminas\Navigation\Exception\InvalidArgumentException
      */
     public function testOnlyActiveBranchNoParentsAndBothDepthsSpecified(): void
@@ -668,7 +668,7 @@ final class MenuTest extends AbstractTestCase
      * @throws Exception
      * @throws ContainerExceptionInterface
      * @throws \Laminas\View\Exception\InvalidArgumentException
-     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      * @throws \Laminas\Navigation\Exception\InvalidArgumentException
      */
     public function testOnlyActiveBranchNoParentsActiveOneBelowMinDepth(): void
@@ -690,7 +690,7 @@ final class MenuTest extends AbstractTestCase
      * @throws Exception
      * @throws ContainerExceptionInterface
      * @throws \Laminas\View\Exception\InvalidArgumentException
-     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      * @throws \Laminas\Navigation\Exception\InvalidArgumentException
      */
     public function testRenderSubMenuShouldOverrideOptions(): void
@@ -710,7 +710,7 @@ final class MenuTest extends AbstractTestCase
      * @throws Exception
      * @throws ContainerExceptionInterface
      * @throws \Laminas\View\Exception\InvalidArgumentException
-     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      * @throws \Laminas\Navigation\Exception\InvalidArgumentException
      */
     public function testOptionMaxDepth(): void
@@ -727,7 +727,7 @@ final class MenuTest extends AbstractTestCase
      * @throws Exception
      * @throws ContainerExceptionInterface
      * @throws \Laminas\View\Exception\InvalidArgumentException
-     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      * @throws \Laminas\Navigation\Exception\InvalidArgumentException
      */
     public function testOptionMinDepth(): void
@@ -744,7 +744,7 @@ final class MenuTest extends AbstractTestCase
      * @throws Exception
      * @throws ContainerExceptionInterface
      * @throws \Laminas\View\Exception\InvalidArgumentException
-     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      * @throws \Laminas\Navigation\Exception\InvalidArgumentException
      */
     public function testOptionBothDepts(): void
@@ -764,7 +764,7 @@ final class MenuTest extends AbstractTestCase
      * @throws Exception
      * @throws ContainerExceptionInterface
      * @throws \Laminas\View\Exception\InvalidArgumentException
-     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      * @throws \Laminas\Navigation\Exception\InvalidArgumentException
      */
     public function testOptionOnlyActiveBranch(): void
@@ -781,7 +781,7 @@ final class MenuTest extends AbstractTestCase
      * @throws Exception
      * @throws ContainerExceptionInterface
      * @throws \Laminas\View\Exception\InvalidArgumentException
-     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      * @throws \Laminas\Navigation\Exception\InvalidArgumentException
      */
     public function testOptionOnlyActiveBranchNoParents(): void
@@ -801,7 +801,7 @@ final class MenuTest extends AbstractTestCase
      * @throws Exception
      * @throws ContainerExceptionInterface
      * @throws \Laminas\View\Exception\InvalidArgumentException
-     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      * @throws \Laminas\Navigation\Exception\InvalidArgumentException
      */
     public function testOptionOnlyActiveBranchAndMinDepth(): void
@@ -821,7 +821,7 @@ final class MenuTest extends AbstractTestCase
      * @throws Exception
      * @throws ContainerExceptionInterface
      * @throws \Laminas\View\Exception\InvalidArgumentException
-     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      * @throws \Laminas\Navigation\Exception\InvalidArgumentException
      */
     public function testOptionOnlyActiveBranchAndMaxDepth(): void
@@ -841,7 +841,7 @@ final class MenuTest extends AbstractTestCase
      * @throws Exception
      * @throws ContainerExceptionInterface
      * @throws \Laminas\View\Exception\InvalidArgumentException
-     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      * @throws \Laminas\Navigation\Exception\InvalidArgumentException
      */
     public function testOptionOnlyActiveBranchAndBothDepthsSpecified(): void
@@ -862,7 +862,7 @@ final class MenuTest extends AbstractTestCase
      * @throws Exception
      * @throws ContainerExceptionInterface
      * @throws \Laminas\View\Exception\InvalidArgumentException
-     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      * @throws \Laminas\Navigation\Exception\InvalidArgumentException
      */
     public function testOptionOnlyActiveBranchNoParentsAndBothDepthsSpecified(): void
@@ -884,7 +884,7 @@ final class MenuTest extends AbstractTestCase
      * @throws Exception
      * @throws ContainerExceptionInterface
      * @throws \Laminas\View\Exception\InvalidArgumentException
-     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      * @throws \Laminas\Navigation\Exception\InvalidArgumentException
      */
     public function testRenderingWithoutPageClassToLi(): void
@@ -911,7 +911,7 @@ final class MenuTest extends AbstractTestCase
      * @throws \Laminas\Navigation\Exception\InvalidArgumentException
      * @throws ContainerExceptionInterface
      * @throws \Laminas\View\Exception\InvalidArgumentException
-     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function testRenderingWithPageClassToLi(): void
     {
@@ -938,7 +938,7 @@ final class MenuTest extends AbstractTestCase
      * @throws \Laminas\Navigation\Exception\InvalidArgumentException
      * @throws ContainerExceptionInterface
      * @throws \Laminas\View\Exception\InvalidArgumentException
-     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function testRenderDeepestMenuWithPageClassToLi(): void
     {
@@ -974,6 +974,7 @@ final class MenuTest extends AbstractTestCase
      *
      * @throws Exception
      */
+    #[Override]
     protected function getExpected(string $file): string
     {
         return str_replace(

@@ -25,6 +25,7 @@ use Laminas\View\Model\ModelInterface;
 use Laminas\View\Renderer\PhpRenderer;
 use Mimmi20\NavigationHelper\ContainerParser\ContainerParserInterface;
 use Mimmi20\NavigationHelper\Htmlify\HtmlifyInterface;
+use Override;
 use Psr\Container\ContainerExceptionInterface;
 
 use function array_key_exists;
@@ -66,6 +67,7 @@ final class Breadcrumbs extends \Laminas\View\Helper\Navigation\Breadcrumbs
      *
      * @throws void
      */
+    #[Override]
     public function getMinDepth(): int | null
     {
         if (!is_int($this->minDepth) || 0 > $this->minDepth) {
@@ -90,6 +92,7 @@ final class Breadcrumbs extends \Laminas\View\Helper\Navigation\Breadcrumbs
      *
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      */
+    #[Override]
     public function renderStraight($container = null): string
     {
         $content = $this->parentRenderStraight($container);
@@ -118,6 +121,7 @@ final class Breadcrumbs extends \Laminas\View\Helper\Navigation\Breadcrumbs
      * @throws Exception\InvalidArgumentException
      * @throws RuntimeException
      */
+    #[Override]
     public function htmlify(AbstractPage $page): string
     {
         return $this->htmlify->toHtml(self::class, $page);
@@ -139,6 +143,7 @@ final class Breadcrumbs extends \Laminas\View\Helper\Navigation\Breadcrumbs
      *
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      */
+    #[Override]
     protected function renderPartialModel(array $params, $container, $partial): string
     {
         if ($partial === null) {
