@@ -223,12 +223,15 @@ trait HelperTrait
             $maxDepth = $this->getMaxDepth();
         }
 
+        $role  = $this->getRole();
+        $roles = $role === null ? [] : [$role];
+
         $findActiveHelper = $this->serviceBuilder->build(
             FindActiveInterface::class,
             [
                 'authorization' => $this->getUseAcl() ? $this->getAcl() : null,
                 'renderInvisible' => $this->getRenderInvisible(),
-                'role' => $this->getRole(),
+                'roles' => $roles,
             ],
         );
         assert(
@@ -277,12 +280,15 @@ trait HelperTrait
     #[Override]
     public function accept(AbstractPage $page, $recursive = true): bool
     {
+        $role  = $this->getRole();
+        $roles = $role === null ? [] : [$role];
+
         $acceptHelper = $this->serviceBuilder->build(
             AcceptHelperInterface::class,
             [
                 'authorization' => $this->getUseAcl() ? $this->getAcl() : null,
                 'renderInvisible' => $this->getRenderInvisible(),
-                'role' => $this->getRole(),
+                'roles' => $roles,
             ],
         );
 

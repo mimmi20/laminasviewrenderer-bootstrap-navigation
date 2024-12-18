@@ -148,7 +148,7 @@ final class Menu8Test extends TestCase
                 [
                     'authorization' => $auth,
                     'renderInvisible' => false,
-                    'role' => $role,
+                    'roles' => [$role],
                 ],
             )
             ->willReturn($findActiveHelper);
@@ -308,7 +308,7 @@ final class Menu8Test extends TestCase
                 [
                     'authorization' => $auth,
                     'renderInvisible' => false,
-                    'role' => $role,
+                    'roles' => [$role],
                 ],
             )
             ->willReturn($findActiveHelper);
@@ -534,7 +534,7 @@ final class Menu8Test extends TestCase
                         [
                             'authorization' => $auth,
                             'renderInvisible' => false,
-                            'role' => $role,
+                            'roles' => [$role],
                         ],
                         $options,
                         (string) $invocation,
@@ -763,7 +763,7 @@ final class Menu8Test extends TestCase
                 [
                     'authorization' => $auth,
                     'renderInvisible' => false,
-                    'role' => $role,
+                    'roles' => [$role],
                 ],
             )
             ->willReturn($findActiveHelper);
@@ -1001,7 +1001,7 @@ final class Menu8Test extends TestCase
                         [
                             'authorization' => $auth,
                             'renderInvisible' => false,
-                            'role' => $role,
+                            'roles' => [$role],
                         ],
                         $options,
                         (string) $invocation,

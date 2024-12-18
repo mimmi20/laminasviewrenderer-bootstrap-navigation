@@ -246,7 +246,7 @@ final class Menu6Test extends TestCase
                         [
                             'authorization' => $auth,
                             'renderInvisible' => false,
-                            'role' => $role,
+                            'roles' => [$role],
                         ],
                         $options,
                         (string) $invocation,
@@ -616,7 +616,7 @@ final class Menu6Test extends TestCase
                         [
                             'authorization' => $auth,
                             'renderInvisible' => false,
-                            'role' => $role,
+                            'roles' => [$role],
                         ],
                         $options,
                         (string) $invocation,
