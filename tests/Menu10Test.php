@@ -379,7 +379,7 @@ final class Menu10Test extends TestCase
                         [
                             'authorization' => $auth,
                             'renderInvisible' => false,
-                            'role' => $role,
+                            'roles' => [$role],
                         ],
                         $options,
                         (string) $invocation,
@@ -933,7 +933,7 @@ final class Menu10Test extends TestCase
                         [
                             'authorization' => $auth,
                             'renderInvisible' => false,
-                            'role' => $role,
+                            'roles' => [$role],
                         ],
                         $options,
                         (string) $invocation,

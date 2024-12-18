@@ -334,7 +334,7 @@ final class Menu3Test extends TestCase
                 [
                     'authorization' => null,
                     'renderInvisible' => false,
-                    'role' => null,
+                    'roles' => [],
                 ],
             )
             ->willReturn($findActiveHelper);

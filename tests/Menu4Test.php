@@ -236,7 +236,7 @@ final class Menu4Test extends TestCase
                 [
                     'authorization' => null,
                     'renderInvisible' => false,
-                    'role' => null,
+                    'roles' => [],
                 ],
             )
             ->willReturn($findActiveHelper);
@@ -406,7 +406,7 @@ final class Menu4Test extends TestCase
                         [
                             'authorization' => $auth,
                             'renderInvisible' => false,
-                            'role' => $role,
+                            'roles' => [$role],
                         ],
                         $options,
                         (string) $invocation,
@@ -676,7 +676,7 @@ final class Menu4Test extends TestCase
                         [
                             'authorization' => $auth,
                             'renderInvisible' => false,
-                            'role' => $role,
+                            'roles' => [$role],
                         ],
                         $options,
                         (string) $invocation,
@@ -1045,7 +1045,7 @@ final class Menu4Test extends TestCase
                         [
                             'authorization' => $auth,
                             'renderInvisible' => false,
-                            'role' => $role,
+                            'roles' => [$role],
                         ],
                         $options,
                         (string) $invocation,

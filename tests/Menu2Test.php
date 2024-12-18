@@ -87,7 +87,7 @@ final class Menu2Test extends TestCase
                 [
                     'authorization' => $auth,
                     'renderInvisible' => false,
-                    'role' => $role,
+                    'roles' => [$role],
                 ],
             )
             ->willReturn($findActiveHelper);
@@ -235,7 +235,7 @@ final class Menu2Test extends TestCase
                 [
                     'authorization' => $auth,
                     'renderInvisible' => false,
-                    'role' => $role,
+                    'roles' => [$role],
                 ],
             )
             ->willReturn($findActiveHelper);
@@ -384,7 +384,7 @@ final class Menu2Test extends TestCase
                 [
                     'authorization' => $auth,
                     'renderInvisible' => false,
-                    'role' => $role,
+                    'roles' => [$role],
                 ],
             )
             ->willReturn($findActiveHelper);
@@ -542,7 +542,7 @@ final class Menu2Test extends TestCase
                 [
                     'authorization' => $auth,
                     'renderInvisible' => false,
-                    'role' => $role,
+                    'roles' => [$role],
                 ],
             )
             ->willReturn($findActiveHelper);
@@ -686,7 +686,7 @@ final class Menu2Test extends TestCase
                 [
                     'authorization' => $auth,
                     'renderInvisible' => false,
-                    'role' => $role,
+                    'roles' => [$role],
                 ],
             )
             ->willReturn($findActiveHelper);
@@ -826,7 +826,7 @@ final class Menu2Test extends TestCase
                 [
                     'authorization' => $auth,
                     'renderInvisible' => false,
-                    'role' => $role,
+                    'roles' => [$role],
                 ],
             )
             ->willReturn($findActiveHelper);

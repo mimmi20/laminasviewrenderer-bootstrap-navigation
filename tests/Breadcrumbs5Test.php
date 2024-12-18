@@ -164,7 +164,7 @@ final class Breadcrumbs5Test extends TestCase
                 [
                     'authorization' => $auth,
                     'renderInvisible' => false,
-                    'role' => $role,
+                    'roles' => [$role],
                 ],
             )
             ->willReturn($findActiveHelper);
@@ -360,7 +360,7 @@ final class Breadcrumbs5Test extends TestCase
                 [
                     'authorization' => $auth,
                     'renderInvisible' => false,
-                    'role' => $role,
+                    'roles' => [$role],
                 ],
             )
             ->willReturn($findActiveHelper);
@@ -530,7 +530,7 @@ final class Breadcrumbs5Test extends TestCase
                 [
                     'authorization' => $auth,
                     'renderInvisible' => false,
-                    'role' => $role,
+                    'roles' => [$role],
                 ],
             )
             ->willReturn($findActiveHelper);
@@ -674,7 +674,7 @@ final class Breadcrumbs5Test extends TestCase
                 [
                     'authorization' => $auth,
                     'renderInvisible' => false,
-                    'role' => $role,
+                    'roles' => [$role],
                 ],
             )
             ->willReturn($findActiveHelper);
@@ -864,7 +864,7 @@ final class Breadcrumbs5Test extends TestCase
                 [
                     'authorization' => null,
                     'renderInvisible' => false,
-                    'role' => null,
+                    'roles' => [],
                 ],
             )
             ->willReturn($findActiveHelper);

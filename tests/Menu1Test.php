@@ -426,7 +426,7 @@ final class Menu1Test extends TestCase
                 [
                     'authorization' => $auth,
                     'renderInvisible' => false,
-                    'role' => $role,
+                    'roles' => [$role],
                 ],
             )
             ->willReturn($acceptHelper);
@@ -797,7 +797,7 @@ final class Menu1Test extends TestCase
                 [
                     'authorization' => $auth,
                     'renderInvisible' => false,
-                    'role' => $role,
+                    'roles' => [$role],
                 ],
             )
             ->willReturn($findActiveHelper);
@@ -943,7 +943,7 @@ final class Menu1Test extends TestCase
                 [
                     'authorization' => $auth,
                     'renderInvisible' => false,
-                    'role' => $role,
+                    'roles' => [$role],
                 ],
             )
             ->willReturn($findActiveHelper);
