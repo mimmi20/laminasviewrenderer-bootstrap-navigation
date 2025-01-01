@@ -3,7 +3,7 @@
 /**
  * This file is part of the mimmi20/laminasviewrenderer-bootstrap-navigation package.
  *
- * Copyright (c) 2021-2024, Thomas Mueller <mimmi20@live.de>
+ * Copyright (c) 2021-2025, Thomas Mueller <mimmi20@live.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -370,13 +370,17 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
             $subHtml .= $indent . '    <li';
 
             if ($liClasses !== []) {
-                $subHtml .= ' class="' . ($this->escapeHtmlAttr)($this->combineClasses(
-                    $liClasses,
-                )) . '"';
+                $liClasses = ($this->escapeHtmlAttr)($this->combineClasses($liClasses));
+                assert(is_string($liClasses));
+
+                $subHtml .= ' class="' . $liClasses . '"';
             }
 
             if (!empty($liRole)) {
-                $subHtml .= ' role="' . ($this->escapeHtmlAttr)($liRole) . '"';
+                $liRole = ($this->escapeHtmlAttr)($liRole);
+                assert(is_string($liRole));
+
+                $subHtml .= ' role="' . $liRole . '"';
             }
 
             $subHtml .= '>' . PHP_EOL;
@@ -401,11 +405,17 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
         $html = $indent . '<ul';
 
         if ($ulClass) {
-            $html .= ' class="' . ($this->escapeHtmlAttr)($ulClass) . '"';
+            $ulClass = ($this->escapeHtmlAttr)($ulClass);
+            assert(is_string($ulClass));
+
+            $html .= ' class="' . $ulClass . '"';
         }
 
         if (!empty($ulRole)) {
-            $html .= ' role="' . ($this->escapeHtmlAttr)($ulRole) . '"';
+            $ulRole = ($this->escapeHtmlAttr)($ulRole);
+            assert(is_string($ulRole));
+
+            $html .= ' role="' . $ulRole . '"';
         }
 
         $html .= '>' . PHP_EOL;
@@ -516,10 +526,16 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
             if ($depth > $prevDepth) {
                 // start new ul tag
                 if ($depth === 0) {
-                    $ulClass = ' class="' . ($this->escapeHtmlAttr)($ulClass) . '"';
+                    $ulClass = ($this->escapeHtmlAttr)($ulClass);
+                    assert(is_string($ulClass));
+
+                    $ulClass = ' class="' . $ulClass . '"';
 
                     if (!empty($ulRole)) {
-                        $ulClass .= ' role="' . ($this->escapeHtmlAttr)($ulRole) . '"';
+                        $ulRole = ($this->escapeHtmlAttr)($ulRole);
+                        assert(is_string($ulRole));
+
+                        $ulClass .= ' role="' . $ulRole . '"';
                     }
                 } else {
                     $ulClasses = [];
@@ -532,12 +548,16 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
                         $ulClasses[] = 'dropdown-menu-dark';
                     }
 
-                    $ulClass = ' class="' . ($this->escapeHtmlAttr)($this->combineClasses(
-                        $ulClasses,
-                    )) . '"';
+                    $classes = ($this->escapeHtmlAttr)($this->combineClasses($ulClasses));
+                    assert(is_string($classes));
+
+                    $ulClass = ' class="' . $classes . '"';
 
                     if ($prevPage?->getId() !== null) {
-                        $ulClass .= ' aria-labelledby="' . ($this->escapeHtmlAttr)($prevPage->getId()) . '"';
+                        $id = ($this->escapeHtmlAttr)($prevPage->getId());
+                        assert(is_string($id));
+
+                        $ulClass .= ' aria-labelledby="' . $id . '"';
                     }
                 }
 
@@ -596,12 +616,18 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
                 $combinedLiClasses = $this->combineClasses($liClasses);
 
                 if ($combinedLiClasses !== '') {
-                    $allLiClasses = ' class="' . ($this->escapeHtmlAttr)($combinedLiClasses) . '"';
+                    $classes = ($this->escapeHtmlAttr)($combinedLiClasses);
+                    assert(is_string($classes));
+
+                    $allLiClasses = ' class="' . $classes . '"';
                 }
             }
 
             if ($depth === 0 && !empty($liRole)) {
-                $allLiClasses .= ' role="' . ($this->escapeHtmlAttr)($liRole) . '"';
+                $role = ($this->escapeHtmlAttr)($liRole);
+                assert(is_string($role));
+
+                $allLiClasses .= ' role="' . $role . '"';
             }
 
             $html .= $myIndent . '    <li' . $allLiClasses . '>' . PHP_EOL;
@@ -866,12 +892,11 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
     }
 
     /**
-     * @param AbstractPage                        $page           current page to check
-     * @param array<string, bool|int|string|null> $options        options for controlling rendering
-     * @param int                                 $level          current level of rendering
-     * @param array<int, string>                  $liClasses
-     * @param array<string, string>               $pageAttributes
-     * @phpstan-param array{role?: string, direction?: Direction, sublink?: Sublink, liActiveClass?: string, liClass?: string, addClassToListItem?: bool} $options
+     * @param AbstractPage                                                                                                                        $page           current page to check
+     * @param array{role?: string, direction?: Direction, sublink?: Sublink, liActiveClass?: string, liClass?: string, addClassToListItem?: bool} $options        options for controlling rendering
+     * @param int                                                                                                                                 $level          current level of rendering
+     * @param array<int, string>                                                                                                                  $liClasses
+     * @param array<string, string>                                                                                                               $pageAttributes
      *
      * @throws \Laminas\Navigation\Exception\InvalidArgumentException
      */
@@ -936,17 +961,23 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
             $liActiveClass = $page->get('li-active-class');
 
             if ($liActiveClass) {
+                assert(is_string($liActiveClass));
+
                 $liClasses[] = $liActiveClass;
             }
         }
 
         if (array_key_exists('liClass', $options)) {
+            assert(is_string($options['liClass']));
+
             $liClasses[] = $options['liClass'];
         }
 
         $liClass = $page->get('li-class');
 
         if ($liClass) {
+            assert(is_string($liClass));
+
             $liClasses[] = $liClass;
         }
 
