@@ -3,7 +3,7 @@
 /**
  * This file is part of the mimmi20/laminasviewrenderer-bootstrap-navigation package.
  *
- * Copyright (c) 2021-2024, Thomas Mueller <mimmi20@live.de>
+ * Copyright (c) 2021-2025, Thomas Mueller <mimmi20@live.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -26,7 +26,6 @@ use Laminas\Permissions\Acl\Resource\GenericResource;
 use Laminas\Permissions\Acl\Role\GenericRole;
 use Laminas\Router\ConfigProvider;
 use Laminas\Router\RouteMatch as V3RouteMatch;
-use Laminas\ServiceManager\Config;
 use Laminas\ServiceManager\Exception\ContainerModificationsNotAllowedException;
 use Laminas\ServiceManager\ServiceManager;
 use Laminas\View\Exception\InvalidArgumentException;
@@ -148,8 +147,7 @@ abstract class AbstractTestCase extends TestCase
         (new ServiceManagerConfig())->configureServiceManager($sm);
 
         if (class_exists(ConfigProvider::class)) {
-            $routerConfig = new Config((new ConfigProvider())->getDependencyConfig());
-            $routerConfig->configureServiceManager($sm);
+            $sm->configure((new ConfigProvider())->getDependencyConfig());
         }
 
         $sm->setFactory('Navigation', DefaultNavigationFactory::class);
