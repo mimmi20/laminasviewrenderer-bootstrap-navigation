@@ -38,7 +38,7 @@ final readonly class ArrayTranslator implements Translator\Loader\FileLoaderInte
      * @param string $locale
      * @param string $filename
      *
-     * @return TextDomain<(int|string), mixed>
+     * @return TextDomain<string, string>
      *
      * @throws void
      *
