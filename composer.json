@@ -38,7 +38,7 @@
     "ext-xmlwriter": "*",
     "infection/infection": "^0.29.11",
     "laminas/laminas-authentication": "^2.18.0",
-    "laminas/laminas-escaper": "^2.15.0",
+    "laminas/laminas-escaper": "^2.16.0",
     "laminas/laminas-i18n": "^2.29.0",
     "laminas/laminas-modulemanager": "^2.17.0",
     "laminas/laminas-mvc": "^3.8.0",
