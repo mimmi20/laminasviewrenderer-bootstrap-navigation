@@ -119,6 +119,12 @@ parameters:
     -
       message: '~Parameter #2 \$v3config of class Laminas\\View\\HelperPluginManager constructor expects array~'
       path: src\HelperPluginManagerFactory.php
+    -
+      identifier: property.uninitialized
+      paths:
+        - tests/*/*Test.php
+        - tests/*Test.php
+        - tests/Compare/AbstractTestCase.php
 
 rules:
   # code complexity

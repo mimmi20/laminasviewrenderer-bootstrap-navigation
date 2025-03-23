@@ -32,6 +32,7 @@ use Mimmi20\NavigationHelper\Accept\AcceptHelperInterface;
 use Mimmi20\NavigationHelper\ContainerParser\ContainerParserInterface;
 use Mimmi20\NavigationHelper\FindActive\FindActiveInterface;
 use Override;
+use PHPUnit\Event\NoPreviousThrowableException;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerExceptionInterface;
@@ -209,6 +210,8 @@ final class Menu4Test extends TestCase
      * @throws \Laminas\Navigation\Exception\InvalidArgumentException
      * @throws InvalidArgumentException
      * @throws ContainerExceptionInterface
+     * @throws NoPreviousThrowableException
+     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testDoNotRenderMenuIfNoPageIsActive(): void
     {

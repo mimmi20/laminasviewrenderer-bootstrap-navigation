@@ -31,6 +31,7 @@ use Mimmi20\NavigationHelper\ContainerParser\ContainerParserInterface;
 use Mimmi20\NavigationHelper\FindActive\FindActiveInterface;
 use Mimmi20\NavigationHelper\Htmlify\HtmlifyInterface;
 use Override;
+use PHPUnit\Event\NoPreviousThrowableException;
 use PHPUnit\Framework\Constraint\IsInstanceOf;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestCase;
@@ -48,7 +49,11 @@ final class Breadcrumbs1Test extends TestCase
         Breadcrumbs::setDefaultRole(null);
     }
 
-    /** @throws Exception */
+    /**
+     * @throws Exception
+     * @throws NoPreviousThrowableException
+     * @throws \PHPUnit\Framework\MockObject\Exception
+     */
     public function testSetView(): void
     {
         $view = $this->createMock(RendererInterface::class);
@@ -105,6 +110,8 @@ final class Breadcrumbs1Test extends TestCase
      * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      * @throws \Laminas\Navigation\Exception\InvalidArgumentException
      * @throws InvalidArgumentException
+     * @throws NoPreviousThrowableException
+     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testSetContainer(): void
     {
@@ -245,6 +252,8 @@ final class Breadcrumbs1Test extends TestCase
      * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      * @throws \Laminas\Navigation\Exception\InvalidArgumentException
      * @throws InvalidArgumentException
+     * @throws NoPreviousThrowableException
+     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testSetContainerWithStringFound(): void
     {
@@ -304,6 +313,8 @@ final class Breadcrumbs1Test extends TestCase
      * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      * @throws InvalidArgumentException
      * @throws ContainerExceptionInterface
+     * @throws NoPreviousThrowableException
+     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testDoNotAccept(): void
     {
@@ -426,6 +437,8 @@ final class Breadcrumbs1Test extends TestCase
      * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      * @throws InvalidArgumentException
      * @throws ContainerExceptionInterface
+     * @throws NoPreviousThrowableException
+     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testDoNotAcceptWithException(): void
     {
@@ -548,6 +561,8 @@ final class Breadcrumbs1Test extends TestCase
      * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      * @throws InvalidArgumentException
      * @throws RuntimeException
+     * @throws NoPreviousThrowableException
+     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testHtmlify(): void
     {

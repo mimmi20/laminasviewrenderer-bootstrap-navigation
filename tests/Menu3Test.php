@@ -30,6 +30,7 @@ use Mimmi20\LaminasView\Helper\HtmlElement\Helper\HtmlElementInterface;
 use Mimmi20\NavigationHelper\ContainerParser\ContainerParserInterface;
 use Mimmi20\NavigationHelper\FindActive\FindActiveInterface;
 use Override;
+use PHPUnit\Event\NoPreviousThrowableException;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestCase;
 
@@ -307,6 +308,8 @@ final class Menu3Test extends TestCase
      * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      * @throws \Laminas\Navigation\Exception\InvalidArgumentException
      * @throws InvalidArgumentException
+     * @throws NoPreviousThrowableException
+     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testDoNotRenderIfNoPageIsActive(): void
     {
