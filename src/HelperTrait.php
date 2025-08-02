@@ -70,8 +70,6 @@ trait HelperTrait
      * @param AbstractContainer<AbstractPage>|string|null $container container to operate on
      *
      * @throws InvalidArgumentException
-     *
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      */
     #[Override]
     public function __invoke($container = null): self
@@ -107,8 +105,6 @@ trait HelperTrait
      * @param AbstractContainer<AbstractPage>|string|null $container default is null, meaning container will be reset
      *
      * @throws InvalidArgumentException
-     *
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      */
     #[Override]
     public function setContainer($container = null): self
@@ -149,8 +145,6 @@ trait HelperTrait
      *                                                                   given, the first value is used for the partial view script.
      *
      * @throws void
-     *
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      */
     #[Override]
     public function setPartial($partial): self
@@ -203,8 +197,6 @@ trait HelperTrait
      * @throws InvalidArgumentException
      * @throws \Laminas\Navigation\Exception\InvalidArgumentException
      * @throws ContainerExceptionInterface
-     *
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      */
     #[Override]
     public function findActive($container, $minDepth = null, $maxDepth = -1): array
@@ -274,8 +266,6 @@ trait HelperTrait
      * @return bool Whether page should be accepted
      *
      * @throws ContainerExceptionInterface
-     *
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      */
     #[Override]
     public function accept(AbstractPage $page, $recursive = true): bool

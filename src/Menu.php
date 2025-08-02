@@ -134,8 +134,6 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
      * @throws \Laminas\Navigation\Exception\InvalidArgumentException
      * @throws ContainerExceptionInterface
      * @throws Exception\InvalidArgumentException
-     *
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      */
     #[Override]
     public function renderMenu($container = null, array $options = []): string
@@ -220,8 +218,6 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
      * @throws \Laminas\Navigation\Exception\InvalidArgumentException
      * @throws ContainerExceptionInterface
      * @throws Exception\InvalidArgumentException
-     *
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      */
     #[Override]
     public function renderSubMenu(
@@ -261,7 +257,6 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
      * @throws Exception\InvalidArgumentException
      *
      * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      */
     #[Override]
     public function htmlify(AbstractPage $page, $escapeLabel = true, $addClassToListItem = false): string
@@ -287,8 +282,6 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
      * @throws InvalidArgumentException
      * @throws Exception\InvalidArgumentException
      * @throws ContainerExceptionInterface
-     *
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      */
     #[Override]
     protected function renderDeepestMenu(
@@ -444,8 +437,6 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
      * @throws InvalidArgumentException
      * @throws Exception\InvalidArgumentException
      * @throws ContainerExceptionInterface
-     *
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      */
     #[Override]
     protected function renderNormalMenu(
@@ -685,8 +676,6 @@ final class Menu extends \Laminas\View\Helper\Navigation\Menu
      * @throws InvalidArgumentException
      * @throws \Laminas\Navigation\Exception\InvalidArgumentException
      * @throws DomainException
-     *
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      */
     #[Override]
     protected function renderPartialModel(array $params, $container, $partial): string

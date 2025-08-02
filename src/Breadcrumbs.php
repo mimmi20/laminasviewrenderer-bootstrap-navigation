@@ -89,8 +89,6 @@ final class Breadcrumbs extends \Laminas\View\Helper\Navigation\Breadcrumbs
      * @throws Exception\InvalidArgumentException
      * @throws ContainerExceptionInterface
      * @throws RuntimeException
-     *
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      */
     #[Override]
     public function renderStraight($container = null): string
@@ -140,8 +138,6 @@ final class Breadcrumbs extends \Laminas\View\Helper\Navigation\Breadcrumbs
      * @throws \Laminas\Navigation\Exception\InvalidArgumentException
      * @throws ContainerExceptionInterface
      * @throws DomainException
-     *
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      */
     #[Override]
     protected function renderPartialModel(array $params, $container, $partial): string
