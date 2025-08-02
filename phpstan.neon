@@ -119,6 +119,7 @@ parameters:
     - '~Call to method ([gs]et(DefaultAcl|DefaultRole|Role|Acl|Translator|Indent|RenderParents|UlClass|LiActiveClass|OnlyActiveBranch|AddClassToListItem|MaxDepth|MinDepth|UseAcl|Separator|LinkLast|RenderInvisible)|renderPartial|render|renderPartialWithParams)\(\) of deprecated (class|interface) Laminas\\View\\Helper\\Navigation\\(AbstractHelper|Menu|Breadcrumbs|HelperInterface)~'
     - '~extends deprecated class~'
     - '~of deprecated class~'
+    - '~Call to deprecated method~'
     -
       message: '~Parameter #2 \$v3config of class Laminas\\View\\HelperPluginManager constructor expects array~'
       path: src\HelperPluginManagerFactory.php
