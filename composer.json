@@ -1,6 +1,6 @@
 {
   "name": "mimmi20/laminasviewrenderer-bootstrap-navigation",
-  "description": "Provides viewhelper for Laminas Navigation to use with Bootstrap",
+  "description": "Provides viewhelper for Laminas Navigation to use with Bootstrap 5",
   "license": "MIT",
   "type": "library",
   "authors": [
